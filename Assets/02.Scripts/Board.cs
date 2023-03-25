@@ -39,13 +39,15 @@ public class Board : MonoBehaviour
     // 감지해서 출력
     private void Start()
     {
-        Test();
+        // Test();
+        // GetWallInfo();
     }
 
+    
     public void Test()
     {
-        NodeArray = new Node_[sizeX, sizeZ];
-        collision = Physics.OverlapBox(transform.position + center, size, Quaternion.identity, layerMask);
+        
+        collision = Physics.OverlapBox(center, size, Quaternion.identity, layerMask);       // 검은 큐브 
         for (int i = 0; i < collision.Length; i++)
         {
             Debug.Log("collision 물체: " + collision[i].transform.name);
@@ -53,40 +55,68 @@ public class Board : MonoBehaviour
         }
         print(collision.Length);
     }
-
-    void OnDrawGizmos()
+    public void GetWallInfo()
     {
-        Gizmos.color = Color.black;
-        Gizmos.DrawWireCube(center, size * 2);
+        sizeX = topRight.x - bottomLeft.x + 1;      // 27
+        sizeZ = topRight.z - bottomLeft.z + 1;      // 27
         
-        // if(FinalNodeList.Count != 0) for (int i = 0; i < FinalNodeList.Count - 1; i++)
-        //         Gizmos.DrawLine(new Vector2(FinalNodeList[i].x, FinalNodeList[i].z), new Vector2(FinalNodeList[i + 1].x, FinalNodeList[i + 1].z));
-    }
-    
-    public void PathFinding()
-    {
-        // NodeArray의 크기 정해주고, isWall, x, y 대입
-        sizeX = topRight.x - bottomLeft.x + 1;
-        sizeZ = topRight.z - bottomLeft.z + 1;
         NodeArray = new Node_[sizeX, sizeZ];
         
-        // 벽정보 저장
         for (int i = 0; i < sizeX; i++)
         {
             for (int j = 0; j < sizeZ; j++)
             {
                 bool isWall = false;
-                collision = Physics.OverlapSphere(new Vector3(i + bottomLeft.x, 0.5f, j + bottomLeft.z), 1f);  //      Box(new Vector3(i + bottomLeft.x, 0.5f, j + bottomLeft.z),new Vector3(1, 1, 1));
-                // for (int k = 0; k < collision.Length; k++)
-                //     if (collision[k].gameObject.layer == LayerMask.NameToLayer("Wall"))
-                //         isWall = true;
-                
+                // collision = Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z), Vector3.one * 0.5f, Quaternion.identity, layerMask);
+                foreach (var collider in Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z), Vector3.one * 0.4f, Quaternion.identity, layerMask))
+                {
+                    if (collider.gameObject.layer == LayerMask.NameToLayer("Wall")) isWall = true;
+                    // Debug.Log(collider.gameObject.name);
+                }
                 NodeArray[i, j] = new Node_(isWall, i + bottomLeft.x, j + bottomLeft.z);
             }
         }
-        for (int k = 0; k < collision.Length; k++)
+        for (int i = 0; i < sizeX; i++)
         {
-            Debug.Log("Wall object: " + collision[k].transform.position);
+            for (int j = 0; j < sizeZ; j++)
+            {
+                Node_ node = NodeArray[i, j];
+                Debug.Log($"Node [{i},{j}]: isWall={node.isWall}, x={node.x}, z={node.z}");
+            }
+        }
+
+    }
+    
+    void OnDrawGizmos()
+    {
+        // Gizmos.color = Color.black;
+        // Gizmos.DrawWireCube(center, size * 2);
+        
+        if(FinalNodeList.Count != 0) for (int i = 0; i < FinalNodeList.Count - 1; i++)
+                Gizmos.DrawLine(new Vector3(FinalNodeList[i].x,1f ,FinalNodeList[i].z), new Vector3(FinalNodeList[i + 1].x,1f, FinalNodeList[i + 1].z));
+    }
+    
+    public void PathFinding()
+    {
+        // NodeArray의 크기 정해주고, isWall, x, y 대입
+        sizeX = topRight.x - bottomLeft.x + 1;      // 27
+        sizeZ = topRight.z - bottomLeft.z + 1;      // 27
+        
+        NodeArray = new Node_[sizeX, sizeZ];
+        
+        for (int i = 0; i < sizeX; i++)
+        {
+            for (int j = 0; j < sizeZ; j++)
+            {
+                bool isWall = false;
+                // collision = Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z), Vector3.one * 0.5f, Quaternion.identity, layerMask);
+                foreach (var collider in Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z), Vector3.one * 0.4f, Quaternion.identity, layerMask))
+                {
+                    if (collider.gameObject.layer == LayerMask.NameToLayer("Wall")) isWall = true;
+                    // Debug.Log(collider.gameObject.name);
+                }
+                NodeArray[i, j] = new Node_(isWall, i + bottomLeft.x, j + bottomLeft.z);
+            }
         }
 
         // 시작과 끝 노드, 열린리스트와 닫힌리스트, 마지막리스트 초기화
@@ -128,16 +158,6 @@ public class Board : MonoBehaviour
                 return;
             }
 
-
-            // ↗↖↙↘
-            if (allowDiagonal)
-            {
-                OpenListAdd(CurNode.x + 1, CurNode.z + 1);
-                OpenListAdd(CurNode.x - 1, CurNode.z + 1);
-                OpenListAdd(CurNode.x - 1, CurNode.z - 1);
-                OpenListAdd(CurNode.x + 1, CurNode.z - 1);
-            }
-
             // ↑ → ↓ ←
             OpenListAdd(CurNode.x, CurNode.z + 1);
             OpenListAdd(CurNode.x + 1, CurNode.z);
@@ -151,9 +171,6 @@ public class Board : MonoBehaviour
         // 상하좌우 범위를 벗어나지 않고, 벽이 아니면서, 닫힌리스트에 없다면
         if (checkX >= bottomLeft.x && checkX < topRight.x + 1 && checkZ >= bottomLeft.z && checkZ < topRight.z + 1 && !NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z].isWall && !ClosedList.Contains(NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z]))
         {
-            // 대각선 허용시, 벽 사이로 통과 안됨
-            if (allowDiagonal) if (NodeArray[CurNode.x - bottomLeft.x, checkZ - bottomLeft.z].isWall && NodeArray[checkX - bottomLeft.x, CurNode.z - bottomLeft.z].isWall) return;
-
             // 코너를 가로질러 가지 않을시, 이동 중에 수직수평 장애물이 있으면 안됨
             if (dontCrossCorner) if (NodeArray[CurNode.x - bottomLeft.x, checkZ - bottomLeft.z].isWall || NodeArray[checkX - bottomLeft.x, CurNode.z - bottomLeft.z].isWall) return;
 
@@ -175,6 +192,9 @@ public class Board : MonoBehaviour
         }
     }
 
-    
+    public void DFS()
+    {
+        
+    }
     
 }
