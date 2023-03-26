@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 7563904526080823568}
   m_Layer: 3
   m_Name: Straight
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAvailableColor: {r: 0.28773582, g: 0.39329305, b: 1, a: 1}
-  clickedColor: {r: 0.21693665, g: 0.28971955, b: 0.7075472, a: 1}
+  isClicked: 0
 --- !u!54 &7563904526080823568
 Rigidbody:
   m_ObjectHideFlags: 0
