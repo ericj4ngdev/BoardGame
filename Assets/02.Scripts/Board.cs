@@ -40,10 +40,41 @@ public class Board : MonoBehaviour
     public Vector3 size;
     public LayerMask layerMask;
     
-    public void FollowFinalNodeList()
+    private void Awake()
     {
+        node = GetComponentInChildren<Node>();
+        
+    }
+    
+    private void Start()
+    {
+        /*for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(child.position.x), 0, Mathf.RoundToInt(child.position.z));
+            print($"Child Object Name: { child.name} \n             Child Object Position:{TilePosition}");
+        }*/
+    }
+    
+    public void FollowFinalNodeList(GameObject targetTile)
+    {
+        // for(int i = 0; i < transform.childCount; i++)
+        // {
+        //     Transform child = transform.GetChild(i);
+        //     Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(child.position.x), 0, Mathf.RoundToInt(child.position.z));
+        //     if(TilePosition == targetTile)
+        // }
+        Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(targetTile.transform.position.x), 0,
+                                                Mathf.RoundToInt(targetTile.transform.position.z));
+        targetPos = TilePosition;
+        // 갱신한 targetPos로 길찾기
+        PathFinding();      
+        // 플레이어 이동
         player.FollowPath(FinalNodeList);
+        // 시작점을 최종 노드로 설정
         startPos = new Vector3Int(FinalNodeList[FinalNodeList.Count - 1].x,0,FinalNodeList[FinalNodeList.Count - 1].z);
+        // 타일 클릭 초기화
+        SetAllChildrenIsClickedFalse();
     }
 
     public void SetTargetpos(Vector3 pos)
@@ -53,7 +84,7 @@ public class Board : MonoBehaviour
         {
             SetStartpos(targetPos);     // 출발점이 목표점이 된다. (도착하면 도착한 곳이 다음 시작점이기 때문)
         }
-        targetPos = new Vector3Int((int)pos.x, 0, (int)pos.z);  // 도착점 = 클릭한 타일 위치
+        targetPos = new Vector3Int(Mathf.RoundToInt(pos.x), 0, Mathf.RoundToInt(pos.z));  // 도착점 = 클릭한 타일 위치
     }
     
     private void SetStartpos(Vector3Int pos)
@@ -62,11 +93,7 @@ public class Board : MonoBehaviour
     }
     
     // 감지해서 출력
-    private void Awake()
-    {
-        node = GetComponentInChildren<Node>();
-    }
-
+    
     public void SetAllChildrenIsClickedFalse()
     {
         Node[] childNodes = GetComponentsInChildren<Node>();
@@ -74,12 +101,6 @@ public class Board : MonoBehaviour
         {
             childNode.isClicked = false;
         }
-    }
-    
-    private void Start()
-    {
-        // Test();
-        // GetWallInfo();
     }
 
     public void Test()
