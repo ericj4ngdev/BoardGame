@@ -86,8 +86,15 @@ public class Node : MonoBehaviour
     public void OnMoveto(Vector3 end)
     {
         StartCoroutine("MoveTo",end);
+        // 중간에 다른 이동 경로가 있는 경우.
     }
 
+    public void OnMoveto_(Vector3 end)
+    {
+        StartCoroutine("MoveToNextTarget",end);
+    }
+    
+    
     private IEnumerator MoveTo(Vector3 end)
     {
         float	current  = 0;
@@ -105,5 +112,37 @@ public class Node : MonoBehaviour
             yield return null;
         }
         tr.position = end;
+    }
+    
+    public List<GameObject> targetList;
+    public float timeToReachTarget;
+
+    private int currentIndex = 0;
+    private bool isMoving = false;
+    
+    private IEnumerator MoveToNextTarget(Vector3 end)
+    {
+        isMoving = true;
+
+        while (currentIndex < targetList.Count)
+        {
+            Vector3 targetPosition = targetList[currentIndex].transform.position;
+            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+            float speed = distanceToTarget / timeToReachTarget;
+
+            float elapsedTime = 0f;
+            while (elapsedTime < timeToReachTarget)
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPosition, elapsedTime * speed / distanceToTarget);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            transform.position = targetPosition;
+            currentIndex++;
+        }
+
+        isMoving = false;
+        yield return null;
     }
 }
