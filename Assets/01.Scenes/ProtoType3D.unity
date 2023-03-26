@@ -4607,7 +4607,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Coll \uAC10\uC9C0"
+  m_Text: DFS
 --- !u!222 &665785800
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10977,7 +10977,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2105040522}
         m_TargetAssemblyTypeName: Board, Assembly-CSharp
-        m_MethodName: Test
+        m_MethodName: DFS
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11374,9 +11374,9 @@ MonoBehaviour:
   bottomLeft: {x: -13, y: 0, z: -13}
   topRight: {x: 13, y: 0, z: 13}
   startPos: {x: -12, y: 0, z: -12}
-  targetPos: {x: 0, y: 0, z: 0}
+  targetPos: {x: -12, y: 0, z: -9}
   FinalNodeList: []
-  allowDiagonal: 0
+  DFSList: []
   dontCrossCorner: 0
   center: {x: -13, y: 0, z: -13}
   size: {x: 0.5, y: 0.5, z: 0.5}

@@ -7,7 +7,8 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Node_
 {
-    public Node_(bool _isWall, int _x, int _z) { isWall = _isWall; x = _x; z = _z; }
+    public Node_(bool _isWall, bool _isVisited, int _x, int _z) { isWall = _isWall;
+        isVisited = _isVisited; x = _x; z = _z; }
 
     public bool isWall;
     public bool isVisited;
@@ -45,7 +46,6 @@ public class Board : MonoBehaviour
         // GetWallInfo();
     }
 
-
     public void Test()
     {
 
@@ -71,6 +71,7 @@ public class Board : MonoBehaviour
             for (int j = 0; j < sizeZ; j++)
             {
                 bool isWall = false;
+                bool isVisited = false;
                 // collision = Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z), Vector3.one * 0.5f, Quaternion.identity, layerMask);
                 foreach (var collider in Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z),
                              Vector3.one * 0.4f, Quaternion.identity, layerMask))
@@ -79,18 +80,18 @@ public class Board : MonoBehaviour
                     // Debug.Log(collider.gameObject.name);
                 }
 
-                NodeArray[i, j] = new Node_(isWall, i + bottomLeft.x, j + bottomLeft.z);
+                NodeArray[i, j] = new Node_(isWall, isVisited,i + bottomLeft.x, j + bottomLeft.z);
             }
         }
 
-        for (int i = 0; i < sizeX; i++)
+        /*for (int i = 0; i < sizeX; i++)
         {
             for (int j = 0; j < sizeZ; j++)
             {
                 Node_ node = NodeArray[i, j];
                 Debug.Log($"Node [{i},{j}]: isWall={node.isWall}, x={node.x}, z={node.z}");
             }
-        }
+        }*/
 
     }
 
@@ -104,7 +105,7 @@ public class Board : MonoBehaviour
                 Gizmos.DrawLine(new Vector3(FinalNodeList[i].x, 1f, FinalNodeList[i].z),
                     new Vector3(FinalNodeList[i + 1].x, 1f, FinalNodeList[i + 1].z));
         if (DFSList.Count != 0)
-            for (int i = 0; i < DFSList.Count - 1; i++)
+            for (int i = 0; i < DFSList.Count; i++)
             {
                 Gizmos.DrawCube(new Vector3(DFSList[i].x, 1f, DFSList[i].z), Vector3.one * 0.5f);
             }
@@ -113,38 +114,15 @@ public class Board : MonoBehaviour
 
     public void PathFinding()
     {
-        // NodeArray의 크기 정해주고, isWall, x, y 대입
-        sizeX = topRight.x - bottomLeft.x + 1; // 27
-        sizeZ = topRight.z - bottomLeft.z + 1; // 27
-
-        NodeArray = new Node_[sizeX, sizeZ];
-
-        for (int i = 0; i < sizeX; i++)
-        {
-            for (int j = 0; j < sizeZ; j++)
-            {
-                bool isWall = false;
-                // collision = Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z), Vector3.one * 0.5f, Quaternion.identity, layerMask);
-                foreach (var collider in Physics.OverlapBox(new Vector3(i + bottomLeft.x, 0f, j + bottomLeft.z),
-                             Vector3.one * 0.4f, Quaternion.identity, layerMask))
-                {
-                    if (collider.gameObject.layer == LayerMask.NameToLayer("Wall")) isWall = true;
-                    // Debug.Log(collider.gameObject.name);
-                }
-
-                NodeArray[i, j] = new Node_(isWall, i + bottomLeft.x, j + bottomLeft.z);
-            }
-        }
+        GetWallInfo();
 
         // 시작과 끝 노드, 열린리스트와 닫힌리스트, 마지막리스트 초기화
         StartNode = NodeArray[startPos.x - bottomLeft.x, startPos.z - bottomLeft.z];
         TargetNode = NodeArray[targetPos.x - bottomLeft.x, targetPos.z - bottomLeft.z];
-        UnreachableNode = NodeArray[0, 0]; // 항상 벽인 노드
         
         OpenList = new List<Node_>() { StartNode };
         ClosedList = new List<Node_>();
         FinalNodeList = new List<Node_>();
-        DFSList = new List<Node_>();
 
         while (OpenList.Count > 0)
         {
@@ -184,44 +162,47 @@ public class Board : MonoBehaviour
             OpenListAdd(CurNode.x + 1, CurNode.z);
             OpenListAdd(CurNode.x, CurNode.z - 1);
             OpenListAdd(CurNode.x - 1, CurNode.z);
-            
-            // if (CurNode == UnreachableNode)
-            // {
-            //     Node_ TargetCurNode = UnreachableNode;
-            //     while (TargetCurNode != StartNode)
-            //     {
-            //         // FinalNodeList.Add(TargetCurNode);
-            //         TargetCurNode = TargetCurNode.ParentNode;
-            //     }
-// 
-            //     // FinalNodeList.Add(StartNode);
-            //     // FinalNodeList.Reverse();
-            //     return;
-            // }
-                       
-            DFSListAdd(CurNode.x, CurNode.z);
-            DFSListAdd(CurNode.x + 1, CurNode.z);
-            DFSListAdd(CurNode.x, CurNode.z - 1);
-            DFSListAdd(CurNode.x - 1, CurNode.z);
         }
     }
 
-    void DFSListAdd(int checkX, int checkZ)
+    public void DFS()
     {
-        if (checkX >= bottomLeft.x && checkX < topRight.x + 1 && checkZ >= bottomLeft.z && checkZ < topRight.z + 1 &&
-            !NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z].isWall &&
-            !ClosedList.Contains(NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z]))
+        GetWallInfo();
+        StartNode = NodeArray[startPos.x - bottomLeft.x, startPos.z - bottomLeft.z];
+        StartNode.isVisited = true;
+        DFSList = new List<Node_>() { StartNode };
+        CurNode = DFSList[0];
+        // 호출
+        DFSListAdd(CurNode);
+
+    }
+    void DFSListAdd(Node_ currentNode)
+    {
+        // 상하좌우 범위를 벗어나지 않고, 벽이 아닌지 확인
+        // 다음 노드가 방문했던 노드인지? OR 다음 노드가 벽인지? 확인
+        for (int i = -1; i <= 1; i++)
         {
-            NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z].isVisited = true;
-            Node_ NeighborNode = NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z];
-            DFSList.Add(NeighborNode);
+            for (int j = -1; j <= 1; j++)
+            {
+                // 다음 노드의 좌표
+                int nextX = currentNode.x + i;
+                int nextZ = currentNode.z + j;
+                // 다음 노드가 NodeArray를 벗어나는지 확인 && 다음 노드가 방문했던 노드인지? && 다음 노드가 벽인지? 확인
+                if (nextX >= bottomLeft.x && nextX <= topRight.x && nextZ >= bottomLeft.z && nextZ <= topRight.z &&
+                    !NodeArray[nextX - bottomLeft.x, nextZ - bottomLeft.z].isVisited && !NodeArray[nextX - bottomLeft.x, nextZ - bottomLeft.z].isWall)
+                {
+                    NodeArray[nextX - bottomLeft.x, nextZ - bottomLeft.z].isVisited = true;
+                    Node_ NeighborNode = NodeArray[nextX - bottomLeft.x, nextZ - bottomLeft.z];
+                    DFSList.Add(NeighborNode);
+                    DFSListAdd(NeighborNode);
+                }
+            }
         }
     }
-
-
 
     void OpenListAdd(int checkX, int checkZ)
     {
+        
         // 상하좌우 범위를 벗어나지 않고, 벽이 아니면서, 닫힌리스트에 없다면
         if (checkX >= bottomLeft.x && checkX < topRight.x + 1 && checkZ >= bottomLeft.z && checkZ < topRight.z + 1 &&
             !NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z].isWall &&
@@ -247,10 +228,4 @@ public class Board : MonoBehaviour
             }
         }
     }
-
-    public void DFS()
-    {
-        
-    }
-    
 }
