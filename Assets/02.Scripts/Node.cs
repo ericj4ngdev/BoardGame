@@ -62,36 +62,6 @@ public class Node : MonoBehaviour
             rend.material.color = originalColor;
         }
         print(transform.position);
-        
-        /*if (isDFS(board.DFSList))
-        {
-            rend.material.color = clickedColor;
-            isClicked = true;
-            // 플레이어 이동, startpos,Targetpos 수정 함수 호출
-            tileposition = transform.position;
-            print($"board.startPos : {board.startPos} \n                 board.targetPos : {board.targetPos}");
-            if (board.targetPos == board.startPos)
-            {
-                // 같은 곳을 여러번 클릭하는 것 방지
-                return;
-            }
-            else if (board.targetPos != board.startPos)
-            {
-                board.SetTargetpos(tileposition);
-            }
-        }
-        else
-        {
-            print("그곳엔 이동할 수 없습니다.");
-            rend.material.color = originalColor;
-        }
-        print(transform.position);*/
-        
-        // 모서리 쪽에 있는 타일인가? -> 이동할 방향 정하기, UI띄우기 
-        // 함수 호출, 이벤트 
-        // TileUI.instance.SetUp(transform.position, this);
-        // 플레이어가 노드의 정중앙으로 이동. 그런데 타일의 최단경로를 따라 이동한다. 
-        
     }
 
     
