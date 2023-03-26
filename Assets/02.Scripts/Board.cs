@@ -48,12 +48,7 @@ public class Board : MonoBehaviour
     
     private void Start()
     {
-        /*for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform child = transform.GetChild(i);
-            Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(child.position.x), 0, Mathf.RoundToInt(child.position.z));
-            print($"Child Object Name: { child.name} \n             Child Object Position:{TilePosition}");
-        }*/
+        DFS();
     }
     
     public void FollowFinalNodeList(GameObject targetTile)
@@ -75,6 +70,8 @@ public class Board : MonoBehaviour
         startPos = new Vector3Int(FinalNodeList[FinalNodeList.Count - 1].x,0,FinalNodeList[FinalNodeList.Count - 1].z);
         // 타일 클릭 초기화
         SetAllChildrenIsClickedFalse();
+        // 갈수 있는 타일 검색
+        DFS();
     }
 
     public void SetTargetpos(Vector3 pos)

@@ -9,6 +9,7 @@ public class SelectObjectInRange : MonoBehaviour
 {
     public GameObject SpawnObject;
     private GameManager gameManager;
+    private Board board;
     
     public Vector3[] center_x = new Vector3[5];
     public Vector3[] center_z = new Vector3[5];
@@ -36,6 +37,7 @@ public class SelectObjectInRange : MonoBehaviour
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        board = FindObjectOfType<Board>();
         SpawnObject = gameManager.rotatingObject;
     }
 
@@ -127,6 +129,7 @@ public class SelectObjectInRange : MonoBehaviour
         UIPanel.gameObject.SetActive(false);
         yield return delay1;
         UIPanel.gameObject.SetActive(true);
+        board.DFS();
     }
 }
 
