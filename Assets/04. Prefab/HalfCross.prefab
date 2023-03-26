@@ -146,9 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fa17b72c531534ca5c59bd375d98ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildAvailableColor: {r: 0.47474232, g: 0.4292453, b: 1, a: 0}
-  buildNotAvailableColor: {r: 0, g: 0, b: 0, a: 0}
-  end: {fileID: 0}
+  moveAvailableColor: {r: 0.28773582, g: 0.39329305, b: 1, a: 1}
+  clickedColor: {r: 0.21693665, g: 0.28971955, b: 0.7075472, a: 1}
 --- !u!54 &2298424957180637797
 Rigidbody:
   m_ObjectHideFlags: 0

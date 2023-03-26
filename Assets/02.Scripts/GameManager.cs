@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     // 타일 이동
     public GameObject rotatingObject;
+    public GameObject board;
     public Transform SpawnSpot;
     private Vector3 eulerRotation;
     private Vector2Int BoardSize = new Vector2Int(5,5);
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < waypoint.Count; i++)
         {
             tilePrefab = AllTileList[Random.Range(0, AllTileList.Count)];
-            GameObject clone = Instantiate(tilePrefab, waypoint[i].transform.position, waypoint[i].transform.rotation,this.transform);
+            GameObject clone = Instantiate(tilePrefab, waypoint[i].transform.position, waypoint[i].transform.rotation,board.transform);
             Node node = clone.GetComponent<Node>();
             TileBoard.Add(node);
         }

@@ -17,7 +17,7 @@ public class SelectObjectInRange : MonoBehaviour
     public LayerMask layerMask;
     WaitForSeconds delay1 = new WaitForSeconds(1f);
     
-    void OnDrawGizmos()
+    /*void OnDrawGizmos()
     {
         // 기즈모 색상 지정
         Gizmos.color = Color.blue;
@@ -31,7 +31,7 @@ public class SelectObjectInRange : MonoBehaviour
         {
             Gizmos.DrawWireCube(center_z[i]/3, size_z);
         }
-    }
+    }*/
 
     private void Start()
     {
@@ -128,6 +128,5 @@ public class SelectObjectInRange : MonoBehaviour
         yield return delay1;
         UIPanel.gameObject.SetActive(true);
     }
-
 }
 

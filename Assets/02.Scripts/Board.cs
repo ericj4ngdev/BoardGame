@@ -21,25 +21,61 @@ public class Node_
 
 public class Board : MonoBehaviour
 {
-
     public Vector3Int bottomLeft, topRight;
     public Vector3Int startPos, targetPos;
     public List<Node_> FinalNodeList;
     public List<Node_> DFSList;
     public bool dontCrossCorner;
-
+    public Player player;
+    
     int sizeX, sizeZ;
     Node_[,] NodeArray;
     Node_ StartNode, TargetNode, CurNode, UnreachableNode;
     List<Node_> OpenList, ClosedList;
     Collider[] collision;
     private Transform tr;
-
+    private Node node;
+    
     public Vector3 center;
     public Vector3 size;
     public LayerMask layerMask;
+    
+    public void FollowFinalNodeList()
+    {
+        player.FollowPath(FinalNodeList);
+        startPos = new Vector3Int(FinalNodeList[FinalNodeList.Count - 1].x,0,FinalNodeList[FinalNodeList.Count - 1].z);
+    }
 
+    public void SetTargetpos(Vector3 pos)
+    {
+        if (targetPos == startPos) return;
+        if (targetPos != startPos)
+        {
+            SetStartpos(targetPos);     // 출발점이 목표점이 된다. (도착하면 도착한 곳이 다음 시작점이기 때문)
+        }
+        targetPos = new Vector3Int((int)pos.x, 0, (int)pos.z);  // 도착점 = 클릭한 타일 위치
+    }
+    
+    private void SetStartpos(Vector3Int pos)
+    {
+        startPos = pos;
+    }
+    
     // 감지해서 출력
+    private void Awake()
+    {
+        node = GetComponentInChildren<Node>();
+    }
+
+    public void SetAllChildrenIsClickedFalse()
+    {
+        Node[] childNodes = GetComponentsInChildren<Node>();
+        foreach (Node childNode in childNodes)
+        {
+            childNode.isClicked = false;
+        }
+    }
+    
     private void Start()
     {
         // Test();
@@ -104,10 +140,16 @@ public class Board : MonoBehaviour
             for (int i = 0; i < FinalNodeList.Count - 1; i++)
                 Gizmos.DrawLine(new Vector3(FinalNodeList[i].x, 1f, FinalNodeList[i].z),
                     new Vector3(FinalNodeList[i + 1].x, 1f, FinalNodeList[i + 1].z));
+        
+        // if (FinalNodeList.Count != 0)
+        //     for (int i = 0; i < FinalNodeList.Count; i++)
+        //         Gizmos.DrawCube(new Vector3(FinalNodeList[i].x, 2f, FinalNodeList[i].z), Vector3.one);
+        
+        Gizmos.color = Color.yellow;
         if (DFSList.Count != 0)
             for (int i = 0; i < DFSList.Count; i++)
             {
-                Gizmos.DrawCube(new Vector3(DFSList[i].x, 1f, DFSList[i].z), Vector3.one * 0.5f);
+                Gizmos.DrawCube(new Vector3(DFSList[i].x, 10f, DFSList[i].z), Vector3.one);
             }
         
     }

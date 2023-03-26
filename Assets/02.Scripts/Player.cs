@@ -1,0 +1,44 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    private float moveSpeed; // 플레이어 이동 속도
+    public float waitTime; // 이동 대기 시간
+    public int moveTime = 1;
+    
+    private IEnumerator<Node_> nodeEnumerator;
+    private Vector3 targetPosition;
+
+    public void FollowPath(List<Node_> path)
+    {
+        moveSpeed = (path.Count) * 10 / moveTime;
+        nodeEnumerator = path.GetEnumerator();
+        if (nodeEnumerator.MoveNext())
+        {
+            targetPosition = new Vector3(nodeEnumerator.Current.x, transform.position.y, nodeEnumerator.Current.z);
+            StartCoroutine("MoveToNextNode", moveSpeed);
+        }
+    }
+
+    private IEnumerator MoveToNextNode(float moveSpeed)
+    {
+        // 차례차례 MoveToWards 수행
+        // 여기서 moveSpeed 를 올리면 빨리 갈 듯 
+        while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        // 여기가 시간 조절하는 곳
+        yield return new WaitForSeconds(waitTime);
+
+        if (nodeEnumerator.MoveNext())
+        {
+            targetPosition = new Vector3(nodeEnumerator.Current.x, transform.position.y, nodeEnumerator.Current.z);
+            StartCoroutine("MoveToNextNode",moveSpeed);
+        }
+    }
+}

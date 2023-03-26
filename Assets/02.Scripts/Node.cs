@@ -7,33 +7,33 @@ public class Node : MonoBehaviour
 {
     private Renderer rend;
     private Color originalColor;
-    public Color buildAvailableColor;
-    public Color buildNotAvailableColor;
+    public Color moveAvailableColor;
+    private Color clickedColor;
     private Transform tr;
+    private Board board;
+    public bool isClicked = false;
+    private Vector3 tileposition;
     
     private void Awake()
     {
         rend = GetComponent<Renderer>();
         tr = GetComponent<Transform>();
-        originalColor = rend.material.color;
+        // originalColor = rend.material.color;
+        originalColor = GetComponent<Renderer>().material.color;
+        clickedColor = originalColor * 0.8f;
+        board = GetComponentInParent<Board>();
+        // print(isDFS(board.DFSList));
     }
+
+    private void Update()
+    {
+        // isDFS(board.DFSList);
+    }
+
     private void OnMouseEnter()
     {
-        rend.material.color = buildAvailableColor;
-    }
-
-    private void OnMouseDown()
-    {
-        // 모서리 쪽에 있는 타일인가? -> 이동할 방향 정하기, UI띄우기 
-        // 함수 호출, 이벤트 
-        // TileUI.instance.SetUp(transform.position, this);
-        // 플레이어가 노드의 정중앙으로 이동. 그런데 타일의 최단경로를 따라 이동한다. 
-        
-    }
-
-    public void OnMoveto(Vector3 end)
-    {
-        StartCoroutine("MoveTo",end);
+        // if (isDFS(board.DFSList) && !isClicked)
+            rend.material.color = moveAvailableColor;
     }
     
     private void OnMouseExit()
@@ -41,6 +41,96 @@ public class Node : MonoBehaviour
         rend.material.color = originalColor;
     }
     
+    private void OnMouseDown()
+    {
+        // 한번 클릭하면 다신 클릭 못하게 함.
+        // 다시 클릭하려면 isClicke =false로 바꿔야 함. 
+        if (isClicked) return;
+        // 클릭 가능 여부는 dfs가 있는 곳만 가능
+        if (isDFS(board.DFSList))
+        {
+            rend.material.color = clickedColor;
+            isClicked = true;
+            GetComponent<Renderer>().material.color = clickedColor;
+            // 플레이어 이동, startpos,Targetpos 수정 함수 호출
+            tileposition = transform.position;
+            board.SetTargetpos(tileposition);
+        }
+        else
+        {
+            print("그곳엔 이동할 수 없습니다.");
+            rend.material.color = originalColor;
+        }
+        print(transform.position);
+        
+        /*if (isDFS(board.DFSList))
+        {
+            rend.material.color = clickedColor;
+            isClicked = true;
+            // 플레이어 이동, startpos,Targetpos 수정 함수 호출
+            tileposition = transform.position;
+            print($"board.startPos : {board.startPos} \n                 board.targetPos : {board.targetPos}");
+            if (board.targetPos == board.startPos)
+            {
+                // 같은 곳을 여러번 클릭하는 것 방지
+                return;
+            }
+            else if (board.targetPos != board.startPos)
+            {
+                board.SetTargetpos(tileposition);
+            }
+        }
+        else
+        {
+            print("그곳엔 이동할 수 없습니다.");
+            rend.material.color = originalColor;
+        }
+        print(transform.position);*/
+        
+        // 모서리 쪽에 있는 타일인가? -> 이동할 방향 정하기, UI띄우기 
+        // 함수 호출, 이벤트 
+        // TileUI.instance.SetUp(transform.position, this);
+        // 플레이어가 노드의 정중앙으로 이동. 그런데 타일의 최단경로를 따라 이동한다. 
+        
+    }
+
+    
+    
+    private void OnMouseUp()
+    {
+        // isClicked = false;
+        GetComponent<Renderer>().material.color = originalColor;  // 기존 색상으로 변경
+    }
+    
+    
+    private bool isDFS(List<Node_> DFSList)
+    {
+        Vector3Int TilePosition = new Vector3Int((int)transform.position.x, 0, (int)transform.position.z);
+        for(int i  =0 ; i < DFSList.Count ; i++)
+        {
+            
+            if (Mathf.Abs(TilePosition.x - DFSList[i].x) < 0.1 && Mathf.Abs(TilePosition.z - DFSList[i].z) <0.1 )
+            {
+                print("true");
+                Debug.Log($"(DFSList[{i}]좌표 : {DFSList[i].x}, {DFSList[i].z})");
+                Debug.Log(TilePosition);    
+                return true;
+            }
+            else
+            {
+                print("false");
+                Debug.Log(TilePosition);
+            }
+        }
+        return false;
+    }
+    
+
+    public void OnMoveto(Vector3 end)
+    {
+        StartCoroutine("MoveTo",end);
+    }
+
     private IEnumerator MoveTo(Vector3 end)
     {
         float	current  = 0;
