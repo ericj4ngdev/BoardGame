@@ -29,11 +29,13 @@ public class GameManager : MonoBehaviour
     private void SpawnTiles()
     {
         GameObject tilePrefab;
-        
+        Quaternion randomRotation;
         for (int i = 0; i < waypoint.Count; i++)
         {
             tilePrefab = AllTileList[Random.Range(0, AllTileList.Count)];
-            GameObject clone = Instantiate(tilePrefab, waypoint[i].transform.position, waypoint[i].transform.rotation,board.transform);
+            randomRotation = Quaternion.Euler(0, Random.Range(0, 4) * 90, 0);
+
+            GameObject clone = Instantiate(tilePrefab, waypoint[i].transform.position, randomRotation,board.transform);
             Node node = clone.GetComponent<Node>();
             TileBoard.Add(node);
         }

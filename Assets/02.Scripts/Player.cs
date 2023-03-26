@@ -12,7 +12,43 @@ public class Player : MonoBehaviour
     public float num;
     private IEnumerator<Node_> nodeEnumerator;
     private Vector3 targetPosition;
+    private GameObject groundObj;
+    
+    private Transform tr;
+    private Rigidbody rb;
+    private Collider col;
 
+    public Vector3 playerPosition = Vector3.zero;
+    
+    private void Awake()
+    {
+        tr = GetComponent<Transform>();
+        rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
+    }
+
+    private void Update()
+    {
+        playerPosition = tr.position;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            transform.SetParent(collision.transform);
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            transform.SetParent(null);
+        }
+    }
+
+    
     public void FollowPath(List<Node_> path)
     {
         moveSpeed = (path.Count) * 10 / moveTime;

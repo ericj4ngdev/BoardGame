@@ -34,7 +34,7 @@ public class SelectObjectInRange : MonoBehaviour
         }
     }*/
 
-    private void Start()
+    private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
         board = FindObjectOfType<Board>();
@@ -118,6 +118,9 @@ public class SelectObjectInRange : MonoBehaviour
                 gameManager.rotatingObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
                 break;
         }
+        
+        // 플레이어 위치 갱신하고 DFS 호출하는 함수 호출
+        // board.SetStartpos();
     }
 
     public void DisableUI(GameObject UIPanel)
@@ -129,7 +132,7 @@ public class SelectObjectInRange : MonoBehaviour
         UIPanel.gameObject.SetActive(false);
         yield return delay1;
         UIPanel.gameObject.SetActive(true);
-        board.DFS();
+        
     }
 }
 
