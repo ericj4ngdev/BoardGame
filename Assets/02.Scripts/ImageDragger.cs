@@ -5,25 +5,29 @@ using UnityEngine;
 
 public class ImageDragger : MonoBehaviour
 {
-    private Vector3 eulerRotation;
-    private Quaternion newRotation;
-    
-    private void Start()
+    private Vector3 offset;
+    private float zCoord;
+
+    void OnMouseDown()
     {
-        eulerRotation = transform.rotation.eulerAngles;
+        // 마우스 클릭 시 오브젝트와 마우스 포인터의 거리를 계산하여 offset 변수에 저장
+        zCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+        offset = gameObject.transform.position - GetMouseWorldPos();
     }
 
-    private void Update()
+    void OnMouseDrag()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            eulerRotation.z -= 90f;
-            transform.rotation = Quaternion.Euler(eulerRotation);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            eulerRotation.z += 90f;
-            transform.rotation = Quaternion.Euler(eulerRotation);
-        }
+        // 마우스 드래그 시 오브젝트를 새로운 위치로 이동
+        Vector3 newPosition = GetMouseWorldPos() + offset;
+        transform.position = new Vector3(newPosition.x, transform.position.y, newPosition.z);
     }
+
+    private Vector3 GetMouseWorldPos()
+    {
+        // 마우스 포인터 위치를 3D 좌표로 변환하여 반환
+        Vector3 mousePoint = Input.mousePosition;
+        mousePoint.z = zCoord;
+        return Camera.main.ScreenToWorldPoint(mousePoint);
+    }
+
 }

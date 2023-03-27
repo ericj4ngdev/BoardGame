@@ -3,22 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SelectObjectInRange : MonoBehaviour
 {
-    public GameObject SpawnObject;
     private GameManager gameManager;
     private Board board;
-    
+
+    public GameObject SpawnObject;
+    public GameObject SpawnPoint;
+    public GameObject[] waypoints;
+    public GameObject[] cornerPoint;
     public Vector3[] center_x = new Vector3[5];
     public Vector3[] center_z = new Vector3[5];
     public Vector3 size_x;
     public Vector3 size_z;
     public LayerMask layerMask;
+    public LayerMask layerMask_2;
     WaitForSeconds delay1 = new WaitForSeconds(1f);
     
-    /*void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         // 기즈모 색상 지정
         Gizmos.color = Color.blue;
@@ -32,7 +37,7 @@ public class SelectObjectInRange : MonoBehaviour
         {
             Gizmos.DrawWireCube(center_z[i]/3, size_z);
         }
-    }*/
+    }
 
     private void Awake()
     {
@@ -41,6 +46,12 @@ public class SelectObjectInRange : MonoBehaviour
         SpawnObject = gameManager.rotatingObject;
     }
 
+    private void Start()
+    {
+    }
+
+
+    
     public void PushNode(string info)
     {
         // 매개변수 받기
@@ -48,6 +59,9 @@ public class SelectObjectInRange : MonoBehaviour
         string location = Info[0];
         int num = int.Parse(Info[1]);
         
+        Transform previousTransform;
+        Transform spawnTransform;
+
         Collider[][] hitColliders_x = new Collider[center_x.Length][];
         Collider[][] hitColliders_z = new Collider[center_z.Length][];
         // 히트 정보 저장 및 정렬(x 좌표를 기준으로 오름차순 정렬)
@@ -63,21 +77,21 @@ public class SelectObjectInRange : MonoBehaviour
         Collider[][] sortedColliders_z = hitColliders_z;
         
         // 디버깅
-        /*for (int i = 0; i < sortedColliders_x.Length; i++)
-        {
-            for (int j = 0; j < sortedColliders_x[i].Length; j++)
-            {
-                Debug.Log($"x[{i}][{j}] {sortedColliders_x[i][j].transform.position}");
-            }
-        }
-        for (int i = 0; i < sortedColliders_z.Length; i++)
-        {
-            for (int j = 0; j < sortedColliders_z[i].Length; j++)
-            {
-                Debug.Log($"z[{i}][{j}] {sortedColliders_z[i][j].transform.position}");
-            }
-        }*/
-        
+        // for (int i = 0; i < sortedColliders_x.Length; i++)
+        // {
+        //     for (int j = 0; j < sortedColliders_x[i].Length; j++)
+        //     {
+        //         Debug.Log($"x[{i}][{j}] {sortedColliders_x[i][j].transform.position}");
+        //     }
+        // }
+        // for (int i = 0; i < sortedColliders_z.Length; i++)
+        // {
+        //     for (int j = 0; j < sortedColliders_z[i].Length; j++)
+        //     {
+        //         Debug.Log($"z[{i}][{j}] {sortedColliders_z[i][j].transform.position}");
+        //     }
+        // }
+
         // 이동
         switch (location)
         {
@@ -109,19 +123,37 @@ public class SelectObjectInRange : MonoBehaviour
                 gameManager.rotatingObject = sortedColliders_z[num][0].gameObject;
                 break;
             case "Bottom":
-                for (int i = 0; i < sortedColliders_z[num].Length - 1; i++)
+                // previousTransform = sortedColliders_z[num][1].gameObject.transform;
+                // spawnTransform = SpawnObject.transform;
+                // List<GameObject> selectedPath = new List<GameObject>();
+                List<GameObject> lastOnePath = new List<GameObject>();
+
+                // selectedPath.Add(cornerPoint[0]); // 오른쪽 아래 코너지점
+                // selectedPath.Add(sortedColliders_z[num][0].gameObject); // 아래지점
+                // selectedPath.Add(waypoints[num+8]);     // 콜라이더가 움직여서 바뀜
+                
+                lastOnePath.Add(sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject); // 위쪽 지점
+                lastOnePath.Add(cornerPoint[1]); // 오른쪽 위 코너지점
+                lastOnePath.Add(SpawnPoint);
+                
+                // SpawnObject.GetComponent<Node>().OnMoveto_(selectedPath);
+                sortedColliders_z[num][sortedColliders_z[num].Length - 2].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
+                
+                for (int i = 1; i < sortedColliders_z[num].Length - 2; i++)
+                {
                     sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i+1].transform.position);
-            
-                sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
-                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][0].transform.position);
-                SpawnObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
-                gameManager.rotatingObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
+                }
+                
+                // spawn object 갱신
+                SpawnObject = sortedColliders_z[num][sortedColliders_z[num].Length - 2].gameObject;
+                gameManager.rotatingObject = sortedColliders_z[num][sortedColliders_z[num].Length - 2].gameObject;
+                
                 break;
         }
-        
         // 플레이어 위치 갱신하고 DFS 호출하는 함수 호출
         // board.SetStartpos();
     }
+
 
     public void DisableUI(GameObject UIPanel)
     {

@@ -89,9 +89,9 @@ public class Node : MonoBehaviour
         // 중간에 다른 이동 경로가 있는 경우.
     }
 
-    public void OnMoveto_(Vector3 end)
+    public void OnMoveto_(List<GameObject> waypointList)
     {
-        StartCoroutine("MoveToNextTarget",end);
+        StartCoroutine(MoveToNextTarget(waypointList));
     }
     
     
@@ -114,19 +114,18 @@ public class Node : MonoBehaviour
         tr.position = end;
     }
     
-    public List<GameObject> targetList;
-    public float timeToReachTarget;
+    float timeToReachTarget = 1f;
 
     private int currentIndex = 0;
     private bool isMoving = false;
     
-    private IEnumerator MoveToNextTarget(Vector3 end)
+    private IEnumerator MoveToNextTarget(List<GameObject> waypointList)
     {
         isMoving = true;
 
-        while (currentIndex < targetList.Count)
+        while (currentIndex < waypointList.Count)
         {
-            Vector3 targetPosition = targetList[currentIndex].transform.position;
+            Vector3 targetPosition = waypointList[currentIndex].transform.position;
             float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
             float speed = distanceToTarget / timeToReachTarget;
 
