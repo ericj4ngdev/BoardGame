@@ -46,11 +46,6 @@ public class SelectObjectInRange : MonoBehaviour
         SpawnObject = gameManager.rotatingObject;
     }
 
-    private void Start()
-    {
-    }
-
-
     
     public void PushNode(string info)
     {
@@ -58,10 +53,8 @@ public class SelectObjectInRange : MonoBehaviour
         string[] Info = info.Split(' ');
         string location = Info[0];
         int num = int.Parse(Info[1]);
+        List<GameObject> lastOnePath = new List<GameObject>();
         
-        Transform previousTransform;
-        Transform spawnTransform;
-
         Collider[][] hitColliders_x = new Collider[center_x.Length][];
         Collider[][] hitColliders_z = new Collider[center_z.Length][];
         // 히트 정보 저장 및 정렬(x 좌표를 기준으로 오름차순 정렬)
@@ -96,38 +89,52 @@ public class SelectObjectInRange : MonoBehaviour
         switch (location)
         {
             case "Left":
-                for (int i = 0; i < sortedColliders_x[num].Length - 1; i++)
+                lastOnePath.Add(sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject); // 오른쪽 지점
+                lastOnePath.Add(SpawnPoint);
+                sortedColliders_x[num][sortedColliders_x[num].Length - 2].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
+                
+                for (int i = 1; i < sortedColliders_x[num].Length - 2; i++)
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i+1].transform.position);
                 
-                sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
-                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][0].transform.position);
-                SpawnObject = sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject;
-                gameManager.rotatingObject = sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject;
+                // sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
+                // SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][0].transform.position);
+                SpawnObject = sortedColliders_x[num][sortedColliders_x[num].Length - 2].gameObject;
+                gameManager.rotatingObject = sortedColliders_x[num][sortedColliders_x[num].Length - 2].gameObject;
                 break;
             case "Right":
-                for (int i = sortedColliders_x[num].Length - 1; i > 0; i--)
+                lastOnePath.Add(sortedColliders_x[num][0].gameObject); // 왼쪽 지점
+                lastOnePath.Add(cornerPoint[2]);        // 왼쪽 아래 코너지점
+                lastOnePath.Add(cornerPoint[0]);        // 오른쪽 아래 코너지점
+                lastOnePath.Add(SpawnPoint);
+                sortedColliders_x[num][1].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
+                
+                for (int i = sortedColliders_x[num].Length - 2; i > 1; i--)
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i-1].transform.position);
                 
-                sortedColliders_x[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
-                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][sortedColliders_x[num].Length - 1].transform.position);
-                SpawnObject = sortedColliders_x[num][0].gameObject;
-                gameManager.rotatingObject = sortedColliders_x[num][0].gameObject;
+                // sortedColliders_x[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
+                // SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][sortedColliders_x[num].Length - 1].transform.position);
+                SpawnObject = sortedColliders_x[num][1].gameObject;
+                gameManager.rotatingObject = sortedColliders_x[num][1].gameObject;
                 break;
             case "Top":
-                for (int i = sortedColliders_z[num].Length - 1; i > 0 ; i--)
+                lastOnePath.Add(sortedColliders_z[num][0].gameObject); // 아래쪽 지점
+                lastOnePath.Add(cornerPoint[0]); // 오른쪽 아래 코너지점
+                lastOnePath.Add(SpawnPoint);
+                sortedColliders_z[num][1].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
+                
+                for (int i = sortedColliders_z[num].Length - 2; i > 1 ; i--)
                     sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i-1].transform.position);
             
-                sortedColliders_z[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
-                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][sortedColliders_z[num].Length - 1].transform.position);
-                SpawnObject = sortedColliders_z[num][0].gameObject;
-                gameManager.rotatingObject = sortedColliders_z[num][0].gameObject;
+                // sortedColliders_z[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
+                // SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][sortedColliders_z[num].Length - 1].transform.position);
+                
+                SpawnObject = sortedColliders_z[num][1].gameObject;
+                gameManager.rotatingObject = sortedColliders_z[num][1].gameObject;
                 break;
             case "Bottom":
                 // previousTransform = sortedColliders_z[num][1].gameObject.transform;
                 // spawnTransform = SpawnObject.transform;
                 // List<GameObject> selectedPath = new List<GameObject>();
-                List<GameObject> lastOnePath = new List<GameObject>();
-
                 // selectedPath.Add(cornerPoint[0]); // 오른쪽 아래 코너지점
                 // selectedPath.Add(sortedColliders_z[num][0].gameObject); // 아래지점
                 // selectedPath.Add(waypoints[num+8]);     // 콜라이더가 움직여서 바뀜
@@ -136,13 +143,11 @@ public class SelectObjectInRange : MonoBehaviour
                 lastOnePath.Add(cornerPoint[1]); // 오른쪽 위 코너지점
                 lastOnePath.Add(SpawnPoint);
                 
-                // SpawnObject.GetComponent<Node>().OnMoveto_(selectedPath);
+                
                 sortedColliders_z[num][sortedColliders_z[num].Length - 2].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
                 
                 for (int i = 1; i < sortedColliders_z[num].Length - 2; i++)
-                {
                     sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i+1].transform.position);
-                }
                 
                 // spawn object 갱신
                 SpawnObject = sortedColliders_z[num][sortedColliders_z[num].Length - 2].gameObject;
