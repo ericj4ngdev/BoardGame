@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,6 @@ public class DragAndDrop : MonoBehaviour
 {
     private Vector3 mOffset;
     private float mZCoord;
-
     private List<GameObject> collidedObjects;
 
     void Start()
@@ -46,19 +46,4 @@ public class DragAndDrop : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!collidedObjects.Contains(collision.gameObject))
-        {
-            collidedObjects.Add(collision.gameObject);
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collidedObjects.Contains(collision.gameObject))
-        {
-            collidedObjects.Remove(collision.gameObject);
-        }
-    }
 }
