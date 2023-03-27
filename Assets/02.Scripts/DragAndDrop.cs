@@ -31,19 +31,30 @@ public class DragAndDrop : MonoBehaviour
     private void OnMouseDrag()
     {
         transform.position = GetMouseAsWorldPoint() + mOffset;
-        collidedObjects.Clear();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Cube"))
+        {
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Cube"))
+        {
+            collidedObjects.Remove(other.gameObject);
+        }
     }
 
     private void OnMouseUp()
     {
         foreach (GameObject collidedObject in collidedObjects)
         {
-            if (collidedObject.CompareTag("Cube"))
-            {
-                collidedObject.GetComponent<Renderer>().material.color = Color.red;
-                print("aaaaaaaaaaaa");
-            }
+            // collidedObject.GetComponent<Renderer>().material.color = Color.red;
+            // 드래그 앤 드롭 후 함수 호출하고 싶으면 여기서 하면 될듯. 
+            Debug.Log("Color changed");
         }
     }
-
 }
