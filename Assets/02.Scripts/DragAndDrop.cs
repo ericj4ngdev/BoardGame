@@ -42,16 +42,24 @@ public class DragAndDrop : MonoBehaviour
         }
     }
 
+    // 나가면 충돌 리스트 제거
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Cube"))
         {
+            Debug.Log("OnTriggerExit");
             collidedObjects.Remove(other.gameObject);
         }
     }
 
     private void OnMouseUp()
     {
+        if (collidedObjects.Count == 0)
+        {
+            print(" 제자리로 ");
+            return;
+        }
+        
         foreach (GameObject collidedObject in collidedObjects)
         {
             Debug.Log("OnMouseUp");
@@ -60,5 +68,6 @@ public class DragAndDrop : MonoBehaviour
             // 드래그 앤 드롭 후 함수 호출하고 싶으면 여기서 하면 될듯. 
             // Debug.Log("Color changed");
         }
+        collidedObjects.Clear();
     }
 }

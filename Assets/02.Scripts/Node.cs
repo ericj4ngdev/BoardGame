@@ -89,7 +89,7 @@ public class Node : MonoBehaviour
         // 중간에 다른 이동 경로가 있는 경우.
     }
 
-    public void OnMoveto_(List<GameObject> waypointList)
+    public void OnMoveto_(List<Transform> waypointList)
     {
         StartCoroutine(MoveToNextTarget(waypointList));
     }
@@ -116,13 +116,11 @@ public class Node : MonoBehaviour
     
     float timeToReachTarget = 1f;
 
-    private int currentIndex = 0;
-    private bool isMoving = false;
-    
-    private IEnumerator MoveToNextTarget(List<GameObject> waypointList)
+    private IEnumerator MoveToNextTarget(List<Transform> waypointList)
     {
-        isMoving = true;
-
+        int currentIndex = 0;
+        bool isMoving = true;
+        
         while (currentIndex < waypointList.Count)
         {
             Vector3 targetPosition = waypointList[currentIndex].transform.position;
@@ -141,6 +139,8 @@ public class Node : MonoBehaviour
             currentIndex++;
         }
 
+        // transform.position = waypointList[waypointList.Count - 1].transform.position;
+        
         isMoving = false;
         yield return null;
     }

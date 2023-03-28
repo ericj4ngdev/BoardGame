@@ -10,6 +10,7 @@ public class PushArea : MonoBehaviour
     private Color originalColor;
     public UnityEvent onSelectPushArea;
     
+    
     void Start()
     {
         // 큐브의 Renderer 컴포넌트 가져오기
@@ -33,7 +34,7 @@ public class PushArea : MonoBehaviour
 
     public void OnPush()
     {
-        print(" 감지");
+        print(" OnPush");
         onSelectPushArea.Invoke(); // Invoke : 발동하다. 즉, 이벤트 호출
     }
     
@@ -58,6 +59,6 @@ public class PushArea : MonoBehaviour
             isColliding = false;
         }
     }
-
+    
     
 }
