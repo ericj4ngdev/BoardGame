@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PushArea : MonoBehaviour
 {
     private Renderer cubeRenderer;
     private bool isColliding = false;
     private Color originalColor;
+    public UnityEvent onSelectPushArea;
     
     void Start()
     {
@@ -29,6 +31,12 @@ public class PushArea : MonoBehaviour
         }
     }
 
+    public void OnPush()
+    {
+        print(" 감지");
+        onSelectPushArea.Invoke(); // Invoke : 발동하다. 즉, 이벤트 호출
+    }
+    
     // 충돌 중일 때 호출되는 함수
     void OnTriggerStay(Collider other)
     {
@@ -50,4 +58,6 @@ public class PushArea : MonoBehaviour
             isColliding = false;
         }
     }
+
+    
 }

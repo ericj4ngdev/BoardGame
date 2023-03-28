@@ -97,7 +97,7 @@ public class SelectObjectInRange : MonoBehaviour
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i+1].transform.position);
                 
                 // sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
-                // SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][0].transform.position);
+                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][1].transform.position);
                 SpawnObject = sortedColliders_x[num][sortedColliders_x[num].Length - 2].gameObject;
                 gameManager.rotatingObject = sortedColliders_x[num][sortedColliders_x[num].Length - 2].gameObject;
                 break;
@@ -112,7 +112,7 @@ public class SelectObjectInRange : MonoBehaviour
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i-1].transform.position);
                 
                 // sortedColliders_x[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
-                // SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][sortedColliders_x[num].Length - 1].transform.position);
+                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][sortedColliders_x[num].Length - 2].transform.position);
                 SpawnObject = sortedColliders_x[num][1].gameObject;
                 gameManager.rotatingObject = sortedColliders_x[num][1].gameObject;
                 break;
@@ -126,7 +126,7 @@ public class SelectObjectInRange : MonoBehaviour
                     sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i-1].transform.position);
             
                 // sortedColliders_z[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
-                // SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][sortedColliders_z[num].Length - 1].transform.position);
+                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][sortedColliders_z[num].Length - 2].transform.position);
                 
                 SpawnObject = sortedColliders_z[num][1].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[num][1].gameObject;
@@ -149,6 +149,7 @@ public class SelectObjectInRange : MonoBehaviour
                 for (int i = 1; i < sortedColliders_z[num].Length - 2; i++)
                     sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i+1].transform.position);
                 
+                SpawnObject.gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][1].transform.position);
                 // spawn object 갱신
                 SpawnObject = sortedColliders_z[num][sortedColliders_z[num].Length - 2].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[num][sortedColliders_z[num].Length - 2].gameObject;

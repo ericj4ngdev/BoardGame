@@ -37,6 +37,8 @@ public class DragAndDrop : MonoBehaviour
     {
         if (other.CompareTag("Cube"))
         {
+            Debug.Log("OnTriggerEnter 올려놓음 감지");
+            collidedObjects.Add(other.gameObject);
         }
     }
 
@@ -52,9 +54,11 @@ public class DragAndDrop : MonoBehaviour
     {
         foreach (GameObject collidedObject in collidedObjects)
         {
+            Debug.Log("OnMouseUp");
             // collidedObject.GetComponent<Renderer>().material.color = Color.red;
+            collidedObject.GetComponent<PushArea>().OnPush();
             // 드래그 앤 드롭 후 함수 호출하고 싶으면 여기서 하면 될듯. 
-            Debug.Log("Color changed");
+            // Debug.Log("Color changed");
         }
     }
 }

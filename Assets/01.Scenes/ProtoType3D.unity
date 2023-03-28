@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4366756, g: 0.48427194, b: 0.5645252, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366757, g: 0.48427194, b: 0.5645252, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -429,7 +429,7 @@ Transform:
   m_GameObject: {fileID: 28744230}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -6, y: 0.05, z: 16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 30
@@ -442,7 +442,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28744230}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -508,6 +508,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Top 3
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &30273251
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +552,7 @@ Transform:
   m_GameObject: {fileID: 30273251}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 16, y: 0.05, z: 6}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 25
@@ -550,7 +565,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 30273251}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -616,6 +631,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Right 1
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &48571637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,7 +1165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147547784}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 26, y: 0, z: -7}
+  m_LocalPosition: {x: 26, y: 0.05, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2147,7 +2177,7 @@ Transform:
   m_GameObject: {fileID: 282621996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -16, y: 0.05, z: -12}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 36
@@ -2160,7 +2190,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282621996}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -2226,6 +2256,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Left 4
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &283457542
 GameObject:
   m_ObjectHideFlags: 0
@@ -3026,7 +3071,7 @@ Transform:
   m_GameObject: {fileID: 339674403}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 12, y: 0.05, z: 16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 27
@@ -3039,7 +3084,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339674403}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -3105,6 +3150,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Top 0
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &352501401
 GameObject:
   m_ObjectHideFlags: 0
@@ -3164,7 +3224,7 @@ Transform:
   m_GameObject: {fileID: 360843009}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -12, y: 0.05, z: 16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 31
@@ -3177,7 +3237,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360843009}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -3243,6 +3303,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Top 4
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &361657446
 GameObject:
   m_ObjectHideFlags: 0
@@ -4070,7 +4145,7 @@ Transform:
   m_GameObject: {fileID: 505384110}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -16, y: 0.05, z: -6}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 35
@@ -4083,7 +4158,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505384110}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -4149,6 +4224,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Left 3
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &508801192
 GameObject:
   m_ObjectHideFlags: 0
@@ -4765,7 +4855,7 @@ Transform:
   m_GameObject: {fileID: 630561299}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -12, y: 0.05, z: -16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 21
@@ -4778,7 +4868,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630561299}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -4844,6 +4934,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bottom 4
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &647761115
 GameObject:
   m_ObjectHideFlags: 0
@@ -5301,7 +5406,7 @@ Transform:
   m_GameObject: {fileID: 717933698}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6, y: 0.05, z: -16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 18
@@ -5314,7 +5419,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 717933698}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -5380,6 +5485,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bottom 1
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &728598419
 GameObject:
   m_ObjectHideFlags: 0
@@ -5777,7 +5897,7 @@ Transform:
   m_GameObject: {fileID: 813749986}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -16, y: 0.05, z: 6}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 33
@@ -5790,7 +5910,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 813749986}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -5856,6 +5976,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Left 1
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &829487163
 GameObject:
   m_ObjectHideFlags: 0
@@ -5945,7 +6080,7 @@ Transform:
   m_GameObject: {fileID: 846745092}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -6, y: 0.05, z: -16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 20
@@ -5958,7 +6093,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 846745092}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -6024,6 +6159,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bottom 3
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &870082959
 GameObject:
   m_ObjectHideFlags: 0
@@ -6053,7 +6203,7 @@ Transform:
   m_GameObject: {fileID: 870082959}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -16, y: 0.05, z: 12}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 32
@@ -6066,7 +6216,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 870082959}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -6132,6 +6282,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Left 0
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &892888457
 GameObject:
   m_ObjectHideFlags: 0
@@ -6300,7 +6465,7 @@ Transform:
   m_GameObject: {fileID: 950330162}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.05, z: 16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 29
@@ -6313,7 +6478,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950330162}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -6379,6 +6544,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Top 2
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &951016319
 GameObject:
   m_ObjectHideFlags: 0
@@ -6504,7 +6684,7 @@ Transform:
   m_GameObject: {fileID: 1004232874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.05, z: -16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 19
@@ -6517,7 +6697,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004232874}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -6583,6 +6763,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bottom 2
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1008561967
 GameObject:
   m_ObjectHideFlags: 0
@@ -6786,7 +6981,6 @@ GameObject:
   - component: {fileID: 1023453080}
   - component: {fileID: 1023453079}
   - component: {fileID: 1023453078}
-  - component: {fileID: 1023453081}
   - component: {fileID: 1023453082}
   m_Layer: 3
   m_Name: PushArea
@@ -6804,7 +6998,7 @@ Transform:
   m_GameObject: {fileID: 1023453076}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 16, y: 0.05, z: 0}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 24
@@ -6871,22 +7065,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1023453076}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &1023453081
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023453076}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &1023453082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6899,6 +7077,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Right 2
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1024483360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7062,7 +7255,7 @@ Transform:
   m_GameObject: {fileID: 1051324498}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 16, y: 0.05, z: 12}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 26
@@ -7075,7 +7268,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1051324498}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -7141,6 +7334,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Right 0
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1052850938
 GameObject:
   m_ObjectHideFlags: 0
@@ -7443,7 +7651,7 @@ Transform:
   m_GameObject: {fileID: 1105707642}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 12, y: 0.05, z: -16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 17
@@ -7456,7 +7664,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105707642}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -7522,6 +7730,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bottom 0
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1112747207
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8776,7 +8999,7 @@ Transform:
   m_GameObject: {fileID: 1305941443}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 16, y: 0.05, z: -6}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 23
@@ -8855,6 +9078,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Right 3
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1308870995
 GameObject:
   m_ObjectHideFlags: 0
@@ -9023,7 +9261,7 @@ Transform:
   m_GameObject: {fileID: 1325644597}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -16, y: 0.05, z: 0}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 34
@@ -9036,7 +9274,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325644597}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -9102,6 +9340,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Left 2
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1332850659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11476,7 +11729,7 @@ Transform:
   m_GameObject: {fileID: 1819109802}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6, y: 0.05, z: 16}
-  m_LocalScale: {x: 2.5, y: 0.2, z: 4}
+  m_LocalScale: {x: 2.5, y: 0.2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 28
@@ -11489,7 +11742,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819109802}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
@@ -11555,6 +11808,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Top 1
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1824201938
 GameObject:
   m_ObjectHideFlags: 0
@@ -11689,7 +11957,7 @@ Transform:
   m_GameObject: {fileID: 1857766173}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 16, y: 0.05, z: -12}
-  m_LocalScale: {x: 4, y: 0.2, z: 2.5}
+  m_LocalScale: {x: 2, y: 0.2, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 22
@@ -11768,6 +12036,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbf77e9391fc6540b9dbe26d499fa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectPushArea:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1012179943}
+        m_TargetAssemblyTypeName: SelectObjectInRange, Assembly-CSharp
+        m_MethodName: PushNode
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Right 4
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1869977569
 GameObject:
   m_ObjectHideFlags: 0
@@ -13686,7 +13969,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4356814478603049154}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
