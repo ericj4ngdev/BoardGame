@@ -152,7 +152,7 @@ public class Board : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
-        // Gizmos.DrawWireCube(center, size * 2);
+        Gizmos.DrawWireCube(center, size * 2);
 
         if (FinalNodeList.Count != 0)
             for (int i = 0; i < FinalNodeList.Count - 1; i++)
@@ -224,7 +224,34 @@ public class Board : MonoBehaviour
             OpenListAdd(CurNode.x - 1, CurNode.z);
         }
     }
+    void OpenListAdd(int checkX, int checkZ)
+    {
+        
+        // 상하좌우 범위를 벗어나지 않고, 벽이 아니면서, 닫힌리스트에 없다면
+        if (checkX >= bottomLeft.x && checkX < topRight.x + 1 && checkZ >= bottomLeft.z && checkZ < topRight.z + 1 &&
+            !NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z].isWall &&
+            !ClosedList.Contains(NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z]))
+        {
+            // 코너를 가로질러 가지 않을시, 이동 중에 수직수평 장애물이 있으면 안됨
+            if (dontCrossCorner) if (NodeArray[CurNode.x - bottomLeft.x, checkZ - bottomLeft.z].isWall || NodeArray[checkX - bottomLeft.x, CurNode.z - bottomLeft.z].isWall) return;
 
+            
+            // 이웃노드에 넣고, 직선은 10, 대각선은 14비용
+            Node_ NeighborNode = NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z];
+            int MoveCost = CurNode.G + (CurNode.x - checkX == 0 || CurNode.z - checkZ == 0 ? 10 : 14);
+
+
+            // 이동비용이 이웃노드G보다 작거나 또는 열린리스트에 이웃노드가 없다면 G, H, ParentNode를 설정 후 열린리스트에 추가
+            if (MoveCost < NeighborNode.G || !OpenList.Contains(NeighborNode))
+            {
+                NeighborNode.G = MoveCost;
+                NeighborNode.H = (Mathf.Abs(NeighborNode.x - TargetNode.x) + Mathf.Abs(NeighborNode.z - TargetNode.z)) * 10;
+                NeighborNode.ParentNode = CurNode;
+
+                OpenList.Add(NeighborNode);
+            }
+        }
+    }
     public void DFS()
     {
         GetWallInfo();
@@ -260,32 +287,5 @@ public class Board : MonoBehaviour
         }
     }
 
-    void OpenListAdd(int checkX, int checkZ)
-    {
-        
-        // 상하좌우 범위를 벗어나지 않고, 벽이 아니면서, 닫힌리스트에 없다면
-        if (checkX >= bottomLeft.x && checkX < topRight.x + 1 && checkZ >= bottomLeft.z && checkZ < topRight.z + 1 &&
-            !NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z].isWall &&
-            !ClosedList.Contains(NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z]))
-        {
-            // 코너를 가로질러 가지 않을시, 이동 중에 수직수평 장애물이 있으면 안됨
-            if (dontCrossCorner) if (NodeArray[CurNode.x - bottomLeft.x, checkZ - bottomLeft.z].isWall || NodeArray[checkX - bottomLeft.x, CurNode.z - bottomLeft.z].isWall) return;
-
-            
-            // 이웃노드에 넣고, 직선은 10, 대각선은 14비용
-            Node_ NeighborNode = NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z];
-            int MoveCost = CurNode.G + (CurNode.x - checkX == 0 || CurNode.z - checkZ == 0 ? 10 : 14);
-
-
-            // 이동비용이 이웃노드G보다 작거나 또는 열린리스트에 이웃노드가 없다면 G, H, ParentNode를 설정 후 열린리스트에 추가
-            if (MoveCost < NeighborNode.G || !OpenList.Contains(NeighborNode))
-            {
-                NeighborNode.G = MoveCost;
-                NeighborNode.H = (Mathf.Abs(NeighborNode.x - TargetNode.x) + Mathf.Abs(NeighborNode.z - TargetNode.z)) * 10;
-                NeighborNode.ParentNode = CurNode;
-
-                OpenList.Add(NeighborNode);
-            }
-        }
-    }
+    
 }

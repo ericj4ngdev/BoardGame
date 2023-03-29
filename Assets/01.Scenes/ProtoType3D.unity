@@ -11342,7 +11342,6 @@ GameObject:
   - component: {fileID: 1725324341}
   - component: {fileID: 1725324340}
   - component: {fileID: 1725324339}
-  - component: {fileID: 1725324338}
   m_Layer: 0
   m_Name: Board (1)
   m_TagString: Untagged
@@ -11350,31 +11349,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1725324338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1725324337}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de2cb127c8a6ff947b5210823e26d31f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bottomLeft: {x: -13, y: 0, z: -13}
-  topRight: {x: 13, y: 0, z: 13}
-  startPos: {x: -12, y: 0, z: -12}
-  targetPos: {x: 0, y: 0, z: 0}
-  FinalNodeList: []
-  DFSList: []
-  dontCrossCorner: 0
-  player: {fileID: 1173345737}
-  center: {x: -13, y: 0, z: -13}
-  size: {x: 0.5, y: 0.5, z: 0.5}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!64 &1725324339
 MeshCollider:
   m_ObjectHideFlags: 0

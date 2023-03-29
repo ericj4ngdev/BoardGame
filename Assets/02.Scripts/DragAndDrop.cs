@@ -8,7 +8,8 @@ public class DragAndDrop : MonoBehaviour
     private Vector3 mOffset;
     private float mZCoord;
     private List<GameObject> collidedObjects;
-
+    public bool isSelected = false;
+    
     void Start()
     {
         collidedObjects = new List<GameObject>();
@@ -16,6 +17,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!isSelected) return;
         mZCoord = Camera.main.WorldToScreenPoint(
             gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseAsWorldPoint();
@@ -30,6 +32,7 @@ public class DragAndDrop : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (!isSelected) return;
         transform.position = GetMouseAsWorldPoint() + mOffset;
     }
 

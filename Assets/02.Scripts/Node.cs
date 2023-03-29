@@ -12,7 +12,9 @@ public class Node : MonoBehaviour
     private Transform tr;
     private Board board;
     public bool isClicked = false;
+    
     private Vector3 tileposition;
+    float timeToReachTarget = 1f;
     
     private void Awake()
     {
@@ -32,6 +34,9 @@ public class Node : MonoBehaviour
 
     private void OnMouseEnter()
     {
+            // 올려도 무반응.... 자기 턴이 아니거나
+                                    // SelectedTile이 아니면 클릭 불가
+                                    // 아직 타일을 옮기지 않았다면
         if (isDFS(board.DFSList) && !isClicked)
             rend.material.color = moveAvailableColor;
     }
@@ -43,11 +48,13 @@ public class Node : MonoBehaviour
     
     private void OnMouseDown()
     {
+        
         // 한번 클릭하면 다신 클릭 못하게 함.
         // dfs상 도달 가능하면 클릭 가능
         if (isDFS(board.DFSList))
         {
-            if (isClicked) return;
+            
+            if (isClicked) return;      // 클릭했으면 MousDown해도 무반응. 즉, 클릭 불가
             rend.material.color = clickedColor;
             isClicked = true;
             GetComponent<Renderer>().material.color = clickedColor;
@@ -93,8 +100,7 @@ public class Node : MonoBehaviour
     {
         StartCoroutine(MoveToNextTarget(waypointList));
     }
-    
-    
+
     private IEnumerator MoveTo(Vector3 end)
     {
         float	current  = 0;
@@ -114,8 +120,6 @@ public class Node : MonoBehaviour
         tr.position = end;
     }
     
-    float timeToReachTarget = 1f;
-
     private IEnumerator MoveToNextTarget(List<Transform> waypointList)
     {
         int currentIndex = 0;
