@@ -13,8 +13,10 @@ public class Node : MonoBehaviour
     private Transform tr;
     private Board board;
     public bool isPushed = false;
+    public bool isClicked = false;
     private Vector3 tileposition;
     float timeToReachTarget = 1f;
+    
     
     [Header("Drag and Drop")]
     private Vector3 mOffset;
@@ -86,7 +88,17 @@ public class Node : MonoBehaviour
         }
     }
     // =================================================
-
+    
+    public bool IsClicked()
+    {
+        return isClicked;
+    }
+    
+    public void func1()
+    {
+        Debug.Log("isClicked true");
+        isClicked = true;
+    }
     private void OnMouseDown()
     {
         // 클릭
@@ -99,6 +111,7 @@ public class Node : MonoBehaviour
             // dfs 구간이면 클릭 가능 및 이동
             if (isDFS(board.DFSList))
             {
+                func1();
                 rend.material.color = clickedColor;
                 GetComponent<Renderer>().material.color = clickedColor;
                 // 플레이어 이동, startpos,Targetpos 수정 함수 호출

@@ -9,6 +9,7 @@ public class PushArea : MonoBehaviour
     private bool isColliding = false;
     private Color originalColor;
     public UnityEvent onSelectPushArea;
+    public bool ispushed = false;
     
     
     void Start()
@@ -32,11 +33,17 @@ public class PushArea : MonoBehaviour
         }
     }
 
-    public bool OnPush()
+    public void OnPush()
     {
         print(" OnPush");
         onSelectPushArea.Invoke(); // Invoke : 발동하다. 즉, 이벤트 호출
-        return true;
+        ispushed = true;
+    }
+
+    public bool Ispushed()
+    {
+        if (ispushed) return true;
+        else return false;
     }
     
     // 충돌 중일 때 호출되는 함수
