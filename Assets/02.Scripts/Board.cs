@@ -95,9 +95,7 @@ public class Board : MonoBehaviour
     {
         Node[] childNodes = GetComponentsInChildren<Node>();
         foreach (Node childNode in childNodes)
-        {
-            childNode.isClicked = false;
-        }
+            childNode.isPushed = false;
     }
 
     public void Test()

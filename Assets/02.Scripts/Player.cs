@@ -8,7 +8,8 @@ public class Player : MonoBehaviour
     private float moveSpeed; // 플레이어 이동 속도
     public float waitTime; // 이동 대기 시간
     public int moveTime = 1;
-
+    public bool canMove;
+    
     public float num;
     private IEnumerator<Node_> nodeEnumerator;
     private Vector3 targetPosition;

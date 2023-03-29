@@ -1,25 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Test : MonoBehaviour
 {
-    public bool canMove;
-    // Start is called before the first frame update
-    void Start()
+    public bool canMove = false;
+
+    public void func1()
     {
-        
+        Debug.Log("func1");
+        canMove = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool isCanMove()
     {
-        
-    }
-
-    public void MoveToTile(Collider[] colliders)
-    {
-        
+        if (canMove) return true;
+        else return false;
     }
     
+    private void OnMouseEnter()
+    {
+        func1();
+    }
 }

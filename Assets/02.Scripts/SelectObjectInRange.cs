@@ -44,7 +44,8 @@ public class SelectObjectInRange : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         board = FindObjectOfType<Board>();
         SpawnObject = gameManager.rotatingObject;
-        SpawnObject.GetComponent<DragAndDrop>().isSelected = true;
+        SpawnObject.GetComponent<Node>().isSelected = true;
+        // SpawnObject.GetComponent<Node>().isPushed = false;
     }
 
     
@@ -71,7 +72,7 @@ public class SelectObjectInRange : MonoBehaviour
         Collider[][] sortedColliders_z = hitColliders_z;
         
         // 디버깅
-        for (int i = 0; i < sortedColliders_x.Length; i++)
+        /*for (int i = 0; i < sortedColliders_x.Length; i++)
         {
             for (int j = 0; j < sortedColliders_x[i].Length; j++)
             {
@@ -84,7 +85,7 @@ public class SelectObjectInRange : MonoBehaviour
             {
                 Debug.Log($"z[{i}][{j}] {sortedColliders_z[i][j].transform.position}");
             }
-        }
+        }*/
 
         // 이동
         switch (location)
@@ -102,7 +103,7 @@ public class SelectObjectInRange : MonoBehaviour
                 // 넣을 타일 이동
                 SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][0].transform.position);
                 // 넣은 놈의 isSelected는 해제
-                SpawnObject.gameObject.GetComponent<DragAndDrop>().isSelected = false;
+                SpawnObject.gameObject.GetComponent<Node>().isSelected = false;
                 // sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
                 SpawnObject = sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject;
                 gameManager.rotatingObject = sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject;
@@ -123,7 +124,7 @@ public class SelectObjectInRange : MonoBehaviour
                 // SpawnObject 이동
                 SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][sortedColliders_x[num].Length - 1].transform.position);
                 // 넣은 놈의 isSelected는 해제
-                SpawnObject.gameObject.GetComponent<DragAndDrop>().isSelected = false;
+                SpawnObject.gameObject.GetComponent<Node>().isSelected = false;
                 // sortedColliders_x[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
                 SpawnObject = sortedColliders_x[num][0].gameObject;
                 gameManager.rotatingObject = sortedColliders_x[num][0].gameObject;
@@ -142,7 +143,7 @@ public class SelectObjectInRange : MonoBehaviour
                 // SpawnObject 이동
                 SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][sortedColliders_z[num].Length - 1].transform.position);
                 // 넣은 놈의 isSelected는 해제
-                SpawnObject.gameObject.GetComponent<DragAndDrop>().isSelected = false;
+                SpawnObject.gameObject.GetComponent<Node>().isSelected = false;
                 
                 SpawnObject = sortedColliders_z[num][0].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[num][0].gameObject;
@@ -161,14 +162,14 @@ public class SelectObjectInRange : MonoBehaviour
                 // SpawnObject 이동
                 SpawnObject.gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][0].transform.position);
                 // 넣은 놈의 isSelected는 해제
-                SpawnObject.gameObject.GetComponent<DragAndDrop>().isSelected = false;
+                SpawnObject.gameObject.GetComponent<Node>().isSelected = false;
                 SpawnObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
                 
                 break;
         }
         // 클릭 여부 점검을 위해 추가
-        SpawnObject.GetComponent<DragAndDrop>().isSelected = true;
+        SpawnObject.GetComponent<Node>().isSelected = true;
         // 플레이어 위치 갱신하고 DFS 호출하는 함수 호출
         // board.SetStartpos();
     }

@@ -32,10 +32,11 @@ public class PushArea : MonoBehaviour
         }
     }
 
-    public void OnPush()
+    public bool OnPush()
     {
         print(" OnPush");
         onSelectPushArea.Invoke(); // Invoke : 발동하다. 즉, 이벤트 호출
+        return true;
     }
     
     // 충돌 중일 때 호출되는 함수
@@ -59,6 +60,4 @@ public class PushArea : MonoBehaviour
             isColliding = false;
         }
     }
-    
-    
 }

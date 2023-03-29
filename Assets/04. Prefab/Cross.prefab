@@ -612,7 +612,6 @@ GameObject:
   - component: {fileID: 4356814479160045083}
   - component: {fileID: -7640504455264486861}
   - component: {fileID: -1010326874520148128}
-  - component: {fileID: -5743477342741339501}
   m_Layer: 3
   m_Name: Cross
   m_TagString: Ground
@@ -718,7 +717,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAvailableColor: {r: 0.28773582, g: 0.39329305, b: 1, a: 1}
-  isClicked: 0
+  isPushed: 0
+  isSelected: 0
 --- !u!54 &-1010326874520148128
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -735,15 +735,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-5743477342741339501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4356814479160045077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01be147c84d1009429f80c72b10d0bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

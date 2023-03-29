@@ -410,7 +410,6 @@ GameObject:
   - component: {fileID: 5739808588831464875}
   - component: {fileID: 8463119460131070677}
   - component: {fileID: 1391980686931514009}
-  - component: {fileID: -3469315436732558354}
   m_Layer: 3
   m_Name: Left
   m_TagString: Ground
@@ -516,7 +515,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAvailableColor: {r: 0.28773582, g: 0.39329305, b: 1, a: 1}
-  isClicked: 0
+  isPushed: 0
+  isSelected: 0
 --- !u!54 &1391980686931514009
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -533,18 +533,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-3469315436732558354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5739808588831464877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01be147c84d1009429f80c72b10d0bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5739808589249266185
 GameObject:
   m_ObjectHideFlags: 0

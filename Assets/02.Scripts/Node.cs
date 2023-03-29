@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Node : MonoBehaviour
 {
@@ -11,10 +12,15 @@ public class Node : MonoBehaviour
     private Color clickedColor;
     private Transform tr;
     private Board board;
-    public bool isClicked = false;
-    
+    public bool isPushed = false;
     private Vector3 tileposition;
     float timeToReachTarget = 1f;
+    
+    [Header("Drag and Drop")]
+    private Vector3 mOffset;
+    private float mZCoord;
+    private List<GameObject> collidedObjects;
+    public bool isSelected = false;
     
     private void Awake()
     {
@@ -26,18 +32,19 @@ public class Node : MonoBehaviour
         board = GetComponentInParent<Board>();
         // print(isDFS(board.DFSList));
     }
-
-    private void Update()
+    
+    void Start()
     {
-        // isDFS(board.DFSList);
+        collidedObjects = new List<GameObject>();
     }
-
+    
     private void OnMouseEnter()
     {
-            // 올려도 무반응.... 자기 턴이 아니거나
-                                    // SelectedTile이 아니면 클릭 불가
-                                    // 아직 타일을 옮기지 않았다면
-        if (isDFS(board.DFSList) && !isClicked)
+        // 밀었다면 true하고 선택가능
+        // 여기선 '안밀었는가?' 이므로 안밀었으면 true이므로 색변화 X
+        if (!isPushed) return;
+        // MovePlayer가 되면 isPlayerMoved는 false
+        if (isDFS(board.DFSList))
             rend.material.color = moveAvailableColor;
     }
     
@@ -46,37 +53,91 @@ public class Node : MonoBehaviour
         rend.material.color = originalColor;
     }
     
-    private void OnMouseDown()
+    // ==========Drag and Drop 부분======================
+    private Vector3 GetMouseAsWorldPoint()
     {
-        
-        // 한번 클릭하면 다신 클릭 못하게 함.
-        // dfs상 도달 가능하면 클릭 가능
-        if (isDFS(board.DFSList))
+        Vector3 mousePoint = Input.mousePosition;
+        mousePoint.z = mZCoord;
+        return Camera.main.ScreenToWorldPoint(mousePoint);
+    }
+
+    private void OnMouseDrag()
+    {
+        if (!isSelected) return;
+        transform.position = GetMouseAsWorldPoint() + mOffset;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Cube"))
         {
-            
-            if (isClicked) return;      // 클릭했으면 MousDown해도 무반응. 즉, 클릭 불가
-            rend.material.color = clickedColor;
-            isClicked = true;
-            GetComponent<Renderer>().material.color = clickedColor;
-            // 플레이어 이동, startpos,Targetpos 수정 함수 호출
-            tileposition = transform.position;
-            board.FollowFinalNodeList(gameObject);
-        }
-        else
-        {
-            print("그곳엔 이동할 수 없습니다.");
-            rend.material.color = originalColor;
+            Debug.Log("OnTriggerEnter 올려놓음 감지");
+            collidedObjects.Add(other.gameObject);
         }
     }
 
-    
-    
+    // 나가면 충돌 리스트 제거
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Cube"))
+        {
+            Debug.Log("OnTriggerExit");
+            collidedObjects.Remove(other.gameObject);
+        }
+    }
+    // =================================================
+
+    private void OnMouseDown()
+    {
+        // 클릭
+        // if (!isSelected) return;
+        mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+        mOffset = gameObject.transform.position - GetMouseAsWorldPoint();
+        // 타일을 밀었다면 클릭가능
+        if (isPushed)
+        {
+            // dfs 구간이면 클릭 가능 및 이동
+            if (isDFS(board.DFSList))
+            {
+                rend.material.color = clickedColor;
+                GetComponent<Renderer>().material.color = clickedColor;
+                // 플레이어 이동, startpos,Targetpos 수정 함수 호출
+                // tileposition = transform.position;
+                board.FollowFinalNodeList(gameObject);
+            }
+            else
+            { 
+                print("그곳엔 이동할 수 없습니다.");
+                rend.material.color = originalColor;
+                
+            }
+            
+        }
+        
+    }
+
     private void OnMouseUp()
     {
-        // isClicked = false;
+        if (collidedObjects.Count == 0)
+        {
+            print(" 제자리로 ");
+            return;
+        }
+        
+        foreach (GameObject collidedObject in collidedObjects)
+        {
+            Debug.Log("플레이어 말 움직이기로 넘어가기");
+            // collidedObject.GetComponent<Renderer>().material.color = Color.red;
+            collidedObject.GetComponent<PushArea>().OnPush();
+            // 드래그 앤 드롭 후 함수 호출하고 싶으면 여기서 하면 될듯. 
+            // Debug.Log("Color changed");
+        }
+        collidedObjects.Clear();
+        
         GetComponent<Renderer>().material.color = originalColor;  // 기존 색상으로 변경
     }
-    
+
+    // =============================================================
     
     private bool isDFS(List<Node_> DFSList)
     {
@@ -89,7 +150,6 @@ public class Node : MonoBehaviour
         return false;
     }
     
-
     public void OnMoveto(Vector3 end)
     {
         StartCoroutine("MoveTo",end);
