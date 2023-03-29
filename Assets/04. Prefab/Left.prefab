@@ -516,6 +516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAvailableColor: {r: 0.28773582, g: 0.39329305, b: 1, a: 1}
   isPushed: 0
+  isClicked: 0
   isSelected: 0
 --- !u!54 &1391980686931514009
 Rigidbody:

@@ -215,10 +215,10 @@ public class Board : MonoBehaviour
                 FinalNodeList.Add(StartNode);
                 FinalNodeList.Reverse();
 
-                for (int i = 0; i < FinalNodeList.Count; i++)
-                {
-                    print(i + "번째는 " + FinalNodeList[i].x + ", " + FinalNodeList[i].z);
-                }
+                // for (int i = 0; i < FinalNodeList.Count; i++)
+                // {
+                //     print(i + "번째는 " + FinalNodeList[i].x + ", " + FinalNodeList[i].z);
+                // }
 
                 return;
             }

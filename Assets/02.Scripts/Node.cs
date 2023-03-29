@@ -52,6 +52,7 @@ public class Node : MonoBehaviour
     private void OnMouseEnter()
     {
         if (!isPushed) return;
+        // 모든 노드의 isPushed = true로 만든다. 
         if (isDFS(board.DFSList))
             rend.material.color = moveAvailableColor;
     }
@@ -79,7 +80,7 @@ public class Node : MonoBehaviour
             // dfs 구간이면 클릭 가능 및 이동
             if (isDFS(board.DFSList))
             {
-                func1();
+                isClicked = true;
                 rend.material.color = clickedColor;
                 GetComponent<Renderer>().material.color = clickedColor;
                 // 플레이어 이동, startpos,Targetpos 수정 함수 호출
@@ -110,23 +111,7 @@ public class Node : MonoBehaviour
         
         GetComponent<Renderer>().material.color = originalColor;  // 기존 색상으로 변경
     }
-    
-    public bool IsPushed()
-    {
-        return isPushed;
-    }
 
-    public bool IsClicked()
-    {
-        return isClicked;
-    }
-    
-    public void func1()
-    {
-        Debug.Log("isClicked true");
-        isClicked = true;
-    }
-    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -138,7 +123,7 @@ public class Node : MonoBehaviour
         if (other.CompareTag("Cube"))
             collidedObjects.Remove(other.gameObject);
     }
-    
+
     private bool isDFS(List<Node_> DFSList)
     {
         Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(transform.position.x), 0, Mathf.RoundToInt(transform.position.z));

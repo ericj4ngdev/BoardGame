@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private Vector3 eulerRotation;
     private Vector2Int BoardSize = new Vector2Int(5,5);
     private List<Node> TileBoard = new List<Node>();
+    public List<Node> MapTile = new List<Node>();
     
     // private List<List<Node>> TileBoard = new List<List<Node>>();        // 소환한 타일 정보
     
@@ -25,7 +26,6 @@ public class GameManager : MonoBehaviour
     public GameObject player1;
     public GameObject player2;
 
-    private PushArea pushArea;
     private Node node;
     
     private bool player1Turn;
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         // 타일 옮기기 
         yield return StartCoroutine(DragTile(player));
         Debug.Log($"{player.name} DragTile 끝");
-        
+        // 모든 node의 isPushed = true로 해야 클릭 가능.
         // 말 옮기기 
         yield return StartCoroutine(MovePlayer(player));
         Debug.Log($"{player.name} MovePlayer 끝");
@@ -76,7 +76,16 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             // 타일을 놓았을 때 타일 영역에 들어가면 타일 이동 종료. 다음 spawningObejct
-            if (rotatingObject.GetComponent<Node>().IsPushed()) break;
+            if (rotatingObject.GetComponent<Node>().isPushed)
+            {
+                foreach (var VARIABLE in TileBoard)
+                    VARIABLE.GetComponent<Node>().isPushed = true;
+                foreach (var VARIABLE in MapTile)
+                    VARIABLE.GetComponent<Node>().isPushed = true;
+                rotatingObject.GetComponent<Node>().isPushed = false;
+                Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
+                break;
+            }
             yield return null;
         }
         
@@ -88,11 +97,18 @@ public class GameManager : MonoBehaviour
         // 플레이어 말 이동
         while (true)
         {
-            // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
-            if (node.IsClicked())
+            for (int i = 0; i < TileBoard.Count; i++)
             {
-                break;
+                // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
+                if (TileBoard[i].GetComponent<Node>().isClicked) break;
             }
+            for (int i = 0; i < MapTile.Count; i++)
+            {
+                // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
+                if (MapTile[i].GetComponent<Node>().isClicked) break;
+            }
+            // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
+            
             yield return null;
         }
     }
@@ -119,6 +135,8 @@ public class GameManager : MonoBehaviour
         }
         tilePrefab = AllTileList[Random.Range(0, AllTileList.Count)];
         rotatingObject = Instantiate(tilePrefab, SpawnSpot);
+        Node node_ = rotatingObject.GetComponent<Node>();
+        TileBoard.Add(node_);
     }
 
     public void RotateLeft()

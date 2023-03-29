@@ -44,6 +44,11 @@ public class BoardInfo : MonoBehaviour
         }
     }
 
+    public void GetTileInfo()
+    {
+        
+    }
+    
     public void PushNode(string info)
     {
         // 매개변수 받기
