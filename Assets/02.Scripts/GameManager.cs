@@ -75,10 +75,11 @@ public class GameManager : MonoBehaviour
         // 마우스로 타일 드래그 드롭
         while (true)
         {
-            // 타일을 놓았을 때 타일 영역에 들어가면 타일 이동 종료
-            if (pushArea.Ispushed()) break;
+            // 타일을 놓았을 때 타일 영역에 들어가면 타일 이동 종료. 다음 spawningObejct
+            if (rotatingObject.GetComponent<Node>().IsPushed()) break;
             yield return null;
         }
+        
     }
 
     private IEnumerator MovePlayer(GameObject player)

@@ -6,10 +6,9 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class SelectObjectInRange : MonoBehaviour
+public class BoardInfo : MonoBehaviour
 {
     private GameManager gameManager;
-    private Board board;
 
     public GameObject SpawnObject;
     public GameObject SpawnPoint;
@@ -20,9 +19,15 @@ public class SelectObjectInRange : MonoBehaviour
     public Vector3 size_x;
     public Vector3 size_z;
     public LayerMask layerMask;
-    public LayerMask layerMask_2;
     WaitForSeconds delay1 = new WaitForSeconds(3f);
     
+    private void Awake()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+        SpawnObject = gameManager.rotatingObject;
+        SpawnObject.GetComponent<Node>().isSelected = true;
+        // SpawnObject.GetComponent<Node>().isPushed = false;
+    }
     void OnDrawGizmos()
     {
         // 기즈모 색상 지정
@@ -39,16 +44,6 @@ public class SelectObjectInRange : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-        board = FindObjectOfType<Board>();
-        SpawnObject = gameManager.rotatingObject;
-        SpawnObject.GetComponent<Node>().isSelected = true;
-        // SpawnObject.GetComponent<Node>().isPushed = false;
-    }
-
-    
     public void PushNode(string info)
     {
         // 매개변수 받기
@@ -170,10 +165,11 @@ public class SelectObjectInRange : MonoBehaviour
         }
         // 클릭 여부 점검을 위해 추가
         SpawnObject.GetComponent<Node>().isSelected = true;
+        SpawnObject.GetComponent<Node>().isPushed = true;       // <- 이거 추가하니까 해결됨..
+        // 솔직히 이해는 안됨.. rotatingObject는 놓는 순간 바뀌는데 어캐 이게 적용되노..
         // 플레이어 위치 갱신하고 DFS 호출하는 함수 호출
         // board.SetStartpos();
     }
-
 
     public void DisableBtn(GameObject PushArea)
     {
@@ -186,16 +182,5 @@ public class SelectObjectInRange : MonoBehaviour
         PushArea.gameObject.SetActive(true);
     }
     
-    public void DisableUI(GameObject UIPanel)
-    {
-        StartCoroutine("DisableButtonForFiveSeconds", UIPanel);
-    }
-    public IEnumerator DisableButtonForFiveSeconds(GameObject UIPanel)
-    {
-        UIPanel.gameObject.SetActive(false);
-        yield return delay1;
-        UIPanel.gameObject.SetActive(true);
-        
-    }
 }
 

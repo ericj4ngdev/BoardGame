@@ -43,7 +43,7 @@ public class Board : MonoBehaviour
     private void Awake()
     {
         node = GetComponentInChildren<Node>();
-        
+        tr = player.GetComponent<Transform>();
     }
     
     private void Start()
@@ -73,8 +73,17 @@ public class Board : MonoBehaviour
         // 갈수 있는 타일 검색
         DFS();
     }
+    
+    public void setDFS(GameObject player)
+    {
+        startPos = new Vector3Int((int)player.transform.position.x, 0,(int)player.transform.position.z);
+        // 타일 클릭 초기화
+        SetAllChildrenIsClickedFalse();
+        // 갈수 있는 타일 검색
+        DFS();
+    }
 
-    public void SetTargetpos(Vector3 pos)
+    /*public void SetTargetpos(Vector3 pos)
     {
         if (targetPos == startPos) return;
         if (targetPos != startPos)
@@ -87,7 +96,7 @@ public class Board : MonoBehaviour
     private void SetStartpos(Vector3Int pos)
     {
         startPos = pos;
-    }
+    }*/
     
     // 감지해서 출력
     
@@ -100,7 +109,6 @@ public class Board : MonoBehaviour
 
     public void Test()
     {
-
         collision = Physics.OverlapBox(center, size, Quaternion.identity, layerMask); // 검은 큐브 
         for (int i = 0; i < collision.Length; i++)
         {
@@ -253,13 +261,13 @@ public class Board : MonoBehaviour
     public void DFS()
     {
         GetWallInfo();
+        // 시작노드의 문제인가... start pos의 조정이니 여기에 player정보를 가져오는 것도 방법인듯 하다. 
         StartNode = NodeArray[startPos.x - bottomLeft.x, startPos.z - bottomLeft.z];
         StartNode.isVisited = true;
         DFSList = new List<Node_>() { StartNode };
         CurNode = DFSList[0];
         // 호출
         DFSListAdd(CurNode);
-
     }
     void DFSListAdd(Node_ currentNode)
     {

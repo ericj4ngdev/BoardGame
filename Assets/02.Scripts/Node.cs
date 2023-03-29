@@ -22,7 +22,7 @@ public class Node : MonoBehaviour
     private Vector3 mOffset;
     private float mZCoord;
     private List<GameObject> collidedObjects;
-    public bool isSelected = false;
+    public bool isSelected = false;             // 
     
     private void Awake()
     {
@@ -40,12 +40,18 @@ public class Node : MonoBehaviour
         collidedObjects = new List<GameObject>();
     }
     
+   
+    
+    private Vector3 GetMouseAsWorldPoint()
+    {
+        Vector3 mousePoint = Input.mousePosition;
+        mousePoint.z = mZCoord;
+        return Camera.main.ScreenToWorldPoint(mousePoint);
+    }
+
     private void OnMouseEnter()
     {
-        // 밀었다면 true하고 선택가능
-        // 여기선 '안밀었는가?' 이므로 안밀었으면 true이므로 색변화 X
         if (!isPushed) return;
-        // MovePlayer가 되면 isPlayerMoved는 false
         if (isDFS(board.DFSList))
             rend.material.color = moveAvailableColor;
     }
@@ -55,50 +61,12 @@ public class Node : MonoBehaviour
         rend.material.color = originalColor;
     }
     
-    // ==========Drag and Drop 부분======================
-    private Vector3 GetMouseAsWorldPoint()
-    {
-        Vector3 mousePoint = Input.mousePosition;
-        mousePoint.z = mZCoord;
-        return Camera.main.ScreenToWorldPoint(mousePoint);
-    }
-
     private void OnMouseDrag()
     {
         if (!isSelected) return;
         transform.position = GetMouseAsWorldPoint() + mOffset;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Cube"))
-        {
-            Debug.Log("OnTriggerEnter 올려놓음 감지");
-            collidedObjects.Add(other.gameObject);
-        }
-    }
-
-    // 나가면 충돌 리스트 제거
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Cube"))
-        {
-            Debug.Log("OnTriggerExit");
-            collidedObjects.Remove(other.gameObject);
-        }
-    }
-    // =================================================
-    
-    public bool IsClicked()
-    {
-        return isClicked;
-    }
-    
-    public void func1()
-    {
-        Debug.Log("isClicked true");
-        isClicked = true;
-    }
     private void OnMouseDown()
     {
         // 클릭
@@ -115,18 +83,14 @@ public class Node : MonoBehaviour
                 rend.material.color = clickedColor;
                 GetComponent<Renderer>().material.color = clickedColor;
                 // 플레이어 이동, startpos,Targetpos 수정 함수 호출
-                // tileposition = transform.position;
                 board.FollowFinalNodeList(gameObject);
             }
             else
             { 
                 print("그곳엔 이동할 수 없습니다.");
                 rend.material.color = originalColor;
-                
             }
-            
         }
-        
     }
 
     private void OnMouseUp()
@@ -139,18 +103,41 @@ public class Node : MonoBehaviour
         
         foreach (GameObject collidedObject in collidedObjects)
         {
-            Debug.Log("플레이어 말 움직이기로 넘어가기");
-            // collidedObject.GetComponent<Renderer>().material.color = Color.red;
+            // Debug.Log("플레이어 말 움직이기로 넘어가기");
             collidedObject.GetComponent<PushArea>().OnPush();
-            // 드래그 앤 드롭 후 함수 호출하고 싶으면 여기서 하면 될듯. 
-            // Debug.Log("Color changed");
         }
         collidedObjects.Clear();
         
         GetComponent<Renderer>().material.color = originalColor;  // 기존 색상으로 변경
     }
+    
+    public bool IsPushed()
+    {
+        return isPushed;
+    }
 
-    // =============================================================
+    public bool IsClicked()
+    {
+        return isClicked;
+    }
+    
+    public void func1()
+    {
+        Debug.Log("isClicked true");
+        isClicked = true;
+    }
+    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Cube"))
+            collidedObjects.Add(other.gameObject);
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Cube"))
+            collidedObjects.Remove(other.gameObject);
+    }
     
     private bool isDFS(List<Node_> DFSList)
     {
@@ -168,12 +155,10 @@ public class Node : MonoBehaviour
         StartCoroutine("MoveTo",end);
         // 중간에 다른 이동 경로가 있는 경우.
     }
-
     public void OnMoveto_(List<Transform> waypointList)
     {
         StartCoroutine(MoveToNextTarget(waypointList));
     }
-
     private IEnumerator MoveTo(Vector3 end)
     {
         float	current  = 0;
@@ -192,7 +177,6 @@ public class Node : MonoBehaviour
         }
         tr.position = end;
     }
-    
     private IEnumerator MoveToNextTarget(List<Transform> waypointList)
     {
         int currentIndex = 0;

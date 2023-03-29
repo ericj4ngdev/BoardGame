@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4366757, g: 0.48427194, b: 0.5645252, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366756, g: 0.48427194, b: 0.5645252, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -535,6 +535,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &30273251
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,6 +671,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &48571637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,7 +1158,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.3, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &133409397
 GameObject:
@@ -2441,6 +2443,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &283457542
 GameObject:
   m_ObjectHideFlags: 0
@@ -3347,6 +3350,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &352501401
 GameObject:
   m_ObjectHideFlags: 0
@@ -3512,6 +3516,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &361657446
 GameObject:
   m_ObjectHideFlags: 0
@@ -4308,7 +4313,7 @@ Transform:
   m_LocalScale: {x: 3.5, y: 3.5, z: 3.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &505384110
 GameObject:
@@ -4445,6 +4450,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &508801192
 GameObject:
   m_ObjectHideFlags: 0
@@ -5155,6 +5161,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &647761115
 GameObject:
   m_ObjectHideFlags: 0
@@ -5718,6 +5725,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &728598419
 GameObject:
   m_ObjectHideFlags: 0
@@ -6221,6 +6229,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &829487163
 GameObject:
   m_ObjectHideFlags: 0
@@ -6416,6 +6425,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &870082959
 GameObject:
   m_ObjectHideFlags: 0
@@ -6551,6 +6561,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &892888457
 GameObject:
   m_ObjectHideFlags: 0
@@ -6825,6 +6836,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &951016319
 GameObject:
   m_ObjectHideFlags: 0
@@ -7056,6 +7068,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &1008561967
 GameObject:
   m_ObjectHideFlags: 0
@@ -7097,7 +7110,7 @@ GameObject:
   - component: {fileID: 1012179944}
   - component: {fileID: 1012179943}
   m_Layer: 0
-  m_Name: PushUI
+  m_Name: BoardInfo
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -7159,9 +7172,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  layerMask_2:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!4 &1012179944
 Transform:
   m_ObjectHideFlags: 0
@@ -7174,7 +7184,7 @@ Transform:
   m_LocalScale: {x: 3, y: 0.1, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1022422136
 GameObject:
@@ -7386,6 +7396,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1001 &1024483360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7655,6 +7666,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &1052850938
 GameObject:
   m_ObjectHideFlags: 0
@@ -8132,6 +8144,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1001 &1112747207
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8311,7 +8324,7 @@ GameObject:
   - component: {fileID: 1163309242}
   - component: {fileID: 1163309243}
   m_Layer: 0
-  m_Name: Tiles
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8345,7 +8358,7 @@ Transform:
   - {fileID: 796456715}
   - {fileID: 2127495408}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1163309243
 MonoBehaviour:
@@ -8574,7 +8587,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.3, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1173345737
 MonoBehaviour:
@@ -9497,6 +9510,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &1308870995
 GameObject:
   m_ObjectHideFlags: 0
@@ -9771,6 +9785,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1001 &1332850659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11978,7 +11993,7 @@ Transform:
   - {fileID: 576236949}
   - {fileID: 1040773911}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1795787083
 GameObject:
@@ -12295,6 +12310,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &1824201938
 GameObject:
   m_ObjectHideFlags: 0
@@ -12535,6 +12551,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  ispushed: 0
 --- !u!1 &1869977569
 GameObject:
   m_ObjectHideFlags: 0
@@ -13376,11 +13393,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1163309243}
         m_TargetAssemblyTypeName: Board, Assembly-CSharp
-        m_MethodName: DFS
-        m_Mode: 1
+        m_MethodName: setDFS
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1173345730}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13546,7 +13563,7 @@ GameObject:
   - component: {fileID: 2105040519}
   - component: {fileID: 2105040518}
   m_Layer: 0
-  m_Name: Board
+  m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13627,7 +13644,7 @@ Transform:
   m_LocalScale: {x: 2.7, y: 2, z: 2.7}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2120126091
 GameObject:
