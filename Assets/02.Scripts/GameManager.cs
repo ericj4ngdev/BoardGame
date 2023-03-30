@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private Vector2Int BoardSize = new Vector2Int(5,5);
     private List<Node> TileBoard = new List<Node>();
     public List<Node> MapTile = new List<Node>();
-    
+    private float time;
     // private List<List<Node>> TileBoard = new List<List<Node>>();        // 소환한 타일 정보
     
     public List<GameObject> waypoint;
@@ -59,16 +59,33 @@ public class GameManager : MonoBehaviour
         // 타일 옮기기 
         yield return StartCoroutine(DragTile(player));
         Debug.Log($"{player.name} DragTile 끝");
+        yield return StartCoroutine(RestDFS());
+        // 플레이어 기준으로 DFS 하기, 그런데 움직인 타일의 위치가 반영이 안되어 있다. 
+        board.GetComponent<Board>().GetWallInfo();
+        board.GetComponent<Board>().DFS_player(player);
         // 모든 node의 isPushed = true로 해야 클릭 가능.
         // 말 옮기기 
         yield return StartCoroutine(MovePlayer(player));
+        foreach (var VARIABLE in TileBoard)
+            VARIABLE.GetComponent<Node>().isPushed = false;
         Debug.Log($"{player.name} MovePlayer 끝");
 
         // 플레이어 턴이 끝날 때까지 기다림
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-
     }
 
+    IEnumerator RestDFS()
+    {
+        while (true)
+        {
+            time += Time.deltaTime;
+            if(time>=5f)
+                break; 
+            
+            yield return null;
+        }
+    }
+    
     private IEnumerator DragTile(GameObject player)
     {
         Debug.Log($"{player.name} DragTile 시작");
@@ -83,7 +100,7 @@ public class GameManager : MonoBehaviour
                 foreach (var VARIABLE in MapTile)
                     VARIABLE.GetComponent<Node>().isPushed = true;
                 rotatingObject.GetComponent<Node>().isPushed = false;
-                Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
+                // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
                 break;
             }
             yield return null;
@@ -100,15 +117,14 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < TileBoard.Count; i++)
             {
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
-                if (TileBoard[i].GetComponent<Node>().isClicked) break;
+                if (TileBoard[i].GetComponent<Node>().isClicked) yield break;
             }
             for (int i = 0; i < MapTile.Count; i++)
             {
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
-                if (MapTile[i].GetComponent<Node>().isClicked) break;
+                if (MapTile[i].GetComponent<Node>().isClicked) yield break;
             }
             // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
-            
             yield return null;
         }
     }

@@ -16,16 +16,12 @@ public class Player : MonoBehaviour
     private GameObject groundObj;
     
     private Transform tr;
-    private Rigidbody rb;
-    private Collider col;
 
     public Vector3 playerPosition = Vector3.zero;
     
     private void Awake()
     {
         tr = GetComponent<Transform>();
-        rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
     }
 
     private void Update()

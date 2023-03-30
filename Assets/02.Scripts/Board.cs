@@ -48,7 +48,7 @@ public class Board : MonoBehaviour
     
     private void Start()
     {
-        DFS();
+        // DFS();
     }
     
     public void FollowFinalNodeList(GameObject targetTile)
@@ -74,14 +74,7 @@ public class Board : MonoBehaviour
         DFS();
     }
     
-    public void setDFS(GameObject player)
-    {
-        startPos = new Vector3Int((int)player.transform.position.x, 0,(int)player.transform.position.z);
-        // 타일 클릭 초기화
-        SetAllChildrenIsClickedFalse();
-        // 갈수 있는 타일 검색
-        DFS();
-    }
+    
 
     /*public void SetTargetpos(Vector3 pos)
     {
@@ -177,7 +170,15 @@ public class Board : MonoBehaviour
             }
         
     }
-
+    public void setDFS(GameObject player)
+    {
+        startPos = new Vector3Int((int)player.transform.position.x, 0,(int)player.transform.position.z);
+        // 타일 클릭 초기화
+        SetAllChildrenIsClickedFalse();
+        // 갈수 있는 타일 검색
+        DFS_player(player);
+    }
+    
     public void PathFinding()
     {
         GetWallInfo();
@@ -269,6 +270,19 @@ public class Board : MonoBehaviour
         // 호출
         DFSListAdd(CurNode);
     }
+    
+    public void DFS_player(GameObject player)
+    {
+        GetWallInfo();
+        // 시작노드의 문제인가... start pos의 조정이니 여기에 player정보를 가져오는 것도 방법인듯 하다. 
+        StartNode = NodeArray[(int)player.transform.position.x - bottomLeft.x, (int)player.transform.position.z - bottomLeft.z];
+        StartNode.isVisited = true;
+        DFSList = new List<Node_>() { StartNode };
+        CurNode = DFSList[0];
+        // 호출
+        DFSListAdd(CurNode);
+    }
+    
     void DFSListAdd(Node_ currentNode)
     {
         // 상하좌우 범위를 벗어나지 않고, 벽이 아닌지 확인

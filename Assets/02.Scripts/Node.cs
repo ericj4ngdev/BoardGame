@@ -83,7 +83,7 @@ public class Node : MonoBehaviour
                 isClicked = true;
                 rend.material.color = clickedColor;
                 GetComponent<Renderer>().material.color = clickedColor;
-                // 플레이어 이동, startpos,Targetpos 수정 함수 호출
+                // 플레이어 이동
                 board.FollowFinalNodeList(gameObject);
             }
             else
