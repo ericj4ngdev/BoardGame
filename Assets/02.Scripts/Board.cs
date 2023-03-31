@@ -349,6 +349,7 @@ public class Board : MonoBehaviour
     
     public void DFS_player(GameObject player)
     {
+        GetWallInfo();
         // 시작노드의 문제인가... start pos의 조정이니 여기에 player정보를 가져오는 것도 방법인듯 하다. 
         StartNode = NodeArray[(int)player.transform.position.x - bottomLeft.x, (int)player.transform.position.z - bottomLeft.z];
         StartNode.isVisited = true;

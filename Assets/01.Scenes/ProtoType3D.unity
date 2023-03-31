@@ -7243,7 +7243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnObject: {fileID: 0}
-  SpawnPoint: {fileID: 0}
+  SpawnPoint: {fileID: 147547784}
   waypoints:
   - {fileID: 339674403}
   - {fileID: 1819109802}

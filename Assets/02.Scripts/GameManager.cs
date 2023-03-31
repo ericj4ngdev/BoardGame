@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RestDFS()
     {
+        time = 0;
         while (true)
         {
             time += Time.deltaTime;
