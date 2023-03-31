@@ -514,7 +514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fa17b72c531534ca5c59bd375d98ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAvailableColor: {r: 0.28773582, g: 0.39329305, b: 1, a: 1}
+  reachableTileColor: {r: 0.97264934, g: 1, b: 0, a: 1}
   isPushed: 0
   isClicked: 0
   isSelected: 0

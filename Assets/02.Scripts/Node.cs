@@ -8,7 +8,8 @@ public class Node : MonoBehaviour
 {
     private Renderer rend;
     private Color originalColor;
-    public Color moveAvailableColor;
+    public Color reachableTileColor;
+    public Color ClickableTileColor = Color.blue;
     private Color clickedColor;
     private Transform tr;
     private Board board;
@@ -40,8 +41,12 @@ public class Node : MonoBehaviour
     {
         collidedObjects = new List<GameObject>();
     }
-    
-   
+
+    public void reachableTileColorChange()
+    {
+        if(isDFS(board.DFSList))
+            rend.material.color = reachableTileColor;
+    }
     
     private Vector3 GetMouseAsWorldPoint()
     {
@@ -55,7 +60,7 @@ public class Node : MonoBehaviour
         if (!isPushed) return;
         // 모든 노드의 isPushed = true로 만든다. 
         if (isDFS(board.DFSList))
-            rend.material.color = moveAvailableColor;
+            rend.material.color = ClickableTileColor;
     }
     
     private void OnMouseExit()
