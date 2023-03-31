@@ -51,7 +51,7 @@ public class Board : MonoBehaviour
         // DFS();
     }
     
-    public void FollowFinalNodeList(GameObject targetTile)
+    /*public void FollowFinalNodeList(GameObject targetTile)
     {
         // for(int i = 0; i < transform.childCount; i++)
         // {
@@ -63,7 +63,8 @@ public class Board : MonoBehaviour
                                                 Mathf.RoundToInt(targetTile.transform.position.z));
         targetPos = TilePosition;
         // 갱신한 targetPos로 길찾기
-        PathFinding();      
+        PathFinding();
+        // PathFinding_player();
         // 플레이어 이동
         player.FollowPath(FinalNodeList);
         // 시작점을 최종 노드로 설정
@@ -71,9 +72,31 @@ public class Board : MonoBehaviour
         // 타일 클릭 초기화
         SetAllChildrenIsClickedFalse();
         // 갈수 있는 타일 검색
-        DFS();
-    }
+        DFS();  // GM으로 옮기고 DFS_player();매개변수 받아서 호출해보자. 
+    }*/
     
+    public void FollowFinalNodeList_player(GameObject targetTile, GameObject player)
+    {
+        // for(int i = 0; i < transform.childCount; i++)
+        // {
+        //     Transform child = transform.GetChild(i);
+        //     Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(child.position.x), 0, Mathf.RoundToInt(child.position.z));
+        //     if(TilePosition == targetTile)
+        // }
+        Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(targetTile.transform.position.x), 0,
+            Mathf.RoundToInt(targetTile.transform.position.z));
+        targetPos = TilePosition;
+        // 갱신한 targetPos로 길찾기
+        PathFinding_player(player);
+        // 플레이어 이동
+        player.GetComponent<Player>().FollowPath(FinalNodeList);
+        // 시작점을 최종 노드로 설정
+        startPos = new Vector3Int(FinalNodeList[FinalNodeList.Count - 1].x,0,FinalNodeList[FinalNodeList.Count - 1].z);
+        // 타일 클릭 초기화
+        SetAllChildrenIsClickedFalse();
+        // 갈수 있는 타일 검색
+        DFS_player(player);  // GM으로 옮기고 DFS_player();매개변수 받아서 호출해보자. 
+    }
     
 
     /*public void SetTargetpos(Vector3 pos)
@@ -231,6 +254,59 @@ public class Board : MonoBehaviour
             OpenListAdd(CurNode.x - 1, CurNode.z);
         }
     }
+    public void PathFinding_player(GameObject player)
+    {
+        GetWallInfo();
+
+        // 시작과 끝 노드, 열린리스트와 닫힌리스트, 마지막리스트 초기화
+        StartNode = NodeArray[(int)player.transform.position.x - bottomLeft.x, (int)player.transform.position.z - bottomLeft.z];
+        TargetNode = NodeArray[targetPos.x - bottomLeft.x, targetPos.z - bottomLeft.z];
+        
+        OpenList = new List<Node_>() { StartNode };
+        ClosedList = new List<Node_>();
+        FinalNodeList = new List<Node_>();
+
+        while (OpenList.Count > 0)
+        {
+            // 열린리스트 중 가장 F가 작고 F가 같다면 H가 작은 걸 현재노드로 하고 열린리스트에서 닫힌리스트로 옮기기
+            CurNode = OpenList[0];
+            for (int i = 1; i < OpenList.Count; i++)
+                if (OpenList[i].F <= CurNode.F && OpenList[i].H < CurNode.H)
+                    CurNode = OpenList[i];
+
+            OpenList.Remove(CurNode);
+            ClosedList.Add(CurNode);
+
+
+            // 마지막
+            if (CurNode == TargetNode)
+            {
+                Node_ TargetCurNode = TargetNode;
+                while (TargetCurNode != StartNode)
+                {
+                    FinalNodeList.Add(TargetCurNode);
+                    TargetCurNode = TargetCurNode.ParentNode;
+                }
+
+                FinalNodeList.Add(StartNode);
+                FinalNodeList.Reverse();
+
+                // for (int i = 0; i < FinalNodeList.Count; i++)
+                // {
+                //     print(i + "번째는 " + FinalNodeList[i].x + ", " + FinalNodeList[i].z);
+                // }
+
+                return;
+            }
+
+            // ↑ → ↓ ←
+            OpenListAdd(CurNode.x, CurNode.z + 1);
+            OpenListAdd(CurNode.x + 1, CurNode.z);
+            OpenListAdd(CurNode.x, CurNode.z - 1);
+            OpenListAdd(CurNode.x - 1, CurNode.z);
+        }
+    }
+    
     void OpenListAdd(int checkX, int checkZ)
     {
         
@@ -273,7 +349,6 @@ public class Board : MonoBehaviour
     
     public void DFS_player(GameObject player)
     {
-        GetWallInfo();
         // 시작노드의 문제인가... start pos의 조정이니 여기에 player정보를 가져오는 것도 방법인듯 하다. 
         StartNode = NodeArray[(int)player.transform.position.x - bottomLeft.x, (int)player.transform.position.z - bottomLeft.z];
         StartNode.isVisited = true;

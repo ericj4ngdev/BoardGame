@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     // 타일 이동
     public GameObject rotatingObject;
     public GameObject board;
-    public Transform SpawnSpot;
+    // public Transform SpawnSpot;
+    // new Vector3(26,0.05,-7);
     private Vector3 eulerRotation;
     private Vector2Int BoardSize = new Vector2Int(5,5);
     private List<Node> TileBoard = new List<Node>();
@@ -27,9 +28,13 @@ public class GameManager : MonoBehaviour
     public GameObject player2;
 
     private Node node;
-    
     private bool player1Turn;
-
+    
+    private void Awake()
+    {
+        eulerRotation = transform.rotation.eulerAngles;
+        SpawnTiles();
+    }
     private void Start()
     {
         player1Turn = true;
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
                 foreach (var VARIABLE in MapTile)
                     VARIABLE.GetComponent<Node>().isPushed = true;
                 rotatingObject.GetComponent<Node>().isPushed = false;
+                // 여기 있는 건 다음 spawn물건임.
                 // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
                 break;
             }
@@ -117,24 +123,30 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < TileBoard.Count; i++)
             {
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
-                if (TileBoard[i].GetComponent<Node>().isClicked) yield break;
+                if (TileBoard[i].GetComponent<Node>().isClicked)
+                {
+                    board.GetComponent<Board>().FollowFinalNodeList_player(TileBoard[i].gameObject, player);
+                    TileBoard[i].GetComponent<Node>().isClicked = false;
+                    yield break;
+                }
             }
             for (int i = 0; i < MapTile.Count; i++)
             {
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
-                if (MapTile[i].GetComponent<Node>().isClicked) yield break;
+                if (MapTile[i].GetComponent<Node>().isClicked)
+                {
+                    board.GetComponent<Board>().FollowFinalNodeList_player(MapTile[i].gameObject, player);
+                    MapTile[i].GetComponent<Node>().isClicked = false;
+                    yield break;
+                }
             }
             // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
             yield return null;
         }
     }
-    
+
     // ==========================================
-    private void Awake()
-    {
-        eulerRotation = transform.rotation.eulerAngles;
-        SpawnTiles();
-    }
+   
     
     private void SpawnTiles()
     {
@@ -144,15 +156,20 @@ public class GameManager : MonoBehaviour
         {
             tilePrefab = AllTileList[Random.Range(0, AllTileList.Count)];
             randomRotation = Quaternion.Euler(0, Random.Range(0, 4) * 90, 0);
-
+            
             GameObject clone = Instantiate(tilePrefab, waypoint[i].transform.position, randomRotation,board.transform);
+            if (i == waypoint.Count - 1)
+            {
+                rotatingObject = clone;
+                Node node_ = rotatingObject.GetComponent<Node>();
+                TileBoard.Add(node_);
+                break;
+                // return;
+            }
             Node node = clone.GetComponent<Node>();
             TileBoard.Add(node);
         }
-        tilePrefab = AllTileList[Random.Range(0, AllTileList.Count)];
-        rotatingObject = Instantiate(tilePrefab, SpawnSpot);
-        Node node_ = rotatingObject.GetComponent<Node>();
-        TileBoard.Add(node_);
+        
     }
 
     public void RotateLeft()

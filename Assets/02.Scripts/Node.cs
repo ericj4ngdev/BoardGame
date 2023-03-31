@@ -16,7 +16,7 @@ public class Node : MonoBehaviour
     public bool isClicked = false;
     private Vector3 tileposition;
     float timeToReachTarget = 1f;
-    
+    private GameManager gameManager;
     
     [Header("Drag and Drop")]
     private Vector3 mOffset;
@@ -33,6 +33,7 @@ public class Node : MonoBehaviour
         clickedColor = originalColor * 0.8f;
         board = GetComponentInParent<Board>();
         // print(isDFS(board.DFSList));
+        gameManager = FindObjectOfType<GameManager>();
     }
     
     void Start()
@@ -84,7 +85,7 @@ public class Node : MonoBehaviour
                 rend.material.color = clickedColor;
                 GetComponent<Renderer>().material.color = clickedColor;
                 // 플레이어 이동
-                board.FollowFinalNodeList(gameObject);
+                // board.FollowFinalNodeList(gameObject);
             }
             else
             { 
