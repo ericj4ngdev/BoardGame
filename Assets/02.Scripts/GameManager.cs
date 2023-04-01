@@ -145,8 +145,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-
     
     private IEnumerator GameLoop()
     {
@@ -158,10 +156,12 @@ public class GameManager : MonoBehaviour
             if (player1Turn)
             {
                 yield return StartCoroutine(PlayerTurn(player1_Prefab));
+                isPlayer1Itmem(player1_Prefab);
             }
             else
             {
                 yield return StartCoroutine(PlayerTurn(player2_Prefab));
+                isPlayer2Itmem(player2_Prefab);
             }
             player1Turn = !player1Turn;
             if (IsGameOver())
@@ -349,10 +349,12 @@ public class GameManager : MonoBehaviour
     // ==========================================
     public void isPlayer1Itmem(GameObject player)
     {
-        if (player1_Items.Contains(player1_Prefab.GetComponent<Player>().test))
+        if (player1_Items.Contains(player.GetComponent<Player>().test))
         {
-            player1_Prefab.SetActive(false);
-            player1_Items.Remove(player1_Prefab.GetComponent<Player>().test);
+            // 닿은 물체인 test를 비활성화. 
+            Debug.Log($"{player.GetComponent<Player>().test.name}");
+            player.GetComponent<Player>().test.SetActive(false);
+            player1_Items.Remove(player.GetComponent<Player>().test);
         }
     }
     

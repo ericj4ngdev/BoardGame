@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
         if (other.tag == "Item")
         {
             test = other.gameObject;
+            Debug.Log(test.name);
         }
     }
 

@@ -17,7 +17,7 @@ public class Item : MonoBehaviour
     }
     private void Update()
     {
-        tr.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
+        tr.Rotate(Vector3.down * rotateSpeed * Time.deltaTime);
         light.color = originalColor;
     }
 
