@@ -72,7 +72,7 @@ public class BoardInfo : MonoBehaviour
         Collider[][] sortedColliders_z = hitColliders_z;
         
         // 디버깅
-        /*for (int i = 0; i < sortedColliders_x.Length; i++)
+        for (int i = 0; i < sortedColliders_x.Length; i++)
         {
             for (int j = 0; j < sortedColliders_x[i].Length; j++)
             {
@@ -85,7 +85,7 @@ public class BoardInfo : MonoBehaviour
             {
                 Debug.Log($"z[{i}][{j}] {sortedColliders_z[i][j].transform.position}");
             }
-        }*/
+        }
 
         // 이동
         switch (location)
@@ -96,7 +96,7 @@ public class BoardInfo : MonoBehaviour
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i+1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[5*2+num].transform); // 오른쪽 지점
+                lastOnePath.Add(waypoints[3*2+num].transform); // 오른쪽 지점
                 lastOnePath.Add(SpawnPoint.transform);
                 sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
                 
@@ -115,7 +115,7 @@ public class BoardInfo : MonoBehaviour
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i-1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[5*1+num].transform); // 왼쪽 지점
+                lastOnePath.Add(waypoints[3*1+num].transform); // 왼쪽 지점
                 lastOnePath.Add(cornerPoint[2].transform);        // 왼쪽 아래 코너지점
                 lastOnePath.Add(cornerPoint[0].transform);        // 오른쪽 아래 코너지점
                 lastOnePath.Add(SpawnPoint.transform);
@@ -135,7 +135,7 @@ public class BoardInfo : MonoBehaviour
                     sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i-1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[5*3+num].transform); // 아래쪽 지점
+                lastOnePath.Add(waypoints[3*3+num].transform); // 아래쪽 지점
                 lastOnePath.Add(cornerPoint[0].transform); // 오른쪽 아래 코너지점
                 lastOnePath.Add(SpawnPoint.transform);
                 sortedColliders_z[num][0].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
@@ -154,7 +154,7 @@ public class BoardInfo : MonoBehaviour
                     sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i+1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[5*0+num].transform); // 위쪽 지점
+                lastOnePath.Add(waypoints[3*0+num].transform); // 위쪽 지점
                 lastOnePath.Add(cornerPoint[1].transform); // 오른쪽 위 코너지점
                 lastOnePath.Add(SpawnPoint.transform);
                 sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
