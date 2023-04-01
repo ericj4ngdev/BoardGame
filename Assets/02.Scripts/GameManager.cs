@@ -38,18 +38,27 @@ public class GameManager : MonoBehaviour
     public List<GameObject> AllItems;
     public List<GameObject> player1_Items = new List<GameObject>();
     public List<GameObject> player2_Items = new List<GameObject>();
+    private List<GameObject> AllItems_shuffled;
+    public List<Transform> AllItemsPos;
+    public List<Transform> AllItemsPos_shuffled;
+    private List<Transform> player1_Itemspos = new List<Transform>();
+    private List<Transform> player2_Itemspos = new List<Transform>();
     
     
     // private Vector2Int BoardSize = new Vector2Int(5,5);
     private Vector3 eulerRotation;
     private float time;
     private Node node;
-    
-    
-    
+
+
     private void Awake()
     {
         eulerRotation = transform.rotation.eulerAngles;
+        AllItemsPos = new List<Transform>(FixedTile.Count);
+        for (int i = 0; i < FixedTile.Count; i++)
+        {
+            AllItemsPos.Add(FixedTile[i].transform);
+        }
         SpawnTiles();
         
     }
@@ -68,19 +77,76 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
+    private List<T> Shuffle<T>(List<T> list)
+    {
+        int random1,  random2;
+        T temp;
+
+        for (int i = 0; i < list.Count; ++i)
+        {
+            random1 = Random.Range(0, list.Count);
+            random2 = Random.Range(0, list.Count);
+
+            temp = list[random1];
+            list[random1] = list[random2];
+            list[random2] = temp;
+        }
+
+        return list;
+    }
     private void SpawnItem()
     {
-        int temp;
+        int index1, index2;
+        Shuffle(AllItems);
+        Shuffle(AllItemsPos);
+        Queue<GameObject> itemqueue = new Queue<GameObject>(AllItems);
+        Queue<Transform> itemPosqueue = new Queue<Transform>(AllItemsPos);
+        
         for (int i = 0; i < 4; i++)
         {
-            temp = Random.Range(0, AllItems.Count);
-            if (!player1_Items.Contains(AllItems[temp]))
+            if (itemqueue.Count > 0)
             {
-                player1_Items.Add(AllItems[temp]);
-                Instantiate(AllItems[temp], FixedTile[i].transform);
+                GameObject item = itemqueue.Dequeue();
+                Transform pos = itemPosqueue.Dequeue();
+                player1_Items.Add(item);
+                player1_Itemspos.Add(pos);
+                Instantiate(item, pos);
+            }
+            else
+            {
+                break;
+            }
+        }
+    
+        // 플레이어 2에게 아직 할당되지 않은 아이템 중 플레이어 1과 겹치지 않는 아이템 할당
+        itemqueue = new Queue<GameObject>(AllItems.Except(player1_Items));
+        itemPosqueue = new Queue<Transform>(AllItemsPos.Except(player1_Itemspos));
+        for (int i = 0; i < 4; i++)
+        {
+            index2 = Random.Range(0, FixedTile.Count);
+            if (itemqueue.Count > 0)
+            {
+                GameObject item = itemqueue.Dequeue();
+                Transform pos = itemPosqueue.Dequeue();
+                if (!player1_Items.Contains(item) && !player2_Items.Contains(item) && !player1_Itemspos.Contains(pos) && !player2_Itemspos.Contains(pos))
+                {
+                    player2_Items.Add(item);
+                    player2_Itemspos.Add(pos);
+                    Instantiate(item, pos);
+                }
+                else
+                {
+                    itemqueue.Enqueue(item);
+                    itemPosqueue.Enqueue(pos);
+                }
+            }
+            else
+            {
+                break;
             }
         }
     }
+
 
     
     private IEnumerator GameLoop()
