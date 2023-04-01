@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fa17b72c531534ca5c59bd375d98ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reachableTileColor: {r: 0.972549, g: 1, b: 0, a: 1}
-  ClickableTileColor: {r: 0, g: 0, b: 1, a: 1}
+  reachableTileColor: {r: 0, g: 0.6037736, b: 0.009204936, a: 1}
+  ClickableTileColor: {r: 1, g: 0.97435904, b: 0, a: 1}
   isPushed: 0
   isClicked: 0
   isSelected: 0

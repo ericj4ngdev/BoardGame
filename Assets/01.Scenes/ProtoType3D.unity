@@ -859,6 +859,7 @@ MonoBehaviour:
   moveTime: 1
   canMove: 0
   num: 1
+  test: {fileID: 0}
   playerPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &125105150
 Rigidbody:
@@ -1283,7 +1284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1510,6 +1511,8 @@ MonoBehaviour:
   - {fileID: 4242082328037496940, guid: 0fc4bd55998181a40bd22144cdf4ff98, type: 3}
   player1_Items: []
   player2_Items: []
+  AllItemsPos: []
+  AllItemsPos_shuffled: []
 --- !u!4 &231717543
 Transform:
   m_ObjectHideFlags: 0
@@ -1654,7 +1657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3970,7 +3973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4073,7 +4076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4413,7 +4416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5665,7 +5668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6100,7 +6103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6203,7 +6206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6494,7 +6497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7293,7 +7296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7627,7 +7630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7870,7 +7873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8304,6 +8307,7 @@ MonoBehaviour:
   moveTime: 1
   canMove: 0
   num: 1
+  test: {fileID: 0}
   playerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1187687818
 GameObject:
@@ -9637,7 +9641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10213,7 +10217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10286,7 +10290,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10970,7 +10974,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11979,7 +11983,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4356814479160045082, guid: c4cd4ed97a905a44ba5ccfe1dc0f117c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12987,11 +12991,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0, g: 0.7254902, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.4764151, g: 0.85627073, b: 1, a: 1}
+    m_PressedColor: {r: 0, g: 0.56122816, b: 0.7735849, a: 1}
+    m_SelectedColor: {r: 0, g: 0.7254902, b: 1, a: 1}
+    m_DisabledColor: {r: 0, g: 0.56078434, b: 0.7725491, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

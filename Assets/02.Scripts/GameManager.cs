@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
     private float time;
     private Node node;
 
-
     private void Awake()
     {
         eulerRotation = transform.rotation.eulerAngles;
@@ -155,6 +154,7 @@ public class GameManager : MonoBehaviour
         {
             // 현재 턴 정보 업데이트
             UpdateTurnUI();
+            OnMovePlayerFinished();
             if (player1Turn)
             {
                 yield return StartCoroutine(PlayerTurn(player1_Prefab));
@@ -164,9 +164,32 @@ public class GameManager : MonoBehaviour
                 yield return StartCoroutine(PlayerTurn(player2_Prefab));
             }
             player1Turn = !player1Turn;
+            if (IsGameOver())
+            {
+                break;
+            }
         }
     }
 
+    private bool IsGameOver()
+    {
+        bool gameOver = false;
+    
+        // 승리 또는 패배 조건 판단 로직 작성
+        if (player1_Items.Count == 0)
+        {
+            gameOver = true;
+            Debug.Log("Player 1 Wins!");
+        }
+        else if (player2_Items.Count == 0)
+        {
+            gameOver = true;
+            Debug.Log("Player 2 Wins!");
+        }
+
+        return gameOver;
+    }
+    
     private IEnumerator PlayerTurn(GameObject player)
     {
         // 스폰 오브젝트는 드래그 가능
@@ -230,7 +253,7 @@ public class GameManager : MonoBehaviour
         // 마우스로 타일 드래그 드롭
         while (true)
         {
-            
+            rotatingObject.GetComponent<Node>().isSelected = true;
             // 타일을 놓았을 때 타일 영역에 들어가면 타일 이동 종료. 다음 spawningObejct
             if (rotatingObject.GetComponent<Node>().isPushed)
             {
@@ -239,6 +262,7 @@ public class GameManager : MonoBehaviour
                 foreach (var VARIABLE in FixedTile)
                     VARIABLE.GetComponent<Node>().isPushed = true;
                 rotatingObject.GetComponent<Node>().isPushed = false;
+                rotatingObject.GetComponent<Node>().isSelected = false;
                 // 여기 있는 건 다음 spawn물건임.
                 // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
                 break;
@@ -248,12 +272,11 @@ public class GameManager : MonoBehaviour
         }
         
     }
-    IEnumerator RestDFS()
+    private IEnumerator RestDFS()
     {
         time = 0;
         while (true)
         {
-            
             time += Time.deltaTime;
             if(time>=5f)
                 break; 
@@ -265,12 +288,14 @@ public class GameManager : MonoBehaviour
     {
         // Debug.Log($"{player.name} MovePlayer 시작");
         // 플레이어 말 이동
+        OnMovePlayerMove();
+        
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");
             for (int i = 0; i < TileBoard.Count; i++)
             {
-                TileBoard[i].GetComponent<Node>().reachableTileColorChange();
+                // TileBoard[i].GetComponent<Node>().reachableTileColorChange();
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
                 if (TileBoard[i].GetComponent<Node>().isClicked)
                 {
@@ -281,7 +306,7 @@ public class GameManager : MonoBehaviour
             }
             for (int i = 0; i < FixedTile.Count; i++)
             {
-                FixedTile[i].GetComponent<Node>().reachableTileColorChange();
+                // FixedTile[i].GetComponent<Node>().reachableTileColorChange();
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
                 if (FixedTile[i].GetComponent<Node>().isClicked)
                 {
@@ -295,8 +320,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnMovePlayerMove()
+    {
+        for (int i = 0; i < TileBoard.Count; i++)
+        {
+            TileBoard[i].GetComponent<Node>().reachableTileColorChange();
+        }
+
+        for (int i = 0; i < FixedTile.Count; i++)
+        {
+            FixedTile[i].GetComponent<Node>().reachableTileColorChange();
+        }
+    }
+    
+    private void OnMovePlayerFinished()
+    {
+        for (int i = 0; i < TileBoard.Count; i++)
+        {
+            TileBoard[i].GetComponent<Node>().ResetTileColor();
+        }
+        for (int i = 0; i < FixedTile.Count; i++)
+        {
+            FixedTile[i].GetComponent<Node>().ResetTileColor();
+        }
+    }
+    
+
     // ==========================================
-   
+    public void isPlayer1Itmem(GameObject player)
+    {
+        if (player1_Items.Contains(player1_Prefab.GetComponent<Player>().test))
+        {
+            player1_Prefab.SetActive(false);
+            player1_Items.Remove(player1_Prefab.GetComponent<Player>().test);
+        }
+    }
+    
+    public void isPlayer2Itmem(GameObject player)
+    {
+        if (player2_Items.Contains(player2_Prefab.GetComponent<Player>().test))
+        {
+            player2_Prefab.SetActive(false);
+            player2_Items.Remove(player2_Prefab.GetComponent<Player>().test);
+        }
+    }
     
     private void SpawnTiles()
     {

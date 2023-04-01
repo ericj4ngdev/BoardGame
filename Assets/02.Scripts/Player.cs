@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     private IEnumerator<Node_> nodeEnumerator;
     private Vector3 targetPosition;
     private GameObject groundObj;
-    
+    public GameObject test;
     private Transform tr;
 
     public Vector3 playerPosition = Vector3.zero;
@@ -45,7 +45,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+    private void OnTriggerStay(Collider other)
+    {
+        // 플레이어의 것인지 other.name == player1_Items.Contain
+        if (other.tag == "Item")
+        {
+            test = other.gameObject;
+        }
+    }
+
     public void FollowPath(List<Node_> path)
     {
         moveSpeed = (path.Count) * 10 / moveTime;

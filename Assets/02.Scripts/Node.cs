@@ -41,32 +41,64 @@ public class Node : MonoBehaviour
     {
         collidedObjects = new List<GameObject>();
     }
-
-    public void reachableTileColorChange()
-    {
-        if(isDFS(board.DFSList))
-            transform.GetChild(0).GetComponent<Renderer>().material.color = reachableTileColor;
-    }
-    
     private Vector3 GetMouseAsWorldPoint()
     {
         Vector3 mousePoint = Input.mousePosition;
         mousePoint.z = mZCoord;
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
+    public void reachableTileColorChange()
+    {
+        bool isReachable = isDFS(board.DFSList);
+        Color tileColor = isReachable ? reachableTileColor : originalColor;
+        transform.GetChild(0).GetComponent<Renderer>().material.color = tileColor;
+    }
+
+    public void ResetTileColor()
+    {
+        transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;
+    }
+
+    private bool isMouseOver = false;
 
     private void OnMouseEnter()
     {
         if (!isPushed) return;
-        // 모든 노드의 isPushed = true로 만든다. 
+
         if (isDFS(board.DFSList))
-            transform.GetChild(0).GetComponent<Renderer>().material.color = ClickableTileColor;
+        {
+            transform.GetChild(0).GetComponent<Renderer>().material.color = reachableTileColor * 1.5f;
+        }
+
+        isMouseOver = true;
+        StartCoroutine(WaitForMouseExit());
     }
-    
+
+
     private void OnMouseExit()
     {
-        transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;
+        isMouseOver = false;
     }
+
+    private IEnumerator WaitForMouseExit()
+    {
+        while (isMouseOver)
+        {
+            yield return null;
+        }
+
+        if (isDFS(board.DFSList))
+        {
+            reachableTileColorChange();
+            yield return null;
+        }
+    }
+
+    
+    /*private void OnMouseExit()
+    {
+        transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;
+    }*/
     
     private void OnMouseDrag()
     {
