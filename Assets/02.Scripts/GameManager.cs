@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -8,46 +9,80 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     // 타일 이동
+    [Header("Tiles")]
+    public List<GameObject> AllTileList;
+    public List<Node> TileBoard = new List<Node>();
+    public List<Node> FixedTile = new List<Node>();
     public GameObject rotatingObject;
     public GameObject board;
-    // public Transform SpawnSpot;
-    // new Vector3(26,0.05,-7);
-    private Vector3 eulerRotation;
-    private Vector2Int BoardSize = new Vector2Int(5,5);
-    public List<Node> TileBoard = new List<Node>();
-    public List<Node> MapTile = new List<Node>();
-    private float time;
-    // private List<List<Node>> TileBoard = new List<List<Node>>();        // 소환한 타일 정보
-    
-    public List<GameObject> waypoint;
-    public List<GameObject> AllTileList;
 
-    // =================================================
+    [Header("Players")] 
+    // public GameObject[] player;
+    // Vector3[] playerInitialPosition;
+    public GameObject player1_Prefab;
+    public GameObject player2_Prefab;
+    Vector3 player1_InitialPosition;
+    Vector3 player2_InitialPosition;
     
-    public GameObject[] tiles;
-    public GameObject player1;
-    public GameObject player2;
-
-    private Node node;
-    private bool player1Turn;
-    private bool endTurnClicked;
+    [Header("UI")]
     public GameObject EndTurnButton;
     public Text turnText;
     public Text StatusText;
+    private bool player1Turn;
+    private bool endTurnClicked;
+    
+    [Header("WayPoints")]
+    public List<GameObject> waypoint;
+
+    [Header("Item")]
+    public List<GameObject> AllItems;
+    public List<GameObject> player1_Items = new List<GameObject>();
+    public List<GameObject> player2_Items = new List<GameObject>();
+    
+    
+    // private Vector2Int BoardSize = new Vector2Int(5,5);
+    private Vector3 eulerRotation;
+    private float time;
+    private Node node;
+    
+    
     
     private void Awake()
     {
         eulerRotation = transform.rotation.eulerAngles;
-        
         SpawnTiles();
+        
     }
     private void Start()
     {
+        // GameObject player1 = Instantiate(player1_Prefab, player1_InitialPosition, Quaternion.identity);
+        // GameObject player2 = Instantiate(player2_Prefab, player2_InitialPosition, Quaternion.identity);
+        // player의 초기 위치 저장, 나중에 돌아올때 사용
+        // player1_InitialPosition = player1.transform.position;
+        // player2_InitialPosition = player2.transform.position;
+        
         player1Turn = true;
         EndTurnButton.SetActive(false);
+        SpawnItem();
+
         StartCoroutine(GameLoop());
     }
 
+    private void SpawnItem()
+    {
+        int temp;
+        for (int i = 0; i < 4; i++)
+        {
+            temp = Random.Range(0, AllItems.Count);
+            if (!player1_Items.Contains(AllItems[temp]))
+            {
+                player1_Items.Add(AllItems[temp]);
+                Instantiate(AllItems[temp], FixedTile[i].transform);
+            }
+        }
+    }
+
+    
     private IEnumerator GameLoop()
     {
         while (true)
@@ -56,11 +91,11 @@ public class GameManager : MonoBehaviour
             UpdateTurnUI();
             if (player1Turn)
             {
-                yield return StartCoroutine(PlayerTurn(player1));
+                yield return StartCoroutine(PlayerTurn(player1_Prefab));
             }
             else
             {
-                yield return StartCoroutine(PlayerTurn(player2));
+                yield return StartCoroutine(PlayerTurn(player2_Prefab));
             }
             player1Turn = !player1Turn;
         }
@@ -135,7 +170,7 @@ public class GameManager : MonoBehaviour
             {
                 foreach (var VARIABLE in TileBoard)
                     VARIABLE.GetComponent<Node>().isPushed = true;
-                foreach (var VARIABLE in MapTile)
+                foreach (var VARIABLE in FixedTile)
                     VARIABLE.GetComponent<Node>().isPushed = true;
                 rotatingObject.GetComponent<Node>().isPushed = false;
                 // 여기 있는 건 다음 spawn물건임.
@@ -178,14 +213,14 @@ public class GameManager : MonoBehaviour
                     yield break;
                 }
             }
-            for (int i = 0; i < MapTile.Count; i++)
+            for (int i = 0; i < FixedTile.Count; i++)
             {
-                MapTile[i].GetComponent<Node>().reachableTileColorChange();
+                FixedTile[i].GetComponent<Node>().reachableTileColorChange();
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
-                if (MapTile[i].GetComponent<Node>().isClicked)
+                if (FixedTile[i].GetComponent<Node>().isClicked)
                 {
-                    board.GetComponent<Board>().FollowFinalNodeList_player(MapTile[i].gameObject, player);
-                    MapTile[i].GetComponent<Node>().isClicked = false;
+                    board.GetComponent<Board>().FollowFinalNodeList_player(FixedTile[i].gameObject, player);
+                    FixedTile[i].GetComponent<Node>().isClicked = false;
                     yield break;
                 }
             }

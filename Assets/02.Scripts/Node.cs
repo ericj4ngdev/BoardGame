@@ -29,8 +29,8 @@ public class Node : MonoBehaviour
     {
         rend = GetComponent<Renderer>();
         tr = GetComponent<Transform>();
-        // originalColor = rend.material.color;
-        originalColor = GetComponent<Renderer>().material.color;
+        originalColor = transform.GetChild(0).GetComponent<Renderer>().material.color;
+        // originalColor = GetComponent<Renderer>().material.color;
         clickedColor = originalColor * 0.8f;
         board = GetComponentInParent<Board>();
         // print(isDFS(board.DFSList));
@@ -45,7 +45,7 @@ public class Node : MonoBehaviour
     public void reachableTileColorChange()
     {
         if(isDFS(board.DFSList))
-            rend.material.color = reachableTileColor;
+            transform.GetChild(0).GetComponent<Renderer>().material.color = reachableTileColor;
     }
     
     private Vector3 GetMouseAsWorldPoint()
@@ -60,12 +60,12 @@ public class Node : MonoBehaviour
         if (!isPushed) return;
         // 모든 노드의 isPushed = true로 만든다. 
         if (isDFS(board.DFSList))
-            rend.material.color = ClickableTileColor;
+            transform.GetChild(0).GetComponent<Renderer>().material.color = ClickableTileColor;
     }
     
     private void OnMouseExit()
     {
-        rend.material.color = originalColor;
+        transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;
     }
     
     private void OnMouseDrag()
@@ -87,15 +87,14 @@ public class Node : MonoBehaviour
             if (isDFS(board.DFSList))
             {
                 isClicked = true;
-                rend.material.color = clickedColor;
-                GetComponent<Renderer>().material.color = clickedColor;
+                transform.GetChild(0).GetComponent<Renderer>().material.color = clickedColor;
                 // 플레이어 이동
                 // board.FollowFinalNodeList(gameObject);
             }
             else
             { 
                 print("그곳엔 이동할 수 없습니다.");
-                rend.material.color = originalColor;
+                transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;
             }
         }
     }
@@ -115,7 +114,7 @@ public class Node : MonoBehaviour
         }
         collidedObjects.Clear();
         
-        GetComponent<Renderer>().material.color = originalColor;  // 기존 색상으로 변경
+        transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;  // 기존 색상으로 변경
     }
 
 
@@ -171,7 +170,6 @@ public class Node : MonoBehaviour
     private IEnumerator MoveToNextTarget(List<Transform> waypointList)
     {
         int currentIndex = 0;
-        bool isMoving = true;
         
         while (currentIndex < waypointList.Count)
         {
@@ -190,10 +188,6 @@ public class Node : MonoBehaviour
             transform.position = targetPosition;
             currentIndex++;
         }
-
-        // transform.position = waypointList[waypointList.Count - 1].transform.position;
-        
-        isMoving = false;
         yield return null;
     }
 }
