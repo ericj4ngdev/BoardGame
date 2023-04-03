@@ -5,22 +5,77 @@ using UnityEngine;
 
 public class Player_Test : MonoBehaviour
 {
-    public bool canMove = false;
-
-    public void func1()
+    private Transform tr;
+    public bool isMoving = false;
+    
+    private void Awake()
     {
-        Debug.Log("func1");
-        canMove = true;
+        tr = GetComponent<Transform>();
     }
 
-    public bool isCanMove()
+    public void MoveController()
     {
-        if (canMove) return true;
-        else return false;
+        if (isMoving) return;
+        
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Move(Vector3.right, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Move(Vector3.left, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Move(Vector3.forward, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Move(Vector3.back, 1);
+        }
+    
     }
     
-    private void OnMouseEnter()
+    private void Move(Vector3 direction, float distance)
     {
-        func1();
+        Vector3 newPosition = transform.position + direction * distance;
+        if (!IsWall(newPosition))
+        {
+            isMoving = true;
+            StartCoroutine( MoveTo(newPosition));
+        }
     }
+    
+    bool IsWall(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, 0.4f); // 위치 주위의 콜라이더 검색
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Wall")) // 태그가 "wall"인 콜라이더를 찾았으면
+            {
+                return true; // 벽이므로 true 반환
+            }
+        }
+        return false; // 벽이 아니므로 false 반환
+    }
+    private IEnumerator MoveTo(Vector3 end)
+    {
+        float	current  = 0;
+        float	percent  = 0;
+        float	moveTime = 0.1f;
+        Vector3	start	 = tr.position; // 본인 위치
+
+        while ( percent < 1 )
+        {
+            current += Time.deltaTime;
+            percent = current / moveTime;
+            // 움직이는 코드
+            tr.position = Vector3.Lerp(start, end , percent);
+            
+            yield return null;
+        }
+        tr.position = end;
+        isMoving = false;
+    }
+    
 }

@@ -288,12 +288,16 @@ public class GameManager : MonoBehaviour
     {
         // Debug.Log($"{player.name} MovePlayer 시작");
         // 플레이어 말 이동
-        OnMovePlayerMove();
+        // OnMovePlayerMove();
         
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");
-            for (int i = 0; i < TileBoard.Count; i++)
+            
+            player.GetComponent<Player>().MoveController();
+            if (Input.GetKeyDown(KeyCode.Space)) break;
+            
+            /*for (int i = 0; i < TileBoard.Count; i++)
             {
                 // TileBoard[i].GetComponent<Node>().reachableTileColorChange();
                 // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
@@ -314,7 +318,7 @@ public class GameManager : MonoBehaviour
                     FixedTile[i].GetComponent<Node>().isClicked = false;
                     yield break;
                 }
-            }
+            }*/
             // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
             yield return null;
         }
