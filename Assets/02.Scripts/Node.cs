@@ -180,6 +180,23 @@ public class Node : MonoBehaviour
     {
         StartCoroutine(MoveToNextTarget(waypointList));
     }
+    
+    // void AddPlayerToTile(Transform tileTransform, Transform playerTransform)
+    // {
+    //     playerTransform.SetParent(tileTransform); // 플레이어 Transform의 부모를 타일 Transform으로 설정
+    // }
+    
+    // 타일 범위에 플레이어나 아이템이 있다면 자식으로 바꾼다.
+    // 모든 플레이어와 아이템은 물리법칙을 무시한다. 
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.tag == "player" || collision.gameObject.tag == "item")
+        {
+            collision.gameObject.transform.SetParent(tr);
+        }
+    }
+
     private IEnumerator MoveTo(Vector3 end)
     {
         float	current  = 0;

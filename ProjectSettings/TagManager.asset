@@ -9,6 +9,7 @@ TagManager:
   - Cube
   - Board
   - Item
+  - player
   layers:
   - Default
   - TransparentFX

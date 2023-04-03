@@ -200,6 +200,8 @@ public class GameManager : MonoBehaviour
             VARIABLE.GetComponent<Rigidbody>().isKinematic = false;
             VARIABLE.GetComponent<Collider>().isTrigger = false;
         }
+        // 밀어넣을 타일 미리 저장.
+        GameObject previousObject = rotatingObject;
         // 마우스로 타일 드래그 드롭
         while (true)
         {
@@ -213,6 +215,17 @@ public class GameManager : MonoBehaviour
                     VARIABLE.GetComponent<Node>().isPushed = true;
                 rotatingObject.GetComponent<Node>().isPushed = false;
                 rotatingObject.GetComponent<Node>().isSelected = false;
+                int childCount = rotatingObject.transform.childCount;
+                // 만약 나온 타일에 자식 오브젝트중 player가 있다면 
+                for (int i = 0; i < childCount; i++)
+                {
+                    if (rotatingObject.transform.GetChild(i).CompareTag("player"))
+                    {
+                        rotatingObject.transform.GetChild(i).transform.position = previousObject.transform.position;
+                    }
+                }
+                
+                
                 // 여기 있는 건 다음 spawn물건임.
                 // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
                 break;
