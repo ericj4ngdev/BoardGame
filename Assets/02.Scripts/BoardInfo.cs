@@ -72,7 +72,7 @@ public class BoardInfo : MonoBehaviour
         Collider[][] sortedColliders_z = hitColliders_z;
         
         // 디버깅
-        for (int i = 0; i < sortedColliders_x.Length; i++)
+        /*for (int i = 0; i < sortedColliders_x.Length; i++)
         {
             for (int j = 0; j < sortedColliders_x[i].Length; j++)
             {
@@ -85,7 +85,7 @@ public class BoardInfo : MonoBehaviour
             {
                 Debug.Log($"z[{i}][{j}] {sortedColliders_z[i][j].transform.position}");
             }
-        }
+        }*/
 
         // 이동
         switch (location)

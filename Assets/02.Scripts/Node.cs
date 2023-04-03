@@ -47,12 +47,12 @@ public class Node : MonoBehaviour
         mousePoint.z = mZCoord;
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
-    public void reachableTileColorChange()
+    /*public void reachableTileColorChange()
     {
         bool isReachable = isDFS(board.DFSList);
         Color tileColor = isReachable ? reachableTileColor : originalColor;
         transform.GetChild(0).GetComponent<Renderer>().material.color = tileColor;
-    }
+    }*/
 
     public void ResetTileColor()
     {
@@ -65,10 +65,10 @@ public class Node : MonoBehaviour
     {
         if (!isPushed) return;
 
-        if (isDFS(board.DFSList))
+        /*if (isDFS(board.DFSList))
         {
             transform.GetChild(0).GetComponent<Renderer>().material.color = reachableTileColor * 1.5f;
-        }
+        }*/
 
         isMouseOver = true;
         StartCoroutine(WaitForMouseExit());
@@ -89,7 +89,7 @@ public class Node : MonoBehaviour
 
         if (isDFS(board.DFSList))
         {
-            reachableTileColorChange();
+            // reachableTileColorChange();
             yield return null;
         }
     }
@@ -113,7 +113,7 @@ public class Node : MonoBehaviour
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseAsWorldPoint();
         // 타일을 밀었다면 클릭가능
-        if (isPushed)
+        /*if (isPushed)
         {
             // dfs 구간이면 클릭 가능 및 이동
             if (isDFS(board.DFSList))
@@ -128,7 +128,7 @@ public class Node : MonoBehaviour
                 print("그곳엔 이동할 수 없습니다.");
                 transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;
             }
-        }
+        }*/
     }
 
     private void OnMouseUp()
@@ -171,7 +171,6 @@ public class Node : MonoBehaviour
                 return true;
         return false;
     }
-    
     public void OnMoveto(Vector3 end)
     {
         StartCoroutine("MoveTo",end);

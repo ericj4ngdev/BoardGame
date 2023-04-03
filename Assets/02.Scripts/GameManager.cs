@@ -16,6 +16,10 @@ public class GameManager : MonoBehaviour
     public GameObject rotatingObject;
     public GameObject board;
 
+    public List<int> tileCounts = new List<int>();
+    // 총 34개 타일로 8,8,8,10 이 적당
+    // 
+    
     [Header("Players")] 
     // public GameObject[] player;
     // Vector3[] playerInitialPosition;
@@ -44,6 +48,9 @@ public class GameManager : MonoBehaviour
     public List<Transform> AllItemsPos_shuffled;
     private List<Transform> player1_Itemspos = new List<Transform>();
     private List<Transform> player2_Itemspos = new List<Transform>();
+
+    public List<GameObject> BlueItem = new List<GameObject>();
+    public List<GameObject> RedItem = new List<GameObject>();
     
     
     // private Vector2Int BoardSize = new Vector2Int(5,5);
@@ -71,7 +78,7 @@ public class GameManager : MonoBehaviour
         
         player1Turn = true;
         EndTurnButton.SetActive(false);
-        SpawnItem();
+        SpawnItem_();
 
         StartCoroutine(GameLoop());
     }
@@ -86,12 +93,10 @@ public class GameManager : MonoBehaviour
             if (player1Turn)
             {
                 yield return StartCoroutine(PlayerTurn(player1_Prefab));
-                // isPlayer1Itmem(player1_Prefab);
             }
             else
             {
                 yield return StartCoroutine(PlayerTurn(player2_Prefab));
-                // isPlayer2Itmem(player2_Prefab);
             }
             player1Turn = !player1Turn;
             if (IsGameOver())
@@ -234,6 +239,7 @@ public class GameManager : MonoBehaviour
         // Debug.Log($"{player.name} MovePlayer 시작");
         // 플레이어 말 이동
         // OnMovePlayerMove();
+        player.GetComponent<Rigidbody>().useGravity = true;
         player.GetComponent<Collider>().isTrigger = true;
         player.GetComponent<Rigidbody>().isKinematic = true;
         foreach (var VARIABLE in player1_Items)
@@ -255,7 +261,7 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 // 먹는거 시전
-                isPlayerItmem(player);
+                isPlayerItem(player);
                 
                 break;
             }
@@ -292,12 +298,12 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < TileBoard.Count; i++)
         {
-            TileBoard[i].GetComponent<Node>().reachableTileColorChange();
+            // TileBoard[i].GetComponent<Node>().reachableTileColorChange();
         }
 
         for (int i = 0; i < FixedTile.Count; i++)
         {
-            FixedTile[i].GetComponent<Node>().reachableTileColorChange();
+            // FixedTile[i].GetComponent<Node>().reachableTileColorChange();
         }
     }
     
@@ -315,7 +321,7 @@ public class GameManager : MonoBehaviour
     
 
     // ==========================================
-    public void isPlayerItmem(GameObject player)
+    public void isPlayerItem(GameObject player)
     {
         if (player == player1_Prefab)
         {
@@ -338,12 +344,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    
-    public void isPlayer2Itmem(GameObject player)
-    {
-        
-    }
-    
+
     private List<T> Shuffle<T>(List<T> list)
     {
         int random1,  random2;
@@ -361,6 +362,48 @@ public class GameManager : MonoBehaviour
 
         return list;
     }
+
+    private void SpawnItem_()
+    {
+        // 각 색에 맞게 분류했고 위치만 노중복으로 배치할 것.
+        GameObject itemPrefab;
+        itemPrefab = BlueItem[Random.Range(0, BlueItem.Count)];
+        GameObject clone;
+        Shuffle(AllItemsPos);
+        Queue<Transform> itemPosqueue = new Queue<Transform>(AllItemsPos);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            Transform pos = itemPosqueue.Dequeue();
+            clone = Instantiate(itemPrefab, pos);
+            player1_Items.Add(clone);
+            player1_Itemspos.Add(pos);
+        }
+        itemPrefab = RedItem[Random.Range(0, RedItem.Count)];
+        itemPosqueue = new Queue<Transform>(AllItemsPos.Except(player1_Itemspos));
+        for (int i = 0; i < 4; i++)
+        {
+            if (itemPosqueue.Count > 0)
+            {
+                Transform pos = itemPosqueue.Dequeue();
+                if (!player1_Items.Contains(itemPrefab) && !player2_Items.Contains(itemPrefab) && !player1_Itemspos.Contains(pos) && !player2_Itemspos.Contains(pos))
+                {
+                    clone = Instantiate(itemPrefab, pos);
+                    player2_Items.Add(clone);
+                    player2_Itemspos.Add(pos);
+                }
+                else
+                {
+                    itemPosqueue.Enqueue(pos);
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
     private void SpawnItem()
     {
         int index1, index2;
@@ -419,13 +462,21 @@ public class GameManager : MonoBehaviour
     }
     private void SpawnTiles()
     {
-        GameObject tilePrefab;
+        GameObject tilePrefab = null; // 변수 초기화
         Quaternion randomRotation;
         for (int i = 0; i < waypoint.Count; i++)
         {
-            tilePrefab = AllTileList[Random.Range(0, AllTileList.Count)];
+            int index = Random.Range(0, AllTileList.Count);
+            // 선택된 GameObject 개수 확인
+            while (tileCounts[index] <= 0) {
+                index = Random.Range(0, AllTileList.Count);
+            }
+            tileCounts[index]--; // 선택된 GameObject 개수 -1
+
+            tilePrefab = AllTileList[index];
+
             randomRotation = Quaternion.Euler(0, Random.Range(0, 4) * 90, 0);
-            
+        
             GameObject clone = Instantiate(tilePrefab, waypoint[i].transform.position, randomRotation,board.transform);
             if (i == waypoint.Count - 1)
             {
@@ -433,12 +484,12 @@ public class GameManager : MonoBehaviour
                 Node node_ = rotatingObject.GetComponent<Node>();
                 TileBoard.Add(node_);
                 break;
-                // return;
             }
             Node node = clone.GetComponent<Node>();
             TileBoard.Add(node);
         }
     }
+
 
     public void RotateLeft()
     {
