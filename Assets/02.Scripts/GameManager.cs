@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     [Header("Item")]
     public List<GameObject> AllItems;
     public List<GameObject> player1_Items = new List<GameObject>();
+    public List<GameObject> player1_ItemsforExcept = new List<GameObject>();
     public List<GameObject> player2_Items = new List<GameObject>();
     private List<GameObject> AllItems_shuffled;
     public List<Transform> AllItemsPos;
@@ -54,12 +55,11 @@ public class GameManager : MonoBehaviour
     {
         eulerRotation = transform.rotation.eulerAngles;
         AllItemsPos = new List<Transform>(FixedTile.Count);
-        for (int i = 0; i < FixedTile.Count; i++)
+        for (int i = 0; i < waypoint.Count; i++)
         {
-            AllItemsPos.Add(FixedTile[i].transform);
+            AllItemsPos.Add(waypoint[i].transform);
         }
         SpawnTiles();
-        
     }
     private void Start()
     {
@@ -76,76 +76,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
-    private List<T> Shuffle<T>(List<T> list)
-    {
-        int random1,  random2;
-        T temp;
-
-        for (int i = 0; i < list.Count; ++i)
-        {
-            random1 = Random.Range(0, list.Count);
-            random2 = Random.Range(0, list.Count);
-
-            temp = list[random1];
-            list[random1] = list[random2];
-            list[random2] = temp;
-        }
-
-        return list;
-    }
-    private void SpawnItem()
-    {
-        int index1, index2;
-        Shuffle(AllItems);
-        Shuffle(AllItemsPos);
-        Queue<GameObject> itemqueue = new Queue<GameObject>(AllItems);
-        Queue<Transform> itemPosqueue = new Queue<Transform>(AllItemsPos);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            if (itemqueue.Count > 0)
-            {
-                GameObject item = itemqueue.Dequeue();
-                Transform pos = itemPosqueue.Dequeue();
-                player1_Items.Add(item);
-                player1_Itemspos.Add(pos);
-                Instantiate(item, pos);
-            }
-            else
-            {
-                break;
-            }
-        }
-    
-        // 플레이어 2에게 아직 할당되지 않은 아이템 중 플레이어 1과 겹치지 않는 아이템 할당
-        itemqueue = new Queue<GameObject>(AllItems.Except(player1_Items));
-        itemPosqueue = new Queue<Transform>(AllItemsPos.Except(player1_Itemspos));
-        for (int i = 0; i < 4; i++)
-        {
-            index2 = Random.Range(0, FixedTile.Count);
-            if (itemqueue.Count > 0)
-            {
-                GameObject item = itemqueue.Dequeue();
-                Transform pos = itemPosqueue.Dequeue();
-                if (!player1_Items.Contains(item) && !player2_Items.Contains(item) && !player1_Itemspos.Contains(pos) && !player2_Itemspos.Contains(pos))
-                {
-                    player2_Items.Add(item);
-                    player2_Itemspos.Add(pos);
-                    Instantiate(item, pos);
-                }
-                else
-                {
-                    itemqueue.Enqueue(item);
-                    itemPosqueue.Enqueue(pos);
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-    
     private IEnumerator GameLoop()
     {
         while (true)
@@ -156,12 +86,12 @@ public class GameManager : MonoBehaviour
             if (player1Turn)
             {
                 yield return StartCoroutine(PlayerTurn(player1_Prefab));
-                isPlayer1Itmem(player1_Prefab);
+                // isPlayer1Itmem(player1_Prefab);
             }
             else
             {
                 yield return StartCoroutine(PlayerTurn(player2_Prefab));
-                isPlayer2Itmem(player2_Prefab);
+                // isPlayer2Itmem(player2_Prefab);
             }
             player1Turn = !player1Turn;
             if (IsGameOver())
@@ -186,7 +116,8 @@ public class GameManager : MonoBehaviour
             gameOver = true;
             Debug.Log("Player 2 Wins!");
         }
-
+        // 출력
+        
         return gameOver;
     }
     
@@ -250,6 +181,20 @@ public class GameManager : MonoBehaviour
     private IEnumerator DragTile(GameObject player)
     {
         // Debug.Log($"{player.name} DragTile 시작");
+        player.GetComponent<Collider>().isTrigger = false;
+        player.GetComponent<Rigidbody>().isKinematic = false;
+        foreach (var VARIABLE in player1_Items)
+        {
+            VARIABLE.GetComponent<Rigidbody>().useGravity = true;
+            VARIABLE.GetComponent<Rigidbody>().isKinematic = false;
+            VARIABLE.GetComponent<Collider>().isTrigger = false;
+        }
+        foreach (var VARIABLE in player2_Items)
+        {
+            VARIABLE.GetComponent<Rigidbody>().useGravity = true;
+            VARIABLE.GetComponent<Rigidbody>().isKinematic = false;
+            VARIABLE.GetComponent<Collider>().isTrigger = false;
+        }
         // 마우스로 타일 드래그 드롭
         while (true)
         {
@@ -289,14 +234,33 @@ public class GameManager : MonoBehaviour
         // Debug.Log($"{player.name} MovePlayer 시작");
         // 플레이어 말 이동
         // OnMovePlayerMove();
-        
+        player.GetComponent<Collider>().isTrigger = true;
+        player.GetComponent<Rigidbody>().isKinematic = true;
+        foreach (var VARIABLE in player1_Items)
+        {
+            VARIABLE.GetComponent<Rigidbody>().useGravity = false;
+            VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
+            VARIABLE.GetComponent<Collider>().isTrigger = true;
+        }
+        foreach (var VARIABLE in player2_Items)
+        {
+            VARIABLE.GetComponent<Rigidbody>().useGravity = false;
+            VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
+            VARIABLE.GetComponent<Collider>().isTrigger = true;
+        }
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");
-            
             player.GetComponent<Player>().MoveController();
-            if (Input.GetKeyDown(KeyCode.Space)) break;
-            
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // 먹는거 시전
+                isPlayerItmem(player);
+                
+                break;
+            }
+            player.GetComponent<Collider>().isTrigger = false;
+            player.GetComponent<Rigidbody>().isKinematic = false;
             /*for (int i = 0; i < TileBoard.Count; i++)
             {
                 // TileBoard[i].GetComponent<Node>().reachableTileColorChange();
@@ -351,26 +315,108 @@ public class GameManager : MonoBehaviour
     
 
     // ==========================================
-    public void isPlayer1Itmem(GameObject player)
+    public void isPlayerItmem(GameObject player)
     {
-        if (player1_Items.Contains(player.GetComponent<Player>().test))
+        if (player == player1_Prefab)
         {
-            // 닿은 물체인 test를 비활성화. 
-            Debug.Log($"{player.GetComponent<Player>().test.name}");
-            player.GetComponent<Player>().test.SetActive(false);
-            player1_Items.Remove(player.GetComponent<Player>().test);
+            if (player1_Items.Contains(player.GetComponent<Player>().test))
+            {
+                // 닿은 물체인 test를 비활성화. 
+                Debug.Log($"{player.GetComponent<Player>().test.name} 획득!!");
+                player.GetComponent<Player>().test.SetActive(false);
+                player1_Items.Remove(player.GetComponent<Player>().test);
+            }
+        }
+
+        if (player == player2_Prefab)
+        {
+            if (player2_Items.Contains(player.GetComponent<Player>().test))
+            {
+                Debug.Log($"{player.GetComponent<Player>().test.name} 획득!!");
+                player.GetComponent<Player>().test.SetActive(false);
+                player2_Items.Remove(player.GetComponent<Player>().test);
+            }
         }
     }
     
     public void isPlayer2Itmem(GameObject player)
     {
-        if (player2_Items.Contains(player2_Prefab.GetComponent<Player>().test))
-        {
-            player2_Prefab.SetActive(false);
-            player2_Items.Remove(player2_Prefab.GetComponent<Player>().test);
-        }
+        
     }
     
+    private List<T> Shuffle<T>(List<T> list)
+    {
+        int random1,  random2;
+        T temp;
+
+        for (int i = 0; i < list.Count; ++i)
+        {
+            random1 = Random.Range(0, list.Count);
+            random2 = Random.Range(0, list.Count);
+
+            temp = list[random1];
+            list[random1] = list[random2];
+            list[random2] = temp;
+        }
+
+        return list;
+    }
+    private void SpawnItem()
+    {
+        int index1, index2;
+        GameObject clone;
+        Shuffle(AllItems);
+        Shuffle(AllItemsPos);
+        Queue<GameObject> itemqueue = new Queue<GameObject>(AllItems);
+        Queue<Transform> itemPosqueue = new Queue<Transform>(AllItemsPos);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (itemqueue.Count > 0)
+            {
+                GameObject item = itemqueue.Dequeue();
+                Transform pos = itemPosqueue.Dequeue();
+                clone = Instantiate(item, pos);
+                // Item item_ = clone.GetComponent<Item>();
+
+                player1_Items.Add(clone);
+                player1_ItemsforExcept.Add(item);
+                player1_Itemspos.Add(pos);
+            }
+            else
+            {
+                break;
+            }
+        }
+    
+        // 플레이어 2에게 아직 할당되지 않은 아이템 중 플레이어 1과 겹치지 않는 아이템 할당
+        itemqueue = new Queue<GameObject>(AllItems.Except(player1_ItemsforExcept));
+        itemPosqueue = new Queue<Transform>(AllItemsPos.Except(player1_Itemspos));
+        for (int i = 0; i < 4; i++)
+        {
+            index2 = Random.Range(0, FixedTile.Count);
+            if (itemqueue.Count > 0)
+            {
+                GameObject item = itemqueue.Dequeue();
+                Transform pos = itemPosqueue.Dequeue();
+                if (!player1_Items.Contains(item) && !player2_Items.Contains(item) && !player1_Itemspos.Contains(pos) && !player2_Itemspos.Contains(pos))
+                {
+                    clone = Instantiate(item, pos);
+                    player2_Items.Add(clone);
+                    player2_Itemspos.Add(pos);
+                }
+                else
+                {
+                    itemqueue.Enqueue(item);
+                    itemPosqueue.Enqueue(pos);
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
     private void SpawnTiles()
     {
         GameObject tilePrefab;

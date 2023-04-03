@@ -17,8 +17,8 @@ public class Item : MonoBehaviour
     }
     private void Update()
     {
-        tr.Rotate(Vector3.down * rotateSpeed * Time.deltaTime);
-        light.color = originalColor;
+        // tr.Rotate(Vector3.down * rotateSpeed * Time.deltaTime);
+        // light.color = originalColor;
     }
 
     private void OnCollisionStay(Collision collision)
