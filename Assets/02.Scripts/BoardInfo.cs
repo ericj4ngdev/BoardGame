@@ -19,7 +19,7 @@ public class BoardInfo : MonoBehaviour
     public Vector3 size_x;
     public Vector3 size_z;
     public LayerMask layerMask;
-    WaitForSeconds delay1 = new WaitForSeconds(3f);
+    WaitForSeconds delay1 = new WaitForSeconds(2f);
     private Renderer[] pushArea_Render;
     public Material originalColor;
     

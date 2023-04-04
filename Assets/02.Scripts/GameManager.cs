@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
     private float time;
     private Node node;
     private Coroutine gameLoopCoroutine;
+    private bool isRotating = false;
 
     private void Awake()
     {
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f; // 게임 재개
         pausePanel.SetActive(false); // 일시정지 패널 비활성화
+        isPaused = !isPaused;
     }
     
     private IEnumerator GameLoop()
@@ -135,8 +137,6 @@ public class GameManager : MonoBehaviour
         gameLoopCoroutine = null;
     }
 
-    
-    
     public void RestartGame()
     {
         if (gameLoopCoroutine != null)
@@ -146,8 +146,6 @@ public class GameManager : MonoBehaviour
         }
         SceneManager.LoadScene("ProtoType3D");
     }
-
-    
 
     private bool IsGameOver()
     {
@@ -299,9 +297,9 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             time += Time.deltaTime;
-            if(time>=5f)
+            if(time>=2f)
                 break; 
-            UpdateCoroutineStatus("RestDFS 중");
+            UpdateCoroutineStatus("이동 중");
             yield return null;
         }
     }
@@ -546,7 +544,7 @@ public class GameManager : MonoBehaviour
 
             tilePrefab = AllTileList[index];
 
-            randomRotation = Quaternion.Euler(0, Random.Range(0, 4) * 90, 0);
+            randomRotation = Quaternion.Euler(0, Random.Range(0, 3) * 90, 0);
         
             GameObject clone = Instantiate(tilePrefab, waypoint[i].transform.position, randomRotation,board.transform);
             if (i == waypoint.Count - 1)
@@ -561,15 +559,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void RotateLeft()
     {
+        if (isRotating) return;
+        isRotating = true;
         eulerRotation.y -= 90f;
         Vector3 end = eulerRotation;
         StartCoroutine("RotateTo",end);
     }
     public void RotateRight()
     {
+        if (isRotating) return;
+        isRotating = true;
         eulerRotation.y += 90f;
         Vector3 end = eulerRotation;
         StartCoroutine("RotateTo",end);
@@ -579,7 +580,7 @@ public class GameManager : MonoBehaviour
     {
         float	current  = 0;
         float	percent  = 0;
-        float	moveTime = 1.0f;
+        float	moveTime = 0.1f;
         
         Quaternion startRotation = rotatingObject.transform.rotation;
         Quaternion endRotation = Quaternion.Euler(end);
@@ -593,6 +594,7 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+        isRotating = false;
     }
     
     

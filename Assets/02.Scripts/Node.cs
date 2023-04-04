@@ -16,7 +16,7 @@ public class Node : MonoBehaviour
     public bool isPushed = false;
     public bool isClicked = false;
     private Vector3 tileposition;
-    float timeToReachTarget = 1f;
+    public float timeToReachTarget = 0.5f;
     private GameManager gameManager;
     
     [Header("Drag and Drop")]
@@ -192,24 +192,16 @@ public class Node : MonoBehaviour
     {
         StartCoroutine(MoveToNextTarget(waypointList));
     }
-    
-    // void AddPlayerToTile(Transform tileTransform, Transform playerTransform)
-    // {
-    //     playerTransform.SetParent(tileTransform); // 플레이어 Transform의 부모를 타일 Transform으로 설정
-    // }
-    
-    // 타일 범위에 플레이어나 아이템이 있다면 자식으로 바꾼다.
-    // 모든 플레이어와 아이템은 물리법칙을 무시한다. 
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "player")
+        if(collision.gameObject.tag == "player")
         {
             Debug.Log(collision.gameObject.name);
             collision.gameObject.transform.SetParent(tr);
         }
-        
-        if (collision.gameObject.tag == "Item")
+
+        if(collision.gameObject.tag == "Item")
         {
             Debug.Log(collision.gameObject.name);
             collision.gameObject.transform.SetParent(tr);
@@ -224,7 +216,7 @@ public class Node : MonoBehaviour
     {
         float	current  = 0;
         float	percent  = 0;
-        float	moveTime = 1.0f;
+        float	moveTime = 1f;
         Vector3	start	 = tr.position; // 본인 위치
 
         while ( percent < 1 )
