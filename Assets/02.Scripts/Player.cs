@@ -30,22 +30,6 @@ public class Player : MonoBehaviour
         playerPosition = tr.position;
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            transform.SetParent(collision.transform);
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            transform.SetParent(null);
-        }
-    }
-
     private void OnTriggerStay(Collider other)
     {
         // 플레이어의 것인지 other.name == player1_Items.Contain

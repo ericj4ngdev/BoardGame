@@ -45,8 +45,16 @@ public class Node : MonoBehaviour
     {
         Vector3 mousePoint = Input.mousePosition;
         mousePoint.z = mZCoord;
+
+        // 일시정지 상태에서는 호출하지 않음
+        if (Time.timeScale == 0f)
+        {
+            return mousePoint;
+        }
+
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
+
     /*public void reachableTileColorChange()
     {
         bool isReachable = isDFS(board.DFSList);
@@ -191,9 +199,20 @@ public class Node : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "player" || collision.gameObject.tag == "item")
+        if (collision.gameObject.tag == "player")
         {
+            Debug.Log(collision.gameObject.name);
             collision.gameObject.transform.SetParent(tr);
+        }
+        
+        if (collision.gameObject.tag == "Item")
+        {
+            Debug.Log(collision.gameObject.name);
+            collision.gameObject.transform.SetParent(tr);
+            collision.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            collision.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+            collision.gameObject.GetComponent<Collider>().isTrigger = true;
         }
     }
 

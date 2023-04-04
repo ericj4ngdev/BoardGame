@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 
 public class GameManager : MonoBehaviour
@@ -30,10 +33,15 @@ public class GameManager : MonoBehaviour
     
     [Header("UI")]
     public GameObject EndTurnButton;
+    public Image Winner;
     public Text turnText;
     public Text StatusText;
-    private bool player1Turn;
+    public Text WinText;
+    public GameObject pausePanel;
     private bool endTurnClicked;
+    private bool player1Turn;
+    private bool isPaused = false;
+
     
     [Header("WayPoints")]
     public List<GameObject> waypoint;
@@ -45,7 +53,6 @@ public class GameManager : MonoBehaviour
     public List<GameObject> player2_Items = new List<GameObject>();
     private List<GameObject> AllItems_shuffled;
     public List<Transform> AllItemsPos;
-    public List<Transform> AllItemsPos_shuffled;
     private List<Transform> player1_Itemspos = new List<Transform>();
     private List<Transform> player2_Itemspos = new List<Transform>();
 
@@ -57,6 +64,7 @@ public class GameManager : MonoBehaviour
     private Vector3 eulerRotation;
     private float time;
     private Node node;
+    private Coroutine gameLoopCoroutine;
 
     private void Awake()
     {
@@ -70,12 +78,6 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        // GameObject player1 = Instantiate(player1_Prefab, player1_InitialPosition, Quaternion.identity);
-        // GameObject player2 = Instantiate(player2_Prefab, player2_InitialPosition, Quaternion.identity);
-        // player의 초기 위치 저장, 나중에 돌아올때 사용
-        // player1_InitialPosition = player1.transform.position;
-        // player2_InitialPosition = player2.transform.position;
-        
         player1Turn = true;
         EndTurnButton.SetActive(false);
         SpawnItem_();
@@ -83,6 +85,30 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPaused = !isPaused;
+            if (isPaused)
+            {
+                Time.timeScale = 0f; // 게임 일시정지
+                pausePanel.SetActive(true); // 일시정지 패널 활성화
+            }
+            else
+            {
+                Time.timeScale = 1f; // 게임 재개
+                pausePanel.SetActive(false); // 일시정지 패널 비활성화
+            }
+        }
+    }
+
+    public void OnResumeButtonClicked()
+    {
+        Time.timeScale = 1f; // 게임 재개
+        pausePanel.SetActive(false); // 일시정지 패널 비활성화
+    }
+    
     private IEnumerator GameLoop()
     {
         while (true)
@@ -104,7 +130,24 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
+
+        // 코루틴 종료 후 gameLoopCoroutine을 null로 초기화
+        gameLoopCoroutine = null;
     }
+
+    
+    
+    public void RestartGame()
+    {
+        if (gameLoopCoroutine != null)
+        {
+            // 현재 실행 중인 GameLoop 코루틴 중지
+            StopCoroutine(gameLoopCoroutine);
+        }
+        SceneManager.LoadScene("ProtoType3D");
+    }
+
+    
 
     private bool IsGameOver()
     {
@@ -115,17 +158,38 @@ public class GameManager : MonoBehaviour
         {
             gameOver = true;
             Debug.Log("Player 1 Wins!");
+            WinText.text = "Player 1 Wins!";
+            StartCoroutine(FadeInImage(Winner, WinText,1f));
         }
         else if (player2_Items.Count == 0)
         {
             gameOver = true;
             Debug.Log("Player 2 Wins!");
+            WinText.text = "Player 2 Wins!";
+            StartCoroutine(FadeInImage(Winner, WinText,1f));
         }
         // 출력
         
         return gameOver;
     }
-    
+
+    IEnumerator FadeInImage(Image image, Text text, float fadeTime)
+    {
+        Color originalImageColor = image.color;
+        Color originalTextColor = text.color;
+        float time = 0f;
+        while (time < fadeTime)
+        {
+            time += Time.deltaTime;
+            float imagealpha = Mathf.Lerp(0f, 0.4f, time / fadeTime);
+            float textalpha = Mathf.Lerp(0f, 1, time / fadeTime);
+            image.color = new Color(originalImageColor.r, originalImageColor.g, originalImageColor.b, imagealpha);
+            text.color = new Color(originalTextColor.r, originalTextColor.g, originalTextColor.b, textalpha);
+            yield return null;
+        }
+    }
+
+
     private IEnumerator PlayerTurn(GameObject player)
     {
         // 스폰 오브젝트는 드래그 가능
@@ -159,7 +223,7 @@ public class GameManager : MonoBehaviour
 
         // EndTurnButton을 다시 비활성화해서 다음 플레이어의 차례를 기다리도록 함
         EndTurnButton.SetActive(false);
-
+        
         // endTurnClicked 변수를 초기화
         endTurnClicked = false;
     }
@@ -185,21 +249,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator DragTile(GameObject player)
     {
-        // Debug.Log($"{player.name} DragTile 시작");
-        player.GetComponent<Collider>().isTrigger = false;
-        player.GetComponent<Rigidbody>().isKinematic = false;
-        foreach (var VARIABLE in player1_Items)
-        {
-            VARIABLE.GetComponent<Rigidbody>().useGravity = true;
-            VARIABLE.GetComponent<Rigidbody>().isKinematic = false;
-            VARIABLE.GetComponent<Collider>().isTrigger = false;
-        }
-        foreach (var VARIABLE in player2_Items)
-        {
-            VARIABLE.GetComponent<Rigidbody>().useGravity = true;
-            VARIABLE.GetComponent<Rigidbody>().isKinematic = false;
-            VARIABLE.GetComponent<Collider>().isTrigger = false;
-        }
         // 밀어넣을 타일 미리 저장.
         GameObject previousObject = rotatingObject;
         // 마우스로 타일 드래그 드롭
@@ -216,13 +265,22 @@ public class GameManager : MonoBehaviour
                 rotatingObject.GetComponent<Node>().isPushed = false;
                 rotatingObject.GetComponent<Node>().isSelected = false;
                 int childCount = rotatingObject.transform.childCount;
+                List<GameObject> players = new List<GameObject>();
                 // 만약 나온 타일에 자식 오브젝트중 player가 있다면 
                 for (int i = 0; i < childCount; i++)
                 {
+                    Debug.Log($"{i}번쨰 점검 : {rotatingObject.transform.GetChild(i).name}");
                     if (rotatingObject.transform.GetChild(i).CompareTag("player"))
                     {
-                        rotatingObject.transform.GetChild(i).transform.position = previousObject.transform.position;
+                        // 여러개 일수 있다. 이미 하나 빼버리면 인덱스 오류나버린다.
+                        players.Add(rotatingObject.transform.GetChild(i).gameObject);
                     }
+                }
+
+                foreach (var VARIABLE in players)
+                {
+                    VARIABLE.transform.SetParent(previousObject.transform);
+                    VARIABLE.transform.position = previousObject.transform.position + new Vector3(0,1,0);
                 }
                 
                 
@@ -252,21 +310,21 @@ public class GameManager : MonoBehaviour
         // Debug.Log($"{player.name} MovePlayer 시작");
         // 플레이어 말 이동
         // OnMovePlayerMove();
-        player.GetComponent<Rigidbody>().useGravity = true;
-        player.GetComponent<Collider>().isTrigger = true;
-        player.GetComponent<Rigidbody>().isKinematic = true;
-        foreach (var VARIABLE in player1_Items)
-        {
-            VARIABLE.GetComponent<Rigidbody>().useGravity = false;
-            VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
-            VARIABLE.GetComponent<Collider>().isTrigger = true;
-        }
-        foreach (var VARIABLE in player2_Items)
-        {
-            VARIABLE.GetComponent<Rigidbody>().useGravity = false;
-            VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
-            VARIABLE.GetComponent<Collider>().isTrigger = true;
-        }
+        // player.GetComponent<Rigidbody>().useGravity = true;
+        // player.GetComponent<Collider>().isTrigger = true;
+        // player.GetComponent<Rigidbody>().isKinematic = true;
+        // foreach (var VARIABLE in player1_Items)
+        // {
+        //     VARIABLE.GetComponent<Rigidbody>().useGravity = false;
+        //     VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
+        //     VARIABLE.GetComponent<Collider>().isTrigger = true;
+        // }
+        // foreach (var VARIABLE in player2_Items)
+        // {
+        //     VARIABLE.GetComponent<Rigidbody>().useGravity = false;
+        //     VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
+        //     VARIABLE.GetComponent<Collider>().isTrigger = true;
+        // }
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");

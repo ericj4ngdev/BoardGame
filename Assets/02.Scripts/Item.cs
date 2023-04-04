@@ -14,26 +14,7 @@ public class Item : MonoBehaviour
         tr = GetComponent<Transform>();
         light = GetComponent<Light>();
         originalColor = GetComponent<Renderer>().material.color;
-    }
-    private void Update()
-    {
-        // tr.Rotate(Vector3.down * rotateSpeed * Time.deltaTime);
-        // light.color = originalColor;
+        transform.SetParent(null);
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            transform.SetParent(collision.transform);
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            transform.SetParent(null);
-        }
-    }
 }
