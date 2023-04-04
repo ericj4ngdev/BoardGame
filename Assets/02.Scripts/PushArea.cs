@@ -31,7 +31,7 @@ public class PushArea : MonoBehaviour
     }
     
     // 충돌 중일 때 호출되는 함수
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Ground"))
             cubeRenderer.material.color = originalColor * 1.5f;

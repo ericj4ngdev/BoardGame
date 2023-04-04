@@ -20,15 +20,21 @@ public class BoardInfo : MonoBehaviour
     public Vector3 size_z;
     public LayerMask layerMask;
     WaitForSeconds delay1 = new WaitForSeconds(3f);
+    private Renderer[] pushArea_Render;
+    public Material originalColor;
     
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
         SpawnObject = gameManager.rotatingObject;
         SpawnObject.GetComponent<Node>().isSelected = true;
-        // SpawnObject.GetComponent<Node>().isPushed = false;
+        pushArea_Render = new Renderer[waypoints.Length];
+        for (int i = 0; i < waypoints.Length; i++)
+        {
+            pushArea_Render[i] = waypoints[i].GetComponent<Renderer>();
+        }
     }
-    void OnDrawGizmos()
+    /*void OnDrawGizmos()
     {
         // 기즈모 색상 지정
         Gizmos.color = Color.blue;
@@ -42,12 +48,7 @@ public class BoardInfo : MonoBehaviour
         {
             Gizmos.DrawWireCube(center_z[i]/3, size_z);
         }
-    }
-
-    public void GetTileInfo()
-    {
-        
-    }
+    }*/
     
     public void PushNode(string info)
     {
@@ -107,7 +108,8 @@ public class BoardInfo : MonoBehaviour
                 // sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
                 SpawnObject = sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject;
                 gameManager.rotatingObject = sortedColliders_x[num][sortedColliders_x[num].Length - 1].gameObject;
-                
+                resetBtn();
+                waypoints[3*2+num].SetActive(false);
                 break;
             case "Right":
                 // 1칸씩 이동
@@ -128,6 +130,8 @@ public class BoardInfo : MonoBehaviour
                 // sortedColliders_x[num][0].gameObject.GetComponent<Node>().OnMoveto(SpawnObject.transform.position);
                 SpawnObject = sortedColliders_x[num][0].gameObject;
                 gameManager.rotatingObject = sortedColliders_x[num][0].gameObject;
+                resetBtn();
+                waypoints[3*1+num].SetActive(false);
                 break;
             case "Top":
                 // 1칸씩 이동
@@ -147,6 +151,8 @@ public class BoardInfo : MonoBehaviour
                 
                 SpawnObject = sortedColliders_z[num][0].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[num][0].gameObject;
+                resetBtn();
+                waypoints[3*3+num].SetActive(false);
                 break;
             case "Bottom":
                 // 1칸씩 이동
@@ -165,7 +171,8 @@ public class BoardInfo : MonoBehaviour
                 SpawnObject.gameObject.GetComponent<Node>().isSelected = false;
                 SpawnObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
-                
+                resetBtn();
+                waypoints[3*0+num].SetActive(false);
                 break;
         }
         // 클릭 여부 점검을 위해 추가
@@ -176,9 +183,22 @@ public class BoardInfo : MonoBehaviour
         // board.SetStartpos();
     }
 
+    private void resetBtn()
+    {
+        foreach (var VARIABLE in waypoints)
+        {
+            VARIABLE.SetActive(true);
+        }
+    }
+    
     public void DisableBtn(GameObject PushArea)
     {
+        foreach (var VARIABLE in pushArea_Render)
+        {
+            VARIABLE.material = originalColor;
+        }
         StartCoroutine("DisablePushArea", PushArea);
+        // SetActive(false);
     }
     public IEnumerator DisablePushArea(GameObject PushArea)
     {
@@ -186,6 +206,6 @@ public class BoardInfo : MonoBehaviour
         yield return delay1;
         PushArea.gameObject.SetActive(true);
     }
-    
+    // 민 쪽의 반대쪽은 불가
 }
 

@@ -111,15 +111,16 @@ public class Node : MonoBehaviour
     private void OnMouseDrag()
     {
         if (!isSelected) return;
-        transform.position = GetMouseAsWorldPoint() + mOffset;
+        transform.position = GetMouseAsWorldPoint() + mOffset + new Vector3(0,2,0);;
     }
 
     private void OnMouseDown()
     {
         // 클릭
-        // if (!isSelected) return;
+        if (!isSelected) return;
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseAsWorldPoint();
+        transform.position += new Vector3(0,2,0);
         // 타일을 밀었다면 클릭가능
         /*if (isPushed)
         {
@@ -141,9 +142,12 @@ public class Node : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (!isSelected) return;
         if (collidedObjects.Count == 0)
         {
             print(" 제자리로 ");
+            transform.position = new Vector3(20, 0.05f, -7);  
+                // += new Vector3(0,-2,0);
             return;
         }
         
