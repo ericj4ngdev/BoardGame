@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,4 +18,8 @@ public class Item : MonoBehaviour
         transform.SetParent(null);
     }
 
+    private void Update()
+    {
+        light.color = originalColor;
+    }
 }
