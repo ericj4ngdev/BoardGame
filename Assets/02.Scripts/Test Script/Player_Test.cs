@@ -1,16 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
-public class Player_Test : MonoBehaviour
+public class Player_Test : MonoBehaviourPunCallbacks
 {
     private Transform tr;
+    public PhotonView PV;
     public bool isMoving = false;
     
     private void Awake()
     {
         tr = GetComponent<Transform>();
+    }
+
+    private void Update()
+    {
+        // Control 
+        if (PV.IsMine) MoveController();
     }
 
     public void MoveController()
