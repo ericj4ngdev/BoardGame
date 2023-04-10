@@ -326,7 +326,7 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");
-            player.GetComponent<Player>().MoveController();
+            player.GetComponent<PlayerController>().MoveController();
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 // 먹는거 시전
@@ -394,22 +394,22 @@ public class GameManager : MonoBehaviour
     {
         if (player == player1_Prefab)
         {
-            if (player1_Items.Contains(player.GetComponent<Player>().test))
+            if (player1_Items.Contains(player.GetComponent<PlayerController>().test))
             {
                 // 닿은 물체인 test를 비활성화. 
-                Debug.Log($"{player.GetComponent<Player>().test.name} 획득!!");
-                player.GetComponent<Player>().test.SetActive(false);
-                player1_Items.Remove(player.GetComponent<Player>().test);
+                Debug.Log($"{player.GetComponent<PlayerController>().test.name} 획득!!");
+                player.GetComponent<PlayerController>().test.SetActive(false);
+                player1_Items.Remove(player.GetComponent<PlayerController>().test);
             }
         }
 
         if (player == player2_Prefab)
         {
-            if (player2_Items.Contains(player.GetComponent<Player>().test))
+            if (player2_Items.Contains(player.GetComponent<PlayerController>().test))
             {
-                Debug.Log($"{player.GetComponent<Player>().test.name} 획득!!");
-                player.GetComponent<Player>().test.SetActive(false);
-                player2_Items.Remove(player.GetComponent<Player>().test);
+                Debug.Log($"{player.GetComponent<PlayerController>().test.name} 획득!!");
+                player.GetComponent<PlayerController>().test.SetActive(false);
+                player2_Items.Remove(player.GetComponent<PlayerController>().test);
             }
         }
     }

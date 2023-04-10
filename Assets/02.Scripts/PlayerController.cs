@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private float moveSpeed; // 플레이어 이동 속도
     public float waitTime; // 이동 대기 시간

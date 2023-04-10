@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -26,7 +27,7 @@ public class Board : MonoBehaviour
     public List<Node_> FinalNodeList;
     public List<Node_> DFSList;
     public bool dontCrossCorner;
-    public Player player;
+    [FormerlySerializedAs("player")] public PlayerController playerController;
     
     int sizeX, sizeZ;
     Node_[,] NodeArray;
@@ -43,7 +44,7 @@ public class Board : MonoBehaviour
     private void Awake()
     {
         node = GetComponentInChildren<Node>();
-        tr = player.GetComponent<Transform>();
+        tr = playerController.GetComponent<Transform>();
     }
     
     private void Start()
@@ -89,7 +90,7 @@ public class Board : MonoBehaviour
         // 갱신한 targetPos로 길찾기
         PathFinding_player(player);
         // 플레이어 이동
-        player.GetComponent<Player>().FollowPath(FinalNodeList);
+        player.GetComponent<PlayerController>().FollowPath(FinalNodeList);
         // 시작점을 최종 노드로 설정
         startPos = new Vector3Int(FinalNodeList[FinalNodeList.Count - 1].x,0,FinalNodeList[FinalNodeList.Count - 1].z);
         // 타일 클릭 초기화

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d75bcc44dccc73c449284c4b88273008
+guid: 866a6b5dbee334e4a9d8821a51ac436e
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,6 +8,7 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
+  fontName: BM JUA_TTF
   fontNames:
   - BM JUA_TTF
   fallbackFontReferences: []
