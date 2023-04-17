@@ -9,7 +9,7 @@ public class BinaryInfo : MonoBehaviour
     private bool[,] straight = new bool[3, 3];
     private bool[,] corner = new bool[3, 3];
     private bool[,] halfcross = new bool[3, 3];
-    private bool[,][,] board = new bool[3, 3][,];
+    private bool[,][,] board = new bool[7, 7][,];
     private void Awake()
     {
         straight = new bool[3,3] {
