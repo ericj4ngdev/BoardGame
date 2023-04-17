@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <conio.h>
 // #include "BinaryInfo.h"
 using namespace std;
 
@@ -15,6 +16,7 @@ struct Tile
     vector<vector<int>> shape;
     int rotation;
     TileType type;
+    int x; int y;
     bool isPlayer1;
     bool isPlayer2;
     bool isPlayer1Item;
@@ -132,15 +134,15 @@ void printNextBoard(Tile tile, vector<vector<Tile>> board, const string& locatio
 void getNextBoard(Tile tile, vector<vector<Tile>> board, const string& location)
 {
 }
-void generateBoard(vector<Tile>& list,vector<vector<Tile>>& v)
+void generateBoard(vector<Tile>& list,vector<vector<Tile>>& board)
 {
     // 7*7 자동생성
-    for (int i = 0; i < v.size(); i++)
+    for (int i = 0; i < board.size(); i++)
     {
-        for (int j = 0; j < v[i].size(); ++j)
+        for (int j = 0; j < board[i].size(); ++j)
         {
-            v[i][j] = list[rand()%3]; 
-            rotateTileRand(v[i][j]);            
+            board[i][j] = list[rand()%3]; 
+            rotateTileRand(board[i][j]);            
         }
     }
 }
@@ -230,6 +232,78 @@ void spawnItem(vector<vector<Tile>>& board)
         board[r][l].shape[1][1] = 5;
     }
 }
+void movePlayer(int player, vector<vector<Tile>>& board)
+{
+    // 플레이어 상하좌우에 0, 1 인지
+    // 2가 있는 타일 찾기
+    // 플레이어 위치 찾기
+    Tile playerPosition;
+    for (int i = 0; i < board.size(); i++)
+    {
+        for (int j = 0; j < board[i].size(); j++)
+        {
+            if(board[i][j].isPlayer1) 
+            {
+                playerPosition = board[i][j];
+                playerPosition.x = i;
+                playerPosition.y = j;
+            }
+        }        
+    }
+    cout << playerPosition.x << " " << playerPosition.y << endl;
+    Tile upTile;
+    char input;
+    while (true) {
+        upTile = board[playerPosition.x-1][playerPosition.y];
+        cin >> input;
+        switch (input) {
+            case 'w':
+                // 길이면 위로 이동                
+                // if(playerPosition.shape[0][1] == 1) playerPosition.shape[0][1] = player;
+                cout << "UP" << endl;
+                if(playerPosition.shape[0][1] == 1 && upTile.shape[2][1] == 1)
+                {
+                    board[playerPosition.x][playerPosition.y].shape[1][1] = 1;     // 플레이어가 있던 곳은 길이 됨.
+                    board[playerPosition.x][playerPosition.y].isPlayer1 = false;
+
+                    //board[playerPosition.x-1][playerPosition.y].shape[1][1] = player;
+                    // 왜 이 줄 뒤로는 playerPosition.x가 0일까
+                    playerPosition.x -= 1;
+                    board[playerPosition.x][playerPosition.y].shape[1][1] = player;
+                    board[playerPosition.x][playerPosition.y].isPlayer1 = true;
+
+                    cout << "If - UP" << endl;
+                }
+                
+                break;
+            case 'a':
+                if(playerPosition.shape[1][0] == 1) playerPosition.shape[1][0] = player;
+                break;
+            case 's':
+                if(playerPosition.shape[2][1] == 1) playerPosition.shape[2][1] = player;
+                break;
+            case 'd':
+                if(playerPosition.shape[1][2] == 1) playerPosition.shape[1][2] = player;
+                break;
+            case 32: // spacebar를 누르면 루프 탈출
+                cout << "SPACEBAR PRESSED" << endl;
+                break;
+            default:
+                cout << "INVALID INPUT" << endl;
+                break;
+        }
+        if (input == 32) {
+            break;
+        }
+        printBoard(board);
+    }
+    
+}
+
+void inputArrow(Tile& position) {
+    
+}
+
 
 int main()
 {
@@ -274,6 +348,9 @@ int main()
     int r = rand()%3;
     int n = 7, m = 7;
     int rotate = 0;
+    int player1 = 2;
+    int player2 = 4;
+
     string location;
     
     // 맵 생성
@@ -288,21 +365,23 @@ int main()
     pTile = Tilelist[r];
     printTileInfo(pTile);
 
-    while (cin)
+    while (true)
     {
         cout << "Choose Rotate : ";
         cin >> rotate;   
         for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
         
-        cout << "Choose Loaction : ";
-        cin >> location;
-        printNextBoard(pTile, board, location);
+        // cout << "To Know Next Board by Loaction : ";
+        // cin >> location;
+        // printNextBoard(pTile, board, location);
         cout << "Choose Loaction again: ";
         cin >> location;
         // system("cls");     
         pushTile(pTile, board, location);
         printBoard(board);
         printTileInfo(pTile);
+        movePlayer(player1, board);
+        
     }
     
     
