@@ -1,20 +1,23 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 using namespace std;
 
-// typedef vector<vector<bool>> Tile;
-
-enum TileType {
+enum TileType 
+{
     STRAIGHT,
     CORNER,
     HALFCROSS
 };
 
-struct Tile {
+
+struct Tile 
+{
     vector<vector<bool>> shape;
     int rotation;
     TileType type;
 };
+
 
 void inputSize(int& n, int& m)
 {
@@ -23,6 +26,8 @@ void inputSize(int& n, int& m)
     cout << "Enter the number of columns: ";
     cin >> m;
 }
+
+
 void printTileInfo(Tile &tile) 
 {
     for (int i = 0; i < tile.shape.size(); ++i) {
@@ -34,6 +39,7 @@ void printTileInfo(Tile &tile)
     cout << "tile.type : " << tile.type << endl;
     cout << endl;
 }
+
 
 void rotateTileCW(Tile &tile) 
 {
@@ -48,10 +54,12 @@ void rotateTileCW(Tile &tile)
     else tile.rotation++;
 }
 
+
 void rotateTileRand(Tile &tile) 
 {
     for (int i = 0; i < rand()%4; i++) rotateTileCW(tile);    
 }
+
 
 void printBoard(vector<vector<Tile>> &v) 
 {
@@ -78,6 +86,7 @@ void printBoard(vector<vector<Tile>> &v)
     cout << endl;
 }
 
+
 void generateBoard(vector<Tile>& list,vector<vector<Tile>>& v)
 {
     // 7*7 자동생성
@@ -91,8 +100,56 @@ void generateBoard(vector<Tile>& list,vector<vector<Tile>>& v)
     }
 }
 
-int main() {
+void pushTile(Tile& tile, vector<vector<Tile>>& board, const string& location) {
+    Tile temp;
+    char ch = location[0];
+    int num = location[1] - '0'; 
+    // 문자 '0'에서 해당 문자의 아스키 코드값을 빼면 숫자 값을 얻을 수 있습니다.
+    switch (ch)
+    {
+        case 'L':
+            temp = board[num][board.size()-1];
+            for (int i = board.size()-1; i >= 1; i--) 
+            {
+                board[num][i] = board[num][i-1];
+            }
+            board[num][0] = tile;
+            tile = temp;
+            break;
+        case 'R':
+            temp = board[num][0];
+            for (int i = 0; i < board.size()-1; i++) 
+            {
+                board[num][i] = board[num][i+1];
+            }
+            board[num][board.size()-1] = tile;
+            tile = temp;
+            break;
+        case 'B':
+            temp = board[0][num];
+            for (int i = 0; i < board.size()-1; i++) 
+            {
+                board[i][num] = board[i+1][num];
+            }
+            board[board.size()-1][num] = tile;
+            tile = temp;
+            break;
+        case 'T':
+            temp = board[board.size()-1][num];
+            for (int i = board.size()-1; i >= 1; i--) 
+            {
+                board[i][num] = board[i-1][num];
+            }
+            board[0][num] = tile;
+            tile = temp;
+            break;
+        default:
+            break;
+    }
+}
 
+int main()
+{
     Tile straight = {
         {
             {false, false, false},
@@ -120,7 +177,7 @@ int main() {
         0,
         HALFCROSS
     };
-    Tile pushTile = {
+    Tile pTile = {
         {
             {false, false, false},
             {false, false, false},
@@ -130,17 +187,34 @@ int main() {
     };
     vector<Tile> Tilelist = {straight, corner, halfcross};
     srand(static_cast<unsigned>(time(0)));
-    
+
     int r = rand()%3;
-    int n, m;
-    inputSize(n,m);
+    int n = 5, m = 5;
+    int rotate = 0;
+    string location;
+    // inputSize(n,m);
     vector<vector<Tile>> board(n, vector<Tile>(m));
     generateBoard(Tilelist,board);
     printBoard(board);
-    
     // 밀어넣을 타일 랜덤으로 정하기
-    pushTile = Tilelist[r];
-    printTileInfo(pushTile);
+    pTile = Tilelist[r];
+    printTileInfo(pTile);
 
+    // printTileInfo(board[0][0]);
+    while (cin)
+    {
+        cout << "Choose Rotate : ";
+        cin >> rotate;   
+        for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
+        
+        cout << "Choose Loaction : ";
+        cin >> location;
+        // system("cls");     
+        pushTile(pTile, board, location);
+        printBoard(board);
+        printTileInfo(pTile);
+    }
+    
+    
     return 0;
 }
