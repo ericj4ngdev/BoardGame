@@ -86,6 +86,55 @@ void printBoard(vector<vector<Tile>> &v)
     cout << endl;
 }
 
+void printNextBoard(Tile tile, vector<vector<Tile>> board, const string& location)
+{
+    Tile temp;
+    char ch = location[0];
+    int num = location[1] - '0'; 
+    // 문자 '0'에서 해당 문자의 아스키 코드값을 빼면 숫자 값을 얻을 수 있습니다.
+    switch (ch)
+    {
+        case 'L':
+            temp = board[num][board.size()-1];
+            for (int i = board.size()-1; i >= 1; i--) 
+            {
+                board[num][i] = board[num][i-1];
+            }
+            board[num][0] = tile;
+            tile = temp;
+            break;
+        case 'R':
+            temp = board[num][0];
+            for (int i = 0; i < board.size()-1; i++) 
+            {
+                board[num][i] = board[num][i+1];
+            }
+            board[num][board.size()-1] = tile;
+            tile = temp;
+            break;
+        case 'B':
+            temp = board[0][num];
+            for (int i = 0; i < board.size()-1; i++) 
+            {
+                board[i][num] = board[i+1][num];
+            }
+            board[board.size()-1][num] = tile;
+            tile = temp;
+            break;
+        case 'T':
+            temp = board[board.size()-1][num];
+            for (int i = board.size()-1; i >= 1; i--) 
+            {
+                board[i][num] = board[i-1][num];
+            }
+            board[0][num] = tile;
+            tile = temp;
+            break;
+        default:
+            break;
+    }
+    printBoard(board);
+}
 
 void generateBoard(vector<Tile>& list,vector<vector<Tile>>& v)
 {
@@ -100,7 +149,8 @@ void generateBoard(vector<Tile>& list,vector<vector<Tile>>& v)
     }
 }
 
-void pushTile(Tile& tile, vector<vector<Tile>>& board, const string& location) {
+void pushTile(Tile& tile, vector<vector<Tile>>& board, const string& location) 
+{
     Tile temp;
     char ch = location[0];
     int num = location[1] - '0'; 
@@ -208,6 +258,9 @@ int main()
         for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
         
         cout << "Choose Loaction : ";
+        cin >> location;
+        printNextBoard(pTile, board, location);
+        cout << "Choose Loaction again: ";
         cin >> location;
         // system("cls");     
         pushTile(pTile, board, location);
