@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+// #include "BinaryInfo.h"
 using namespace std;
 
 enum TileType 
@@ -9,15 +10,16 @@ enum TileType
     CORNER,
     HALFCROSS
 };
-
-
 struct Tile 
 {
-    vector<vector<bool>> shape;
+    vector<vector<int>> shape;
     int rotation;
     TileType type;
+    bool isPlayer1;
+    bool isPlayer2;
+    bool isPlayer1Item;
+    bool isPlayer2Item;
 };
-
 
 void inputSize(int& n, int& m)
 {
@@ -26,8 +28,6 @@ void inputSize(int& n, int& m)
     cout << "Enter the number of columns: ";
     cin >> m;
 }
-
-
 void printTileInfo(Tile &tile) 
 {
     for (int i = 0; i < tile.shape.size(); ++i) {
@@ -39,11 +39,9 @@ void printTileInfo(Tile &tile)
     cout << "tile.type : " << tile.type << endl;
     cout << endl;
 }
-
-
 void rotateTileCW(Tile &tile) 
 {
-    vector<vector<bool>> r = tile.shape;
+    vector<vector<int>> r = tile.shape;
     int n = tile.shape.size();
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -53,14 +51,10 @@ void rotateTileCW(Tile &tile)
     if (tile.rotation >= 3) tile.rotation = 0;
     else tile.rotation++;
 }
-
-
 void rotateTileRand(Tile &tile) 
 {
     for (int i = 0; i < rand()%4; i++) rotateTileCW(tile);    
 }
-
-
 void printBoard(vector<vector<Tile>> &v) 
 {
     int k = 0, l=0;
@@ -85,12 +79,12 @@ void printBoard(vector<vector<Tile>> &v)
     }
     cout << endl;
 }
-
 void printNextBoard(Tile tile, vector<vector<Tile>> board, const string& location)
 {
     Tile temp;
     char ch = location[0];
-    int num = location[1] - '0'; 
+    int num = (location[1] - '0')*2 + 1;    
+    cout << num << endl;
     // 문자 '0'에서 해당 문자의 아스키 코드값을 빼면 숫자 값을 얻을 수 있습니다.
     switch (ch)
     {
@@ -135,7 +129,9 @@ void printNextBoard(Tile tile, vector<vector<Tile>> board, const string& locatio
     }
     printBoard(board);
 }
-
+void getNextBoard(Tile tile, vector<vector<Tile>> board, const string& location)
+{
+}
 void generateBoard(vector<Tile>& list,vector<vector<Tile>>& v)
 {
     // 7*7 자동생성
@@ -148,12 +144,12 @@ void generateBoard(vector<Tile>& list,vector<vector<Tile>>& v)
         }
     }
 }
-
 void pushTile(Tile& tile, vector<vector<Tile>>& board, const string& location) 
 {
     Tile temp;
     char ch = location[0];
-    int num = location[1] - '0'; 
+    int num = (location[1] - '0')*2 + 1;    
+    cout << num << endl;
     // 문자 '0'에서 해당 문자의 아스키 코드값을 빼면 숫자 값을 얻을 수 있습니다.
     switch (ch)
     {
@@ -195,6 +191,43 @@ void pushTile(Tile& tile, vector<vector<Tile>>& board, const string& location)
             break;
         default:
             break;
+    }
+}
+void spawnPlayer(vector<vector<Tile>>& board)
+{
+    board[6][0].isPlayer1 = true;
+    board[6][0].shape[1][1] = 2;
+    board[0][6].isPlayer2 = true;
+    board[0][6].shape[1][1] = 4;
+}
+
+void spawnItem(vector<vector<Tile>>& board)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        int r = rand()%5 + 1;
+        int l = rand()%5 + 1;
+        // 위치 중복안되게 배치
+        while(board[r][l].isPlayer1Item)
+        {
+            r = rand()%5 + 1;
+            l = rand()%5 + 1;           
+        }
+        board[r][l].isPlayer1Item = true;
+        board[r][l].shape[1][1] = 3;
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        int r = rand()%5 + 1;
+        int l = rand()%5 + 1;
+        // 아이템이 없을때까지 랜덤수 재출력
+        while(board[r][l].isPlayer1Item || board[r][l].isPlayer2Item)
+        {
+            r = rand()%5 + 1;
+            l = rand()%5 + 1;
+        }
+        board[r][l].isPlayer2Item = true;
+        board[r][l].shape[1][1] = 5;
     }
 }
 
@@ -239,18 +272,22 @@ int main()
     srand(static_cast<unsigned>(time(0)));
 
     int r = rand()%3;
-    int n = 5, m = 5;
+    int n = 7, m = 7;
     int rotate = 0;
     string location;
+    
+    // 맵 생성
     // inputSize(n,m);
     vector<vector<Tile>> board(n, vector<Tile>(m));
     generateBoard(Tilelist,board);
+    spawnPlayer(board);
+    spawnItem(board);
     printBoard(board);
+
     // 밀어넣을 타일 랜덤으로 정하기
     pTile = Tilelist[r];
     printTileInfo(pTile);
 
-    // printTileInfo(board[0][0]);
     while (cin)
     {
         cout << "Choose Rotate : ";
