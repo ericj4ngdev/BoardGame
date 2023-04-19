@@ -260,7 +260,8 @@ public class Board : MonoBehaviour
         GetWallInfo();
 
         // 시작과 끝 노드, 열린리스트와 닫힌리스트, 마지막리스트 초기화
-        StartNode = NodeArray[(int)player.transform.position.x - bottomLeft.x, (int)player.transform.position.z - bottomLeft.z];
+        StartNode = NodeArray[(int)player.transform.position.x - bottomLeft.x, 
+                            (int)player.transform.position.z - bottomLeft.z];
         TargetNode = NodeArray[targetPos.x - bottomLeft.x, targetPos.z - bottomLeft.z];
         
         OpenList = new List<Node_>() { StartNode };

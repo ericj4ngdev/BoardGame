@@ -17,12 +17,65 @@ struct Tile
     int rotation;
     TileType type;
     int x; int y;
+    bool isvisited = false;
     bool isPlayer1;
     bool isPlayer2;
     bool isPlayer1Item;
     bool isPlayer2Item;
 };
+struct Node
+{
+    int num;
+    bool isVisited = false;
+    // 좌표
+    int x;
+    int y;
+};
 
+// 
+
+struct Player
+{
+    int num;
+    int x;
+    int y;
+    int target;
+    int targetCount;
+
+};
+
+// void DFS(Node& player, vector<Node>& dfsList)
+// {
+    
+//     DFSListAdd(player, dfsList);
+//     // for (int i = 0; i < dfsList.size(); i++)
+//     // {
+//     //     cout << dfsList[i].num << " ";
+//     // }
+    
+// }
+vector<Node> DFSList;
+vector<vector<Node>> boardList;
+
+
+
+
+
+
+
+// void checkReachableItem()
+// {
+//     // DFS 리스트 순회
+// }
+
+void printVector2(vector<vector<Node>>& v){
+    for (int i = 0; i < v.size(); ++i) 
+    {
+        for (int j = 0; j < v[i].size(); ++j)
+            cout << v[i][j].num << " ";
+        cout << endl;
+    }
+}
 void inputSize(int& n, int& m)
 {
     cout << "Enter the number of rows: ";
@@ -57,9 +110,12 @@ void rotateTileRand(Tile &tile)
 {
     for (int i = 0; i < rand()%4; i++) rotateTileCW(tile);    
 }
-void printBoard(vector<vector<Tile>> &v) 
+vector<vector<Node>> printBoard(vector<vector<Tile>> &v) 
 {
-    int k = 0, l=0;
+    int k = 0, l = 0;
+    vector<vector<Node>> boardList;
+    vector<Node> row;
+    Node node;
     // l에 대한 for문을 나중에 돌려서 벡터 크기를 따로 저장
     int x = v[k][l].shape.size();
     for (k = 0; k < v.size(); ++k) 
@@ -72,14 +128,19 @@ void printBoard(vector<vector<Tile>> &v)
                 for (int j = 0; j < v[k][l].shape[i].size(); ++j)
                 {
                     cout << v[k][l].shape[i][j] << " ";
+                    node.num = v[k][l].shape[i][j];
+                    row.push_back(node);
                 }
                 cout << "\t";
             }
+            boardList.push_back(row);
+            row.clear();
             cout << endl;
         }
         cout << endl;
     }
     cout << endl;
+    return boardList;
 }
 void printNextBoard(Tile tile, vector<vector<Tile>> board, const string& location)
 {
@@ -203,6 +264,44 @@ void spawnPlayer(vector<vector<Tile>>& board)
     board[0][6].shape[1][1] = 4;
 }
 
+Node getPlayer1Pos(vector<vector<Node>>& nodeList)
+{
+    Node player1;
+    for (int i = 0; i < nodeList.size(); i++)
+    {
+        for (int j = 0; j < nodeList[i].size(); j++)
+        {
+            if(nodeList[i][j].num == 2) 
+            {
+                player1.num = 2;
+                player1.x = j;
+                player1.y = i;
+                return player1;
+            }
+        }        
+    }
+    return Node();
+}
+
+Node getPlayer2Pos(vector<vector<Node>>& nodeList)
+{
+    Node player2;
+    for (int i = 0; i < nodeList.size(); i++)
+    {
+        for (int j = 0; j < nodeList[i].size(); j++)
+        {
+            if(nodeList[i][j].num == 4) {
+                player2.num = 4;
+                player2.x = j;
+                player2.y = i;
+                return player2;
+            }
+        }        
+    }
+    return Node();
+}
+
+
 void spawnItem(vector<vector<Tile>>& board)
 {
     for (int i = 0; i < 4; i++)
@@ -303,7 +402,35 @@ void movePlayer(int player, vector<vector<Tile>>& board)
 void inputArrow(Tile& position) {
     
 }
+void DFSListAdd(Node currentNode)
+{
+    printVector2(boardList);
+    cout << currentNode.y << ", " << currentNode.x << " : " << boardList[currentNode.y][currentNode.x].num << endl;
+    for (int i = -1; i <= 1; i++)
+    {
+        for (int j = -1; j <= 1; j++)
+        {
+            // Skip the currentNode itself
+            if (i == 0 && j == 0) continue;
+            int nexty = currentNode.y + i;
+            int nextx = currentNode.x + j;
+            // Check if nexty and nextx are within the bounds of the boardList
+            if (nexty >= 0 && nexty < boardList.size() && nextx >= 0 && nextx < boardList[0].size())
+            {
+                if (boardList[nexty][nextx].num >= 1 && !boardList[nexty][nextx].isVisited)
+                {
+                    cout << nexty << ", " << nextx << " : " << boardList[nexty][nextx].num << endl;
+                    boardList[nexty][nextx].isVisited = true;
+                    Node NeighborNode = boardList[nexty][nextx];
+                    DFSList.push_back(NeighborNode);
 
+                    cout << "push" << endl;
+                    DFSListAdd(NeighborNode);
+                }
+            }
+        }        
+    }    
+}
 
 int main()
 {
@@ -348,41 +475,62 @@ int main()
     int r = rand()%3;
     int n = 7, m = 7;
     int rotate = 0;
-    int player1 = 2;
-    int player2 = 4;
 
     string location;
     
     // 맵 생성
     // inputSize(n,m);
     vector<vector<Tile>> board(n, vector<Tile>(m));
+    vector<vector<Node>> boardList;
     generateBoard(Tilelist,board);
     spawnPlayer(board);
     spawnItem(board);
-    printBoard(board);
+    // 이차 배열로 받음
+    boardList = printBoard(board);
+    printVector2(boardList);
+    cout << endl;
+    Node player1 = getPlayer1Pos(boardList);
+    Node player2 = getPlayer2Pos(boardList);
+    cout << player2.y << " " << player2.x << endl;
+
 
     // 밀어넣을 타일 랜덤으로 정하기
     pTile = Tilelist[r];
     printTileInfo(pTile);
+    
+    // DFS(player2, DFSList);
+    DFSListAdd(player2);
 
-    while (true)
+    cout << "DFSList" << endl;
+    for (int i = 0; i < DFSList.size(); i++)
     {
-        cout << "Choose Rotate : ";
-        cin >> rotate;   
-        for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
-        
-        // cout << "To Know Next Board by Loaction : ";
-        // cin >> location;
-        // printNextBoard(pTile, board, location);
-        cout << "Choose Loaction again: ";
-        cin >> location;
-        // system("cls");     
-        pushTile(pTile, board, location);
-        printBoard(board);
-        printTileInfo(pTile);
-        movePlayer(player1, board);
-        
+        cout << DFSList[i].num << " ";
     }
+
+    // while (true)
+    // {
+    //     cout << "Choose Rotate : ";
+    //     cin >> rotate;   
+    //     for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
+        
+    //     // cout << "To Know Next Board by Loaction : ";
+    //     // cin >> location;
+    //     // printNextBoard(pTile, board, location);
+    //     cout << "Choose Loaction again: ";
+    //     cin >> location;
+    //     // system("cls");     
+    //     pushTile(pTile, board, location);
+    //     boardList = printBoard(board);
+    //     for (int i = 0; i < boardList.size(); ++i) 
+    //     {
+    //         for (int j = 0; j < boardList[i].size(); ++j)
+    //             cout << boardList[i][j] << " ";
+    //         cout << endl;
+    //     }
+    //     printTileInfo(pTile);
+    //     // movePlayer(player1, board);
+        
+    // }
     
     
     return 0;
