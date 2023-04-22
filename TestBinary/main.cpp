@@ -1,9 +1,10 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <cstdlib>
 #include <conio.h>
 // #include "BinaryInfo.h"
-using namespace std;
+// using namespace std;
 
 enum TileType 
 {
@@ -13,7 +14,7 @@ enum TileType
 };
 struct Tile 
 {
-    vector<vector<int>> shape;
+    std::vector<std::vector<int>> shape;
     int rotation;
     TileType type;
     int x; int y;
@@ -44,25 +45,25 @@ struct Player
 
 };
 
-// void DFS(Node& player, vector<Node>& dfsList)
+// void DFS(Node& player, std::vector<Node>& dfsList)
 // {
     
 //     DFSListAdd(player, dfsList);
 //     // for (int i = 0; i < dfsList.size(); i++)
 //     // {
-//     //     cout << dfsList[i].num << " ";
+//     //     std::cout << dfsList[i].num << " ";
 //     // }
     
 // }
-vector<Node> DFSList;
-vector<vector<Node>> boardList;
+std::vector<Node> DFSList;
+std::vector<std::vector<Node>> boardList;
 
 // void checkReachableItem()
 // {
 //     // DFS 리스트 순회
 // }
 
-void printVector2(vector<vector<Node>>& v){
+void printstdVector2(std::vector<std::vector<Node>>& v){
     for (int i = 0; i < v.size(); ++i) 
     {
         for (int j = 0; j < v[i].size(); ++j)
@@ -70,57 +71,57 @@ void printVector2(vector<vector<Node>>& v){
             switch (v[i][j].num)
             {
             case 0 : 
-                cout << "#" << " ";
+                std::cout << "#" << " ";
                 break;
 
             case 1 : 
-                cout << " " << " ";
+                std::cout << " " << " ";
                 break;
 
             case 2 : 
-                cout << "A" << " ";
+                std::cout << "A" << " ";
                 break;
 
             case 3 : 
-                cout << "a" << " ";
+                std::cout << "a" << " ";
                 break;
 
             case 4 : 
-                cout << "B" << " ";
+                std::cout << "B" << " ";
                 break;
 
             case 5 : 
-                cout << "b" << " ";
+                std::cout << "b" << " ";
                 break;
 
             default:
                 break;
             }            
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 }
 void inputSize(int& n, int& m)
 {
-    cout << "Enter the number of rows: ";
-    cin >> n;
-    cout << "Enter the number of columns: ";
-    cin >> m;
+    std::cout << "Enter the number of rows: ";
+    std::cin >> n;
+    std::cout << "Enter the number of columns: ";
+    std::cin >> m;
 }
 void printTileInfo(Tile &tile) 
 {
     for (int i = 0; i < tile.shape.size(); ++i) {
         for (int j = 0; j < tile.shape[i].size(); ++j)
-            cout << tile.shape[i][j] << " ";
-        cout << endl;
+            std::cout << tile.shape[i][j] << " ";
+        std::cout << std::endl;
     }
-    cout << "tile.rotation : " << tile.rotation << endl;
-    cout << "tile.type : " << tile.type << endl;
-    cout << endl;
+    std::cout << "tile.rotation : " << tile.rotation << std::endl;
+    std::cout << "tile.type : " << tile.type << std::endl;
+    std::cout << std::endl;
 }
 void rotateTileCW(Tile &tile) 
 {
-    vector<vector<int>> r = tile.shape;
+    std::vector<std::vector<int>> r = tile.shape;
     int n = tile.shape.size();
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -134,11 +135,11 @@ void rotateTileRand(Tile &tile)
 {
     for (int i = 0; i < rand()%4; i++) rotateTileCW(tile);    
 }
-vector<vector<Node>> printBoard(vector<vector<Tile>> &v) 
+std::vector<std::vector<Node>> printBoard(std::vector<std::vector<Tile>> &v) 
 {
     int k = 0, l = 0;
-    vector<vector<Node>> boardList2;
-    vector<Node> row;
+    std::vector<std::vector<Node>> boardList2;
+    std::vector<Node> row;
     Node node;
     // l에 대한 for문을 나중에 돌려서 벡터 크기를 따로 저장
     int x = v[k][l].shape.size();
@@ -151,29 +152,29 @@ vector<vector<Node>> printBoard(vector<vector<Tile>> &v)
                 // 가로 모두 출력
                 for (int j = 0; j < v[k][l].shape[i].size(); ++j)
                 {
-                    cout << v[k][l].shape[i][j] << " ";
+                    std::cout << v[k][l].shape[i][j] << " ";
                     node.num = v[k][l].shape[i][j];
                     node.x = 3 * l + j;
                     node.y = 3 * k + i;
                     row.push_back(node);
                 }
-                cout << "\t";
+                std::cout << "\t";
             }
             boardList2.push_back(row);
             row.clear();
-            cout << endl;
+            std::cout << std::endl;
         }
-        cout << endl;
+        std::cout << std::endl;
     }
-    cout << endl;
+    std::cout << std::endl;
     return boardList2;
 }
-void printNextBoard(Tile tile, vector<vector<Tile>> board, const string& location)
+void printNextBoard(Tile tile, std::vector<std::vector<Tile>> board, const std::string& location)
 {
     Tile temp;
     char ch = location[0];
     int num = (location[1] - '0')*2 + 1;    
-    cout << num << endl;
+    std::cout << num << std::endl;
     // 문자 '0'에서 해당 문자의 아스키 코드값을 빼면 숫자 값을 얻을 수 있습니다.
     switch (ch)
     {
@@ -218,11 +219,11 @@ void printNextBoard(Tile tile, vector<vector<Tile>> board, const string& locatio
     }
     printBoard(board);
 }
-void getNextBoard(Tile tile, vector<vector<Tile>> board, const string& location)
+void getNextBoard(Tile tile, std::vector<std::vector<Tile>> board, const std::string& location)
 {
 
 }
-void generateBoard(vector<Tile>& list,vector<vector<Tile>>& board)
+void generateBoard(std::vector<Tile>& list,std::vector<std::vector<Tile>>& board)
 {
     // 7*7 자동생성
     for (int i = 0; i < board.size(); i++)
@@ -234,12 +235,12 @@ void generateBoard(vector<Tile>& list,vector<vector<Tile>>& board)
         }
     }
 }
-void pushTile(Tile& tile, vector<vector<Tile>>& board, const string& location) 
+void pushTile(Tile& tile, std::vector<std::vector<Tile>>& board, const std::string& location) 
 {
     Tile temp;
     char ch = location[0];
     int num = (location[1] - '0')*2 + 1;    
-    cout << num << endl;
+    std::cout << num << std::endl;
     // 문자 '0'에서 해당 문자의 아스키 코드값을 빼면 숫자 값을 얻을 수 있습니다.
     switch (ch)
     {
@@ -283,7 +284,7 @@ void pushTile(Tile& tile, vector<vector<Tile>>& board, const string& location)
             break;
     }
 }
-void spawnPlayer(vector<vector<Tile>>& board)
+void spawnPlayer(std::vector<std::vector<Tile>>& board)
 {
     board[6][0].isPlayer1 = true;
     board[6][0].shape[1][1] = 2;
@@ -291,7 +292,7 @@ void spawnPlayer(vector<vector<Tile>>& board)
     board[0][6].shape[1][1] = 4;
 }
 
-Node getPlayer1Pos(vector<vector<Node>>& nodeList)
+Node getPlayer1Pos(std::vector<std::vector<Node>>& nodeList)
 {
     Node player1;
     for (int i = 0; i < nodeList.size(); i++)
@@ -310,7 +311,7 @@ Node getPlayer1Pos(vector<vector<Node>>& nodeList)
     return Node();
 }
 
-Node getPlayer2Pos(vector<vector<Node>>& nodeList)
+Node getPlayer2Pos(std::vector<std::vector<Node>>& nodeList)
 {
     Node player2;
     for (int i = 0; i < nodeList.size(); i++)
@@ -329,7 +330,7 @@ Node getPlayer2Pos(vector<vector<Node>>& nodeList)
 }
 
 
-void spawnItem(vector<vector<Tile>>& board)
+void spawnItem(std::vector<std::vector<Tile>>& board)
 {
     for (int i = 0; i < 4; i++)
     {
@@ -359,7 +360,7 @@ void spawnItem(vector<vector<Tile>>& board)
     }
 }
 
-void movePlayer(int player, vector<vector<Tile>>& board)
+void movePlayer(int player, std::vector<std::vector<Tile>>& board)
 {
     // 플레이어 상하좌우에 0, 1 인지
     // 2가 있는 타일 찾기
@@ -377,17 +378,17 @@ void movePlayer(int player, vector<vector<Tile>>& board)
             }
         }        
     }
-    cout << playerPosition.x << " " << playerPosition.y << endl;
+    std::cout << playerPosition.x << " " << playerPosition.y << std::endl;
     Tile upTile;
     char input;
     while (true) {
         upTile = board[playerPosition.x-1][playerPosition.y];
-        cin >> input;
+        std::cin >> input;
         switch (input) {
             case 'w':
                 // 길이면 위로 이동                
                 // if(playerPosition.shape[0][1] == 1) playerPosition.shape[0][1] = player;
-                cout << "UP" << endl;
+                std::cout << "UP" << std::endl;
                 if(playerPosition.shape[0][1] == 1 && upTile.shape[2][1] == 1)
                 {
                     board[playerPosition.x][playerPosition.y].shape[1][1] = 1;     // 플레이어가 있던 곳은 길이 됨.
@@ -399,7 +400,7 @@ void movePlayer(int player, vector<vector<Tile>>& board)
                     board[playerPosition.x][playerPosition.y].shape[1][1] = player;
                     board[playerPosition.x][playerPosition.y].isPlayer1 = true;
 
-                    cout << "If - UP" << endl;
+                    std::cout << "If - UP" << std::endl;
                 }
                 
                 break;
@@ -413,10 +414,10 @@ void movePlayer(int player, vector<vector<Tile>>& board)
                 if(playerPosition.shape[1][2] == 1) playerPosition.shape[1][2] = player;
                 break;
             case 32: // spacebar를 누르면 루프 탈출
-                cout << "SPACEBAR PRESSED" << endl;
+                std::cout << "SPACEBAR PRESSED" << std::endl;
                 break;
             default:
-                cout << "INVALID INPUT" << endl;
+                std::cout << "INVALID INPUT" << std::endl;
                 break;
         }
         if (input == 32) {
@@ -429,7 +430,7 @@ void movePlayer(int player, vector<vector<Tile>>& board)
 
 void DFSListAdd(Node currentNode)
 {
-    // printVector2(boardList);
+    // printstd::Vector2(boardList);
     int cnt = 0;
     Node NeighborNode;
     while (cnt != 9)
@@ -499,29 +500,29 @@ int main()
         },
         0,
     };
-    vector<Tile> Tilelist = {straight, corner, halfcross};
+    std::vector<Tile> Tilelist = {straight, corner, halfcross};
     srand(static_cast<unsigned>(time(0)));
 
     int r = rand()%3;
     int n = 7, m = 7;
     int rotate = 0;
 
-    string location;
+    std::string location;
     
     // 맵 생성
     // inputSize(n,m);
-    vector<vector<Tile>> board(n, vector<Tile>(m));
-    // vector<vector<Node>> boardList;
+    std::vector<std::vector<Tile>> board(n, std::vector<Tile>(m));
+    // std::vector<std::vector<Node>> boardList;
     generateBoard(Tilelist,board);
     spawnPlayer(board);
     spawnItem(board);
     // 이차 배열로 받음
     boardList = printBoard(board);
-    printVector2(boardList);
-    cout << endl;
+    printstdVector2(boardList);
+    std::cout << std::endl;
     Node player1 = getPlayer1Pos(boardList);
     Node player2 = getPlayer2Pos(boardList);
-    cout << player2.y << " " << player2.x << endl;
+    std::cout << player2.y << " " << player2.x << std::endl;
 
 
     // 밀어넣을 타일 랜덤으로 정하기
@@ -531,31 +532,31 @@ int main()
     // DFS(player2, DFSList);
     DFSListAdd(player2);
 
-    cout << "DFSList" << endl;
+    std::cout << "DFSList" << std::endl;
     for (int i = 0; i < DFSList.size(); i++)
     {
-        cout << DFSList[i].num << " ";
+        std::cout << DFSList[i].num << " ";
     }
 
     // while (true)
     // {
-    //     cout << "Choose Rotate : ";
-    //     cin >> rotate;   
+    //     std::cout << "Choose Rotate : ";
+    //     std::cin >> rotate;   
     //     for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
         
-    //     // cout << "To Know Next Board by Loaction : ";
-    //     // cin >> location;
+    //     // std::cout << "To Know Next Board by Loaction : ";
+    //     // std::cin >> location;
     //     // printNextBoard(pTile, board, location);
-    //     cout << "Choose Loaction again: ";
-    //     cin >> location;
+    //     std::cout << "Choose Loaction again: ";
+    //     std::cin >> location;
     //     // system("cls");     
     //     pushTile(pTile, board, location);
     //     boardList = printBoard(board);
     //     for (int i = 0; i < boardList.size(); ++i) 
     //     {
     //         for (int j = 0; j < boardList[i].size(); ++j)
-    //             cout << boardList[i][j] << " ";
-    //         cout << endl;
+    //             std::cout << boardList[i][j] << " ";
+    //         std::cout << std::endl;
     //     }
     //     printTileInfo(pTile);
     //     // movePlayer(player1, board);
