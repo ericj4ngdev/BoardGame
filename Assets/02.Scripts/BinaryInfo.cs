@@ -14,6 +14,28 @@ enum TileType
 
 struct Tile 
 {
+    public Tile(Tile tile)
+    {
+        Shape = new List<List<int>>();
+        for (int i = 0; i < tile.Shape.Count; i++)
+        {
+            Shape.Add(new List<int>());
+            for (int j = 0; j < tile.Shape[i].Count; j++)
+            {
+                Shape[i].Add(tile.Shape[i][j]);
+            }
+        }
+        rotation = tile.rotation;
+        type = tile.type;
+        x = tile.x;
+        y = tile.y;
+        isvisited = tile.isvisited;
+        isPlayer1 = tile.isPlayer1;
+        isPlayer2 = tile.isPlayer2;
+        IsPlayer1Item = tile.IsPlayer1Item;
+        IsPlayer2Item = tile.IsPlayer2Item;
+    }
+
     public List<List<int>> Shape;
     public int rotation;
     public TileType type;
@@ -63,7 +85,6 @@ public class BinaryInfo : MonoBehaviour
             rotation = 0,
             type = TileType.STRAIGHT
         };
-        
         Tile corner = new Tile {
             Shape = new List<List<int>> {
                 new List<int> {0, 0, 0},
@@ -73,7 +94,6 @@ public class BinaryInfo : MonoBehaviour
             rotation = 0,
             type = TileType.CORNER
         };
-        
         Tile halfcross = new Tile {
             Shape = new List<List<int>> {
                 new List<int> {0, 1, 0},
@@ -84,14 +104,6 @@ public class BinaryInfo : MonoBehaviour
             type = TileType.HALFCROSS
         };
         
-        Tile pTile = new Tile {
-            Shape = new List<List<int>> {
-                new List<int> {0, 0, 0},
-                new List<int> {1, 1, 1},
-                new List<int> {0, 0, 0}
-            },
-            rotation = 0
-        };
 
         List<Tile> TileList = new List<Tile> {
             straight,
@@ -104,11 +116,8 @@ public class BinaryInfo : MonoBehaviour
         int m = 7;
         int rotate = 0;
         string location = "L0";
-
-        // PrintTileInfo(corner, ref str);
-        // PrintTileInfo(halfcross, ref str);
-
-        List<List<Tile>> board = new List<List<Tile>>();
+        
+        List<List<Tile>> board = new List<List<Tile>>(0);
         for (int i = 0; i < n; i++)
         {
             List<Tile> row = new List<Tile>();
@@ -119,15 +128,16 @@ public class BinaryInfo : MonoBehaviour
             board.Add(row);
         }
         
-        
-        GenerateBoard(TileList,board, ref str);
-        
+        // PrintTileInfo(corner, ref str);
+        // PrintTileInfo(halfcross, ref str);
+
+        GenerateBoard(TileList,ref board, ref str);
+
         //SpawnPlayer(board);
         //SpawnItem(board);
         boardList = PrintBoard(board, ref str);
-        // printList2(boardList, ref str);
+        printList2(boardList, ref str);
         testStreamWriter.Write(str);
-        
         testStreamWriter.Close();
         
         /*NodeTest player1 = GetPlayer1Pos(boardList);
@@ -147,26 +157,47 @@ public class BinaryInfo : MonoBehaviour
         checkReachableItem();*/
     }
     
-    void GenerateBoard(List<Tile> list, List<List<Tile>> board, ref string str)
+    void GenerateBoard(List<Tile> list, ref List<List<Tile>> board, ref string str)
     {
         // 7*7 자동생성
         for (int i = 0; i < board.Count; i++)
         {
             for (int j = 0; j < board[i].Count; ++j)
             {
-                board[i][j] = list[Random.Range(0,3)]; 
-                RotateTileRand(board[i][j]);
+                Tile tile = new Tile(list[Random.Range(0,3)]);
+                RotateTileRand(ref tile);
+                board[i][j] = tile;
             }
-            str += "\n";
         }
-        str += "\n";
     }
-    
+    void RotateTileCW(ref Tile tile)
+    {
+        List<List<int>> r = new List<List<int>>();
+        foreach (var row in tile.Shape) {
+            var newRow = new List<int>(row);
+            r.Add(newRow);
+        }
+        int n = tile.Shape.Count;
+        for (int i = 0; i < n; ++i)
+        {
+            for (int j = 0; j < n; ++j)
+            {
+                tile.Shape[j][n - 1 - i] = r[i][j];
+            }
+        }
+        if (tile.rotation >= 3) tile.rotation = 0;
+        else tile.rotation++;
+    }
+    void RotateTileRand(ref Tile tile) 
+    {
+        int n = Random.Range(0, 4);
+        for (int i = 0; i < n; i++) RotateTileCW(ref tile); 
+    }
+
     List<List<NodeTest>> PrintBoard(List<List<Tile>> v, ref string str)
     {
         int k = 0, l = 0;
         List<List<NodeTest>> boardList2 = new List<List<NodeTest>>();
-        List<NodeTest> row = new List<NodeTest>();
         NodeTest node = new NodeTest();
         // l에 대한 for문을 나중에 돌려서 리스트 크기를 따로 저장
         int x = v[k][l].Shape.Count;
@@ -174,26 +205,27 @@ public class BinaryInfo : MonoBehaviour
         {
             for (int i = 0; i < x; ++i)
             {
+                List<NodeTest> row = new List<NodeTest>();
                 for (l = 0; l < v[k].Count; ++l)
                 {
                     // 가로 모두 출력
                     for (int j = 0; j < v[k][l].Shape[i].Count; ++j)
                     {
+                        node = new NodeTest(); // 새로운 NodeTest 객체 생성
                         node.x = 3 * l + j;
                         node.y = 3 * k + i;
                         node.num = v[k][l].Shape[i][j];
                         row.Add(node);
                         str += node.num + " ";
                     }
-                    str += "\t"; // str에 "\t" 추가
+                    str += "\t";
                 }
                 boardList2.Add(row);
-                row.Clear();
-                str += "\n"; // str에 "\n" 추가
+                str += "\n";
             }
-            str += "\n"; // str에 "\n" 추가
+            str += "\n";
         }
-        str += "\n"; // str에 "\n" 추가
+        str += "\n";
         return boardList2;
     }
     
@@ -231,13 +263,7 @@ public class BinaryInfo : MonoBehaviour
         }
     }
     
-    void inputSize(int n, int m)
-    {
-        Console.Write("Enter the number of rows: ");
-        n = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter the number of columns: ");
-        m = Convert.ToInt32(Console.ReadLine());
-    }
+    
     void PrintTileInfo(Tile tile, ref string str)
     {
         for (int i = 0; i < tile.Shape.Count; i++)
@@ -249,30 +275,6 @@ public class BinaryInfo : MonoBehaviour
         str += "tile.rotation : " + tile.rotation + "\n";
         str += "tile.type : " + tile.type + "\n";
     }
-    void RotateTileCW(ref Tile tile)
-    {
-        List<List<int>> r = new List<List<int>>();
-        foreach (var row in tile.Shape) {
-            var newRow = new List<int>(row);
-            r.Add(newRow);
-        }
-        int n = tile.Shape.Count;
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                tile.Shape[j][n - 1 - i] = r[i][j];
-            }
-        }
-        if (tile.rotation >= 3) tile.rotation = 0;
-        else tile.rotation++;
-    }
-    void RotateTileRand(Tile tile) 
-    {
-        for (int i = 0; i < Random.Range(0,3); i++) RotateTileCW(ref tile);    
-    }
-    
-    
     
     void printNextBoard(Tile tile, List<List<Tile>> board, string location)
     {
@@ -324,8 +326,6 @@ public class BinaryInfo : MonoBehaviour
         // PrintBoard(board,);
     }
     
-
-
     void PushTile(Tile tile, List<List<Tile>> board, string location)
     {
         Tile temp;
@@ -460,8 +460,6 @@ public class BinaryInfo : MonoBehaviour
         }
     }
 
-
-    
     void DFSListAdd(NodeTest currentNode)
     {
         int cnt = 0;
@@ -508,6 +506,12 @@ public class BinaryInfo : MonoBehaviour
         Console.WriteLine("\nplayer2 reachable item : " + count);
         DFSList.Clear();
     }
-
+    void inputSize(int n, int m)
+    {
+        Console.Write("Enter the number of rows: ");
+        n = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter the number of columns: ");
+        m = Convert.ToInt32(Console.ReadLine());
+    }
 
 }
