@@ -47,21 +47,20 @@ struct Player
 
 // void DFS(Node& player, std::vector<Node>& dfsList)
 // {
-    
 //     DFSListAdd(player, dfsList);
 //     // for (int i = 0; i < dfsList.size(); i++)
 //     // {
 //     //     std::cout << dfsList[i].num << " ";
 //     // }
-    
 // }
+
+
+// 배열화, 메모리 안정화.
+// C#화 해보고 느리면 롤백
+
 std::vector<Node> DFSList;
 std::vector<std::vector<Node>> boardList;
 
-// void checkReachableItem()
-// {
-//     // DFS 리스트 순회
-// }
 
 void printstdVector2(std::vector<std::vector<Node>>& v){
     for (int i = 0; i < v.size(); ++i) 
@@ -219,10 +218,7 @@ void printNextBoard(Tile tile, std::vector<std::vector<Tile>> board, const std::
     }
     printBoard(board);
 }
-void getNextBoard(Tile tile, std::vector<std::vector<Tile>> board, const std::string& location)
-{
 
-}
 void generateBoard(std::vector<Tile>& list,std::vector<std::vector<Tile>>& board)
 {
     // 7*7 자동생성
@@ -284,6 +280,7 @@ void pushTile(Tile& tile, std::vector<std::vector<Tile>>& board, const std::stri
             break;
     }
 }
+
 void spawnPlayer(std::vector<std::vector<Tile>>& board)
 {
     board[6][0].isPlayer1 = true;
@@ -360,74 +357,6 @@ void spawnItem(std::vector<std::vector<Tile>>& board)
     }
 }
 
-void movePlayer(int player, std::vector<std::vector<Tile>>& board)
-{
-    // 플레이어 상하좌우에 0, 1 인지
-    // 2가 있는 타일 찾기
-    // 플레이어 위치 찾기
-    Tile playerPosition;
-    for (int i = 0; i < board.size(); i++)
-    {
-        for (int j = 0; j < board[i].size(); j++)
-        {
-            if(board[i][j].isPlayer1) 
-            {
-                playerPosition = board[i][j];
-                playerPosition.x = i;
-                playerPosition.y = j;
-            }
-        }        
-    }
-    std::cout << playerPosition.x << " " << playerPosition.y << std::endl;
-    Tile upTile;
-    char input;
-    while (true) {
-        upTile = board[playerPosition.x-1][playerPosition.y];
-        std::cin >> input;
-        switch (input) {
-            case 'w':
-                // 길이면 위로 이동                
-                // if(playerPosition.shape[0][1] == 1) playerPosition.shape[0][1] = player;
-                std::cout << "UP" << std::endl;
-                if(playerPosition.shape[0][1] == 1 && upTile.shape[2][1] == 1)
-                {
-                    board[playerPosition.x][playerPosition.y].shape[1][1] = 1;     // 플레이어가 있던 곳은 길이 됨.
-                    board[playerPosition.x][playerPosition.y].isPlayer1 = false;
-
-                    //board[playerPosition.x-1][playerPosition.y].shape[1][1] = player;
-                    // 왜 이 줄 뒤로는 playerPosition.x가 0일까
-                    playerPosition.x -= 1;
-                    board[playerPosition.x][playerPosition.y].shape[1][1] = player;
-                    board[playerPosition.x][playerPosition.y].isPlayer1 = true;
-
-                    std::cout << "If - UP" << std::endl;
-                }
-                
-                break;
-            case 'a':
-                if(playerPosition.shape[1][0] == 1) playerPosition.shape[1][0] = player;
-                break;
-            case 's':
-                if(playerPosition.shape[2][1] == 1) playerPosition.shape[2][1] = player;
-                break;
-            case 'd':
-                if(playerPosition.shape[1][2] == 1) playerPosition.shape[1][2] = player;
-                break;
-            case 32: // spacebar를 누르면 루프 탈출
-                std::cout << "SPACEBAR PRESSED" << std::endl;
-                break;
-            default:
-                std::cout << "INVALID INPUT" << std::endl;
-                break;
-        }
-        if (input == 32) {
-            break;
-        }
-        printBoard(board);
-    }
-    
-}
-
 void DFSListAdd(Node currentNode)
 {
     // printstd::Vector2(boardList);
@@ -460,7 +389,22 @@ void DFSListAdd(Node currentNode)
         }
         cnt++;
     }
-        
+}
+
+// 플레이어 정보,  DFSList를 받아서 
+// 해당 플레이어가 도달할 수 있는 아이템의 개수를 출력한다. 
+void checkReachableItem()
+{
+    int count = 0;
+    std::cout << "DFSList" << std::endl;
+    for (int i = 0; i < DFSList.size(); i++)
+    {
+        if(DFSList[i].num == 5) count++;
+        std::cout << DFSList[i].num << " ";
+    }
+    
+    std::cout << std::endl << "player2 reachable item : " << count << std::endl;
+    DFSList.clear();
 }
 
 int main()
@@ -474,6 +418,7 @@ int main()
         0,
         STRAIGHT
     };
+
     Tile corner = {
         {
             {false, false, false},
@@ -483,6 +428,7 @@ int main()
         0,
         CORNER
     };
+
     Tile halfcross = {
         {
             {false, true, false},
@@ -492,6 +438,7 @@ int main()
         0,
         HALFCROSS
     };
+
     Tile pTile = {
         {
             {false, false, false},
@@ -500,6 +447,7 @@ int main()
         },
         0,
     };
+    
     std::vector<Tile> Tilelist = {straight, corner, halfcross};
     srand(static_cast<unsigned>(time(0)));
 
@@ -531,37 +479,33 @@ int main()
     
     // DFS(player2, DFSList);
     DFSListAdd(player2);
+    checkReachableItem();
 
-    std::cout << "DFSList" << std::endl;
-    for (int i = 0; i < DFSList.size(); i++)
+    while (true)
     {
-        std::cout << DFSList[i].num << " ";
+        std::cout << "Choose Rotate : ";
+        std::cin >> rotate;   
+        for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
+        char x = 'y';
+        // while(x == 'x')
+        // {            
+        //     std::cout << "To Know Next Board by Loaction : ";
+        //     std::cin >> location;
+        //     printNextBoard(pTile, board, location);
+        //     std::cout << "To Decide, input x" << std::endl;
+        //     std::cin >> x;
+        // }
+        std::cout << "Choose Loaction again: ";
+        std::cin >> location;
+        // system("cls");     
+        pushTile(pTile, board, location);
+        boardList = printBoard(board);
+        printstdVector2(boardList);
+        printTileInfo(pTile);
+        DFSListAdd(player2);
+        checkReachableItem();
+        // movePlayer(player1, board);
     }
-
-    // while (true)
-    // {
-    //     std::cout << "Choose Rotate : ";
-    //     std::cin >> rotate;   
-    //     for (int i = 0; i < rotate; i++) rotateTileCW(pTile);
-        
-    //     // std::cout << "To Know Next Board by Loaction : ";
-    //     // std::cin >> location;
-    //     // printNextBoard(pTile, board, location);
-    //     std::cout << "Choose Loaction again: ";
-    //     std::cin >> location;
-    //     // system("cls");     
-    //     pushTile(pTile, board, location);
-    //     boardList = printBoard(board);
-    //     for (int i = 0; i < boardList.size(); ++i) 
-    //     {
-    //         for (int j = 0; j < boardList[i].size(); ++j)
-    //             std::cout << boardList[i][j] << " ";
-    //         std::cout << std::endl;
-    //     }
-    //     printTileInfo(pTile);
-    //     // movePlayer(player1, board);
-        
-    // }
     
     
     return 0;
