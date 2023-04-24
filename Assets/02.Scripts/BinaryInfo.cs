@@ -99,15 +99,15 @@ public class BinaryInfo : MonoBehaviour
             halfcross
         };
 
-        // int r = Random.Range(0, 3);
+        int r = Random.Range(0, 3);
         int n = 7;
         int m = 7;
         int rotate = 0;
         string location = "L0";
 
-        PrintTileInfo(corner, ref str);
-        PrintTileInfo(halfcross, ref str);
-        
+        // PrintTileInfo(corner, ref str);
+        // PrintTileInfo(halfcross, ref str);
+
         List<List<Tile>> board = new List<List<Tile>>();
         for (int i = 0; i < n; i++)
         {
@@ -118,6 +118,8 @@ public class BinaryInfo : MonoBehaviour
             }
             board.Add(row);
         }
+        
+        
         GenerateBoard(TileList,board, ref str);
         
         //SpawnPlayer(board);
@@ -153,10 +155,7 @@ public class BinaryInfo : MonoBehaviour
             for (int j = 0; j < board[i].Count; ++j)
             {
                 board[i][j] = list[Random.Range(0,3)]; 
-                // RotateTileRand(board[i][j]);
-                str += board[i][j].type + "\n";
-                PrintTileInfo(board[i][j], ref str);
-                // str += board[i][j].rotation + "\t";
+                RotateTileRand(board[i][j]);
             }
             str += "\n";
         }
@@ -177,7 +176,6 @@ public class BinaryInfo : MonoBehaviour
             {
                 for (l = 0; l < v[k].Count; ++l)
                 {
-                    str += v[k][l].type + " ";
                     // 가로 모두 출력
                     for (int j = 0; j < v[k][l].Shape[i].Count; ++j)
                     {
@@ -251,9 +249,13 @@ public class BinaryInfo : MonoBehaviour
         str += "tile.rotation : " + tile.rotation + "\n";
         str += "tile.type : " + tile.type + "\n";
     }
-    void RotateTileCW(Tile tile)
+    void RotateTileCW(ref Tile tile)
     {
-        List<List<int>> r = tile.Shape;
+        List<List<int>> r = new List<List<int>>();
+        foreach (var row in tile.Shape) {
+            var newRow = new List<int>(row);
+            r.Add(newRow);
+        }
         int n = tile.Shape.Count;
         for (int i = 0; i < n; ++i)
         {
@@ -267,7 +269,7 @@ public class BinaryInfo : MonoBehaviour
     }
     void RotateTileRand(Tile tile) 
     {
-        for (int i = 0; i < Random.Range(0,3); i++) RotateTileCW(tile);    
+        for (int i = 0; i < Random.Range(0,3); i++) RotateTileCW(ref tile);    
     }
     
     

@@ -1,341 +1,37 @@
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-HALFCROSS
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-STRAIGHT
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 0
-tile.type : STRAIGHT
 
 
-CORNER 0 0 0 	CORNER 0 0 0 	STRAIGHT 0 0 0 	CORNER 0 0 0 	CORNER 0 0 0 	STRAIGHT 0 0 0 	CORNER 0 0 0 	
-CORNER 0 1 1 	CORNER 0 1 1 	STRAIGHT 1 1 1 	CORNER 0 1 1 	CORNER 0 1 1 	STRAIGHT 1 1 1 	CORNER 0 1 1 	
-CORNER 0 1 0 	CORNER 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 1 0 	CORNER 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 1 0 	
 
-HALFCROSS 0 1 0 	CORNER 0 0 0 	STRAIGHT 0 0 0 	HALFCROSS 0 1 0 	HALFCROSS 0 1 0 	CORNER 0 0 0 	HALFCROSS 0 1 0 	
-HALFCROSS 1 1 0 	CORNER 0 1 1 	STRAIGHT 1 1 1 	HALFCROSS 1 1 0 	HALFCROSS 1 1 0 	CORNER 0 1 1 	HALFCROSS 1 1 0 	
-HALFCROSS 0 1 0 	CORNER 0 1 0 	STRAIGHT 0 0 0 	HALFCROSS 0 1 0 	HALFCROSS 0 1 0 	CORNER 0 1 0 	HALFCROSS 0 1 0 	
 
-STRAIGHT 0 0 0 	STRAIGHT 0 0 0 	STRAIGHT 0 0 0 	HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 0 0 	STRAIGHT 0 0 0 	
-STRAIGHT 1 1 1 	STRAIGHT 1 1 1 	STRAIGHT 1 1 1 	HALFCROSS 1 1 0 	STRAIGHT 1 1 1 	CORNER 0 1 1 	STRAIGHT 1 1 1 	
-STRAIGHT 0 0 0 	STRAIGHT 0 0 0 	STRAIGHT 0 0 0 	HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 1 0 	STRAIGHT 0 0 0 	
 
-HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 0 0 	CORNER 0 0 0 	STRAIGHT 0 0 0 	STRAIGHT 0 0 0 	CORNER 0 0 0 	
-HALFCROSS 1 1 0 	STRAIGHT 1 1 1 	CORNER 0 1 1 	CORNER 0 1 1 	STRAIGHT 1 1 1 	STRAIGHT 1 1 1 	CORNER 0 1 1 	
-HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 1 0 	CORNER 0 1 0 	STRAIGHT 0 0 0 	STRAIGHT 0 0 0 	CORNER 0 1 0 	
 
-HALFCROSS 0 1 0 	CORNER 0 0 0 	HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	HALFCROSS 0 1 0 	CORNER 0 0 0 	CORNER 0 0 0 	
-HALFCROSS 1 1 0 	CORNER 0 1 1 	HALFCROSS 1 1 0 	STRAIGHT 1 1 1 	HALFCROSS 1 1 0 	CORNER 0 1 1 	CORNER 0 1 1 	
-HALFCROSS 0 1 0 	CORNER 0 1 0 	HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	HALFCROSS 0 1 0 	CORNER 0 1 0 	CORNER 0 1 0 	
 
-CORNER 0 0 0 	CORNER 0 0 0 	STRAIGHT 0 0 0 	CORNER 0 0 0 	HALFCROSS 0 1 0 	HALFCROSS 0 1 0 	HALFCROSS 0 1 0 	
-CORNER 0 1 1 	CORNER 0 1 1 	STRAIGHT 1 1 1 	CORNER 0 1 1 	HALFCROSS 1 1 0 	HALFCROSS 1 1 0 	HALFCROSS 1 1 0 	
-CORNER 0 1 0 	CORNER 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 1 0 	HALFCROSS 0 1 0 	HALFCROSS 0 1 0 	HALFCROSS 0 1 0 	
 
-HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 0 0 	CORNER 0 0 0 	CORNER 0 0 0 	HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	
-HALFCROSS 1 1 0 	STRAIGHT 1 1 1 	CORNER 0 1 1 	CORNER 0 1 1 	CORNER 0 1 1 	HALFCROSS 1 1 0 	STRAIGHT 1 1 1 	
-HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	CORNER 0 1 0 	CORNER 0 1 0 	CORNER 0 1 0 	HALFCROSS 0 1 0 	STRAIGHT 0 0 0 	
+0 1 0 	0 0 0 	0 0 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	
+0 1 1 	1 1 1 	1 1 1 	0 1 1 	1 1 1 	0 1 1 	1 1 0 	
+0 1 0 	0 0 0 	0 0 0 	0 1 0 	0 0 0 	0 1 0 	0 0 0 	
+
+0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	
+1 1 0 	0 1 1 	1 1 1 	1 1 0 	1 1 0 	1 1 1 	0 1 1 	
+0 0 0 	0 1 0 	0 0 0 	0 0 0 	0 0 0 	0 0 0 	0 1 0 	
+
+0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 0 0 	
+1 1 0 	0 1 1 	0 1 1 	1 1 1 	1 1 0 	1 1 0 	1 1 1 	
+0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 0 0 	0 0 0 	
+
+0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	
+1 1 0 	0 1 1 	1 1 1 	0 1 1 	0 1 1 	1 1 1 	0 1 1 	
+0 0 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	
+
+0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 0 0 	0 0 0 	
+1 1 1 	0 1 1 	0 1 1 	1 1 1 	1 1 0 	1 1 1 	1 1 1 	
+0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 0 0 	0 0 0 	
+
+0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	
+0 1 1 	0 1 1 	1 1 0 	1 1 0 	0 1 1 	1 1 0 	1 1 1 	
+0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 1 0 	0 0 0 	0 0 0 	
+
+0 1 0 	0 0 0 	0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	
+1 1 0 	1 1 1 	1 1 1 	1 1 0 	0 1 1 	1 1 1 	1 1 1 	
+0 0 0 	0 0 0 	0 0 0 	0 0 0 	0 1 0 	0 0 0 	0 0 0 	
 
 
