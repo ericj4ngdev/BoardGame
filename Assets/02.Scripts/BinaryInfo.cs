@@ -69,41 +69,50 @@ public class BinaryInfo : MonoBehaviour
 {
     List<NodeTest> DFSList = new List<NodeTest>();
     List<List<NodeTest>> boardList = new List<List<NodeTest>>();
+    Tile straight = new Tile {
+        Shape = new List<List<int>> {
+            new List<int> {0, 0, 0},
+            new List<int> {1, 1, 1},
+            new List<int> {0, 0, 0}
+        },
+        rotation = 0,
+        type = TileType.STRAIGHT
+    };
+    Tile corner = new Tile {
+        Shape = new List<List<int>> {
+            new List<int> {0, 0, 0},
+            new List<int> {0, 1, 1},
+            new List<int> {0, 1, 0}
+        },
+        rotation = 0,
+        type = TileType.CORNER
+    };
+    Tile halfcross = new Tile {
+        Shape = new List<List<int>> {
+            new List<int> {0, 1, 0},
+            new List<int> {1, 1, 0},
+            new List<int> {0, 1, 0}
+        },
+        rotation = 0,
+        type = TileType.HALFCROSS
+    };
+    Tile pTile = new Tile {
+        Shape = new List<List<int>> {
+            new List<int> {0, 0, 0},
+            new List<int> {0, 0, 0},
+            new List<int> {0, 0, 0}
+        },
+        rotation = 0
+    };
+    List<List<Tile>> board = new List<List<Tile>>(0);
     
-
+    
+    
     private void Start()
     {
         FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
         StreamWriter testStreamWriter = new StreamWriter(test);
         string str = "";
-        Tile straight = new Tile {
-            Shape = new List<List<int>> {
-                new List<int> {0, 0, 0},
-                new List<int> {1, 1, 1},
-                new List<int> {0, 0, 0}
-            },
-            rotation = 0,
-            type = TileType.STRAIGHT
-        };
-        Tile corner = new Tile {
-            Shape = new List<List<int>> {
-                new List<int> {0, 0, 0},
-                new List<int> {0, 1, 1},
-                new List<int> {0, 1, 0}
-            },
-            rotation = 0,
-            type = TileType.CORNER
-        };
-        Tile halfcross = new Tile {
-            Shape = new List<List<int>> {
-                new List<int> {0, 1, 0},
-                new List<int> {1, 1, 0},
-                new List<int> {0, 1, 0}
-            },
-            rotation = 0,
-            type = TileType.HALFCROSS
-        };
-        
 
         List<Tile> TileList = new List<Tile> {
             straight,
@@ -117,7 +126,7 @@ public class BinaryInfo : MonoBehaviour
         int rotate = 0;
         string location = "L0";
         
-        List<List<Tile>> board = new List<List<Tile>>(0);
+        
         for (int i = 0; i < n; i++)
         {
             List<Tile> row = new List<Tile>();
@@ -130,33 +139,45 @@ public class BinaryInfo : MonoBehaviour
         
         // PrintTileInfo(corner, ref str);
         // PrintTileInfo(halfcross, ref str);
-
+        
         GenerateBoard(TileList,ref board, ref str);
-
-        //SpawnPlayer(board);
-        //SpawnItem(board);
+        
+        SpawnPlayer(board);
+        SpawnItem(board);
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
-        testStreamWriter.Write(str);
-        testStreamWriter.Close();
-        
-        /*NodeTest player1 = GetPlayer1Pos(boardList);
+
+        NodeTest player1 = GetPlayer1Pos(boardList);
         NodeTest player2 = GetPlayer2Pos(boardList);
-        testStreamWriter.Write(player2.y);
-        testStreamWriter.Write(player2.x);
         
         // 밀어넣을 타일 랜덤으로 정하기
+        str += "\n";
+        str += "밀어넣을 타일" + "\n";
         pTile = TileList[r];
-        printTileInfo(pTile);
-    
-        // DFS(player2, DFSList);
+        RotateTileRand(ref pTile);
+        PrintTileInfo(pTile, ref str);
+        str += "\n";
+        
+        str += location + "에 push 한 후" + "\n";
+        // StartCoroutine(push());
+        PushTile(ref pTile,board,location);
+        // 출력
+        boardList = PrintBoard(board, ref str);
+        printList2(boardList, ref str);
+        
+        str += "\n";
+        str += "밀어넣을 타일" + "\n";
+        PrintTileInfo(pTile, ref str);
+        str += "\n";
+        
         DFSListAdd(player2);
-        checkReachableItem();
-
-        DFSListAdd(player2);
-        checkReachableItem();*/
+        checkReachableItem(ref str);
+        
+        testStreamWriter.Write(str);
+        testStreamWriter.Close();
     }
-    
+
+
     void GenerateBoard(List<Tile> list, ref List<List<Tile>> board, ref string str)
     {
         // 7*7 자동생성
@@ -225,7 +246,6 @@ public class BinaryInfo : MonoBehaviour
             }
             str += "\n";
         }
-        str += "\n";
         return boardList2;
     }
     
@@ -326,12 +346,11 @@ public class BinaryInfo : MonoBehaviour
         // PrintBoard(board,);
     }
     
-    void PushTile(Tile tile, List<List<Tile>> board, string location)
+    void PushTile(ref Tile tile, List<List<Tile>> board, string location)
     {
         Tile temp;
         char ch = location[0];
         int num = (location[1] - '0') * 2 + 1;
-        Console.WriteLine(num);
         switch (ch)
         {
             case 'L':
@@ -493,17 +512,17 @@ public class BinaryInfo : MonoBehaviour
         }
     }
     
-    void checkReachableItem()
+    void checkReachableItem(ref string str)
     {
         int count = 0;
-        Console.WriteLine("DFSList");
+        str += "DFSList" + "\n";
         for (int i = 0; i < DFSList.Count; i++)
         {
             if(DFSList[i].num == 5) count++;
-            Console.Write(DFSList[i].num + " ");
+            str += DFSList[i].num + " ";
         }
     
-        Console.WriteLine("\nplayer2 reachable item : " + count);
+        str += "\n" + "player2 reachable item : " + count;
         DFSList.Clear();
     }
     void inputSize(int n, int m)
