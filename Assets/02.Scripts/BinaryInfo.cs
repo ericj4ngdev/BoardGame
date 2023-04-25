@@ -125,7 +125,11 @@ public class BinaryInfo : MonoBehaviour
         int m = 7;
         int rotate = 0;
         string location = "L0";
-        
+        List<string> locations = new List<string>{"L0", "L1","L2",
+            "R0","R1","R2",
+            "T0","T1","T2",
+            "B0","B1","B2"
+        };
         
         for (int i = 0; i < n; i++)
         {
@@ -137,13 +141,14 @@ public class BinaryInfo : MonoBehaviour
             board.Add(row);
         }
         
-        // PrintTileInfo(corner, ref str);
-        // PrintTileInfo(halfcross, ref str);
-        
         GenerateBoard(TileList,ref board, ref str);
         
         SpawnPlayer(board);
         SpawnItem(board);
+        
+        
+        
+        str += "board 원본" + "\n";
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
 
@@ -156,19 +161,40 @@ public class BinaryInfo : MonoBehaviour
         pTile = TileList[r];
         RotateTileRand(ref pTile);
         PrintTileInfo(pTile, ref str);
-        str += "\n";
+        str += "\n" ;
         
-        str += location + "에 push 한 후" + "\n";
-        // StartCoroutine(push());
-        PushTile(ref pTile,board,location);
-        // 출력
-        boardList = PrintBoard(board, ref str);
-        printList2(boardList, ref str);
         
-        str += "\n";
-        str += "밀어넣을 타일" + "\n";
-        PrintTileInfo(pTile, ref str);
-        str += "\n";
+        // 12가지 다음 경우의 수 출력
+        for (int i = 0; i < locations.Count; i++)
+        {
+            List<List<Tile>> copiedBoard = new List<List<Tile>>(0);
+            // board 복제
+            foreach (List<Tile> row in board)
+            {
+                List<Tile> copiedRow = new List<Tile>(row);
+                copiedBoard.Add(copiedRow);
+            }
+            str += locations[i] + "에 push했을 때 경우" + "\n";
+            PrintNextBoard(pTile,copiedBoard,locations[i]);
+            PrintBoard(copiedBoard, ref str);
+            str += "\n";
+        }
+
+        // str += location + "에 push 한 후" + "\n";
+        // // StartCoroutine(push());
+        // PushTile(ref pTile,board,location);
+        // // 출력
+        // boardList = PrintBoard(board, ref str);
+        // printList2(boardList, ref str);
+        // 
+        // 
+        // str += "\n";
+        // str += "밀어넣을 타일" + "\n";
+        // PrintTileInfo(pTile, ref str);
+        // str += "\n";
+        
+        DFSListAdd(player2);
+        checkReachableItem(ref str);
         
         DFSListAdd(player2);
         checkReachableItem(ref str);
@@ -296,12 +322,11 @@ public class BinaryInfo : MonoBehaviour
         str += "tile.type : " + tile.type + "\n";
     }
     
-    void printNextBoard(Tile tile, List<List<Tile>> board, string location)
+    void PrintNextBoard(Tile tile, List<List<Tile>> board, string location)
     {
         Tile temp;
         char ch = location[0];
         int num = (location[1] - '0') * 2 + 1;
-        Console.WriteLine(num);
         switch (ch)
         {
             case 'L':
@@ -343,7 +368,6 @@ public class BinaryInfo : MonoBehaviour
             default:
                 break;
         }
-        // PrintBoard(board,);
     }
     
     void PushTile(ref Tile tile, List<List<Tile>> board, string location)
