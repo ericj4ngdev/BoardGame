@@ -67,8 +67,9 @@ struct Player
 
 public class BinaryInfo : MonoBehaviour
 {
-    List<NodeTest> DFSList = new List<NodeTest>();
+    // List<NodeTest> DFSList = new List<NodeTest>();
     List<List<NodeTest>> boardList = new List<List<NodeTest>>();
+    List<List<NodeTest>> CopiedBoardList = new List<List<NodeTest>>();
     Tile straight = new Tile {
         Shape = new List<List<int>> {
             new List<int> {0, 0, 0},
@@ -96,16 +97,11 @@ public class BinaryInfo : MonoBehaviour
         rotation = 0,
         type = TileType.HALFCROSS
     };
-    Tile pTile = new Tile {
-        Shape = new List<List<int>> {
-            new List<int> {0, 0, 0},
-            new List<int> {0, 0, 0},
-            new List<int> {0, 0, 0}
-        },
-        rotation = 0
-    };
+
+    private Tile pTile = new Tile();
     List<List<Tile>> board = new List<List<Tile>>(0);
-    
+    List<NodeTest> DFSList1 = new List<NodeTest>();
+    List<NodeTest> DFSList2 = new List<NodeTest>();
     
     
     private void Start()
@@ -146,8 +142,6 @@ public class BinaryInfo : MonoBehaviour
         SpawnPlayer(board);
         SpawnItem(board);
         
-        
-        
         str += "board 원본" + "\n";
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
@@ -163,25 +157,47 @@ public class BinaryInfo : MonoBehaviour
         PrintTileInfo(pTile, ref str);
         str += "\n" ;
         
+        DFSListAdd(DFSList1,boardList, player1);
+        DFSListAdd(DFSList2, boardList, player2);
+        int k = CheckReachableItem_1(DFSList1, ref str);
+        str += "player1 reachable item : " + k + "\n";
+        k = CheckReachableItem_2(DFSList2, ref str);
+        str += "player2 reachable item : " + k + "\n";
         
-        // 12가지 다음 경우의 수 출력
-        for (int i = 0; i < locations.Count; i++)
+        // 48가지 경우의 수 
+        for (int i = 0; i < 4; i++)
         {
-            List<List<Tile>> copiedBoard = new List<List<Tile>>(0);
-            // board 복제
-            foreach (List<Tile> row in board)
+            Tile copyTile = new Tile(pTile);
+            for (int j = 0; j < i; j++)
             {
-                List<Tile> copiedRow = new List<Tile>(row);
-                copiedBoard.Add(copiedRow);
+                RotateTileCW(ref copyTile);
             }
-            str += locations[i] + "에 push했을 때 경우" + "\n";
-            PrintNextBoard(pTile,copiedBoard,locations[i]);
-            PrintBoard(copiedBoard, ref str);
-            str += "\n";
+            
+            // 12가지 다음 경우의 수 출력
+            for (int j = 0; j < locations.Count; j++)
+            {
+                List<List<Tile>> copiedBoard = new List<List<Tile>>(0);
+                // board 복제
+                foreach (List<Tile> row in board)
+                {
+                    List<Tile> copiedRow = new List<Tile>(row);
+                    copiedBoard.Add(copiedRow);
+                }
+                str += i + "번 회전, " + locations[j] + "에 push했을 때 경우" + "\n";
+                PrintNextBoard(copyTile,copiedBoard,locations[j], ref str);
+                DFSListAdd(DFSList1,CopiedBoardList, player1);
+                DFSListAdd(DFSList2, CopiedBoardList, player2);        // CopiedBoardList 가지고 해야 함.
+                // PrintNextBoard 할때, CopiedBoardList에 저장하고 DFSListAdd를 해야 함.
+                k = CheckReachableItem_1(DFSList1, ref str);
+                str += "player1 reachable item : " + k + "\n";
+                k = CheckReachableItem_2(DFSList2, ref str);
+                str += "player2 reachable item : " + k + "\n";
+            }
         }
+        
+        
 
         // str += location + "에 push 한 후" + "\n";
-        // // StartCoroutine(push());
         // PushTile(ref pTile,board,location);
         // // 출력
         // boardList = PrintBoard(board, ref str);
@@ -193,11 +209,10 @@ public class BinaryInfo : MonoBehaviour
         // PrintTileInfo(pTile, ref str);
         // str += "\n";
         
-        DFSListAdd(player2);
-        checkReachableItem(ref str);
+       
         
-        DFSListAdd(player2);
-        checkReachableItem(ref str);
+        // DFSListAdd(boardList,player2);
+        // checkReachableItem(ref str);
         
         testStreamWriter.Write(str);
         testStreamWriter.Close();
@@ -322,7 +337,7 @@ public class BinaryInfo : MonoBehaviour
         str += "tile.type : " + tile.type + "\n";
     }
     
-    void PrintNextBoard(Tile tile, List<List<Tile>> board, string location)
+    void PrintNextBoard(Tile tile, List<List<Tile>> board, string location, ref string str)
     {
         Tile temp;
         char ch = location[0];
@@ -368,6 +383,8 @@ public class BinaryInfo : MonoBehaviour
             default:
                 break;
         }
+        CopiedBoardList = PrintBoard(board, ref str);
+        PrintTileInfo(tile, ref str);
     }
     
     void PushTile(ref Tile tile, List<List<Tile>> board, string location)
@@ -502,53 +519,66 @@ public class BinaryInfo : MonoBehaviour
             board[r][l] = tile;
         }
     }
-
-    void DFSListAdd(NodeTest currentNode)
+    
+    
+    
+    void DFSListAdd(List<NodeTest> DFSList, List<List<NodeTest>> NodeList, NodeTest currentNode)
     {
-        int cnt = 0;
         NodeTest NeighborNode;
-        while (cnt != 9)
+        for (int i = -1; i <= 1; i++)
         {
-            int i = cnt % 3 - 1;
-            int j = (int)(cnt / 3) - 1;
-            // Skip the currentNode itself
-            if (i == 0 && j == 0)
+            for (int j = -1; j <= 1; j++)
             {
-                cnt++;
-                continue;
-            }
-            int nexty = currentNode.y + i;
-            int nextx = currentNode.x + j;
+                // Skip the currentNode itself
+                if (i == 0 && j == 0) continue;
+                
+                int nexty = currentNode.y + i;
+                int nextx = currentNode.x + j;
 
-            // Check if nexty and nextx are within the bounds of the boardList
-            if (nexty >= 0 && nexty < boardList.Count && nextx >= 0 && nextx < boardList[0].Count)
-            {
-                if (boardList[nexty][nextx].num >= 1 && !boardList[nexty][nextx].isVisited)
+                // Check if nexty and nextx are within the bounds of the boardList
+                if (nexty >= 0 && nexty < NodeList.Count && nextx >= 0 && nextx < NodeList[0].Count)
                 {
-                    boardList[nexty][nextx].isVisited = true;
-                    NeighborNode = boardList[nexty][nextx];
+                    if (NodeList[nexty][nextx].num >= 1 && !NodeList[nexty][nextx].isVisited)
+                    {
+                        NodeList[nexty][nextx].isVisited = true;
+                        NeighborNode = NodeList[nexty][nextx];
 
-                    DFSList.Add(NeighborNode);
-                    DFSListAdd(NeighborNode);
+                        DFSList.Add(NeighborNode);
+                        DFSListAdd(DFSList, NodeList, NeighborNode);
+                    }
                 }
             }
-            cnt++;
         }
     }
     
-    void checkReachableItem(ref string str)
+    int CheckReachableItem_1(List<NodeTest> DFSList, ref string str)
     {
         int count = 0;
-        str += "DFSList" + "\n";
+        str += "DFSList : ";
+        for (int i = 0; i < DFSList.Count; i++)
+        {
+            if(DFSList[i].num == 3) count++;
+            str += DFSList[i].num + " ";
+        }
+        str += "\n";
+        DFSList.Clear();
+        return count;
+    }
+    
+    int CheckReachableItem_2(List<NodeTest> DFSList, ref string str)
+    {
+        int count = 0;
+        str += "DFSList : ";
         for (int i = 0; i < DFSList.Count; i++)
         {
             if(DFSList[i].num == 5) count++;
             str += DFSList[i].num + " ";
         }
-    
-        str += "\n" + "player2 reachable item : " + count;
+        str += "\n";
         DFSList.Clear();
+        return count;
     }
+    
     void inputSize(int n, int m)
     {
         Console.Write("Enter the number of rows: ");
