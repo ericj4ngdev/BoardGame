@@ -56,6 +56,14 @@ class NodeTest
     public bool isVisited;
 }
 
+class Score
+{
+    public string location;
+    public int rotation;
+    public int Player1_DeltaReachableItem;
+    public int Player2_DeltaReachableItem;
+}
+
 struct Player
 {
     public int num;
@@ -70,6 +78,10 @@ public class BinaryInfo : MonoBehaviour
     // List<NodeTest> DFSList = new List<NodeTest>();
     List<List<NodeTest>> boardList = new List<List<NodeTest>>();
     List<List<NodeTest>> CopiedBoardList = new List<List<NodeTest>>();
+    
+    private List<Score> ScoreList = new List<Score>();
+    
+    
     Tile straight = new Tile {
         Shape = new List<List<int>> {
             new List<int> {0, 0, 0},
@@ -102,7 +114,7 @@ public class BinaryInfo : MonoBehaviour
     List<List<Tile>> board = new List<List<Tile>>(0);
     List<NodeTest> DFSList1 = new List<NodeTest>();
     List<NodeTest> DFSList2 = new List<NodeTest>();
-    
+    List<KeyValuePair<int, int>> keyValuePairs = new List<KeyValuePair<int, int>>();
     
     private void Start()
     {
@@ -121,6 +133,11 @@ public class BinaryInfo : MonoBehaviour
         int m = 7;
         int rotate = 0;
         string location = "L0";
+        int deltaItem = 0;
+        
+
+        int NextReachableItem_1 = 0;
+        int NextReachableItem_2 = 0;
         List<string> locations = new List<string>{"L0", "L1","L2",
             "R0","R1","R2",
             "T0","T1","T2",
@@ -159,10 +176,10 @@ public class BinaryInfo : MonoBehaviour
         
         DFSListAdd(DFSList1,boardList, player1);
         DFSListAdd(DFSList2, boardList, player2);
-        int k = CheckReachableItem_1(DFSList1, ref str);
-        str += "player1 reachable item : " + k + "\n";
-        k = CheckReachableItem_2(DFSList2, ref str);
-        str += "player2 reachable item : " + k + "\n";
+        int ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
+        str += "player1 reachable item : " + ReachableItem_1 + "\n";
+        int ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
+        str += "player2 reachable item : " + ReachableItem_2 + "\n";
         
         // 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
@@ -176,7 +193,10 @@ public class BinaryInfo : MonoBehaviour
             // 12가지 다음 경우의 수 출력
             for (int j = 0; j < locations.Count; j++)
             {
+                int deltaReachableItem_1 = 0;
+                int deltaReachableItem_2 = 0;
                 List<List<Tile>> copiedBoard = new List<List<Tile>>(0);
+                Score score = new Score();
                 // board 복제
                 foreach (List<Tile> row in board)
                 {
@@ -188,13 +208,38 @@ public class BinaryInfo : MonoBehaviour
                 DFSListAdd(DFSList1,CopiedBoardList, player1);
                 DFSListAdd(DFSList2, CopiedBoardList, player2);        // CopiedBoardList 가지고 해야 함.
                 // PrintNextBoard 할때, CopiedBoardList에 저장하고 DFSListAdd를 해야 함.
-                k = CheckReachableItem_1(DFSList1, ref str);
-                str += "player1 reachable item : " + k + "\n";
-                k = CheckReachableItem_2(DFSList2, ref str);
-                str += "player2 reachable item : " + k + "\n";
+                NextReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
+                deltaReachableItem_1 = NextReachableItem_1 - ReachableItem_1;
+                str += "player1 reachable item : " + NextReachableItem_1 + "\n";
+                NextReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
+                deltaReachableItem_2 = ReachableItem_2 - NextReachableItem_2;
+                str += "player2 reachable item : " + NextReachableItem_2 + "\n";
+                score.rotation = i;
+                score.location = locations[j];
+                score.Player1_DeltaReachableItem = deltaReachableItem_1;
+                score.Player2_DeltaReachableItem = deltaReachableItem_2;
+                ScoreList.Add(score);
+                keyValuePairs.Add(new KeyValuePair<int, int>(deltaReachableItem_1,deltaReachableItem_2));
+                str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
+                str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
             }
         }
-        
+
+        for (int i = 0; i < keyValuePairs.Count; i++)
+        {
+            KeyValuePair<int, int> pair = keyValuePairs[i];
+            str += i + " 번째 Key, Value : " + pair.Key + ", " + -pair.Value + "\n";
+        }
+
+        for (int i = 0; i < ScoreList.Count; i++)
+        {
+            str += "rotation : " + ScoreList[i].rotation + "\n"
+            + "location : " + ScoreList[i].location + "\n"
+            + "Player1_DeltaReachableItem : " + ScoreList[i].Player1_DeltaReachableItem + "\n"
+            + "Player2_DeltaReachableItem : " + ScoreList[i].Player2_DeltaReachableItem + "\n" + "\n";
+        }
+
+
         
 
         // str += location + "에 push 한 후" + "\n";
