@@ -5,7 +5,7 @@ using UnityEngine;
 using System.IO;
 using Random = UnityEngine.Random;
 
-enum TileType 
+enum TileType  
 {
     STRAIGHT,
     CORNER,
@@ -62,6 +62,7 @@ class Score
     public int rotation;
     public int Player1_DeltaReachableItem;
     public int Player2_DeltaReachableItem;
+    public int Player1_opt;
 }
 
 struct Player
@@ -75,7 +76,6 @@ struct Player
 
 public class BinaryInfo : MonoBehaviour
 {
-    // List<NodeTest> DFSList = new List<NodeTest>();
     List<List<NodeTest>> boardList = new List<List<NodeTest>>();
     List<List<NodeTest>> CopiedBoardList = new List<List<NodeTest>>();
     
@@ -111,46 +111,62 @@ public class BinaryInfo : MonoBehaviour
     };
 
     private Tile pTile = new Tile();
-    List<List<Tile>> board = new List<List<Tile>>(0);
-    List<NodeTest> DFSList1 = new List<NodeTest>();
-    List<NodeTest> DFSList2 = new List<NodeTest>();
-    List<KeyValuePair<int, int>> keyValuePairs = new List<KeyValuePair<int, int>>();
+    private List<List<Tile>> board = new List<List<Tile>>(0);
+    private List<NodeTest> DFSList1 = new List<NodeTest>();
+    private List<NodeTest> DFSList2 = new List<NodeTest>();
+
+    List<string> locations = new List<string>
+    {   "L0", "L1","L2",
+        "R0","R1","R2",
+        "T0","T1","T2",
+        "B0","B1","B2"
+    };
+    
+    /*private int rand = Random.Range(0, 3);
+    private int n = 7;
+    private int m = 7;
+    private int rotate;
+    private string location;
+    private int deltaItem = 0;
+
+    private int ReachableItem_1;
+    private int ReachableItem_2;
+    private int NextReachableItem_1;
+    private int NextReachableItem_2;*/
     
     private void Start()
     {
+        // 메모장 출력용 코드
         FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
         StreamWriter testStreamWriter = new StreamWriter(test);
         string str = "";
-
+        
+        int rand = Random.Range(0, 3);
+        int n = 7;
+        int m = 7;
+        int rotate;
+        string location;
+        int deltaItem = 0;
+        int ReachableItem_1;
+        int ReachableItem_2;
+        int NextReachableItem_1;
+        int NextReachableItem_2;
+        
+        
         List<Tile> TileList = new List<Tile> {
             straight,
             corner,
             halfcross
         };
-
-        int r = Random.Range(0, 3);
-        int n = 7;
-        int m = 7;
-        int rotate = 0;
-        string location = "L0";
-        int deltaItem = 0;
         
-
-        int NextReachableItem_1 = 0;
-        int NextReachableItem_2 = 0;
-        List<string> locations = new List<string>{"L0", "L1","L2",
-            "R0","R1","R2",
-            "T0","T1","T2",
-            "B0","B1","B2"
-        };
         
+        
+        // 보드 초기화
         for (int i = 0; i < n; i++)
         {
             List<Tile> row = new List<Tile>();
             for (int j = 0; j < m; j++)
-            {
                 row.Add(new Tile());
-            }
             board.Add(row);
         }
         
@@ -163,41 +179,47 @@ public class BinaryInfo : MonoBehaviour
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
 
+        // 플레이어 위치정보 NodeTest타입으로 저장
         NodeTest player1 = GetPlayer1Pos(boardList);
         NodeTest player2 = GetPlayer2Pos(boardList);
         
         // 밀어넣을 타일 랜덤으로 정하기
         str += "\n";
         str += "밀어넣을 타일" + "\n";
-        pTile = TileList[r];
+        pTile = TileList[rand];
         RotateTileRand(ref pTile);
         PrintTileInfo(pTile, ref str);
         str += "\n" ;
         
-        DFSListAdd(DFSList1,boardList, player1);
+        // 첫번째 판에서 dfs 출력
+        DFSListAdd(DFSList1, boardList, player1);
         DFSListAdd(DFSList2, boardList, player2);
-        int ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
+        
+        // 도달 가능 아이템 수 변화를 계산하기 위해 다른 변수에 저장
+        ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
         str += "player1 reachable item : " + ReachableItem_1 + "\n";
-        int ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
+        ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
         
         // 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
         {
             Tile copyTile = new Tile(pTile);
-            for (int j = 0; j < i; j++)
-            {
-                RotateTileCW(ref copyTile);
-            }
             
-            // 12가지 다음 경우의 수 출력
+            // 회전 4가지. i에 의해 회전 가지수 결정
+            for (int j = 0; j < i; j++)
+                RotateTileCW(ref copyTile);
+
+            // 각 회전에 따른 12가지 위치에 따른 다음 경우의 수 출력
             for (int j = 0; j < locations.Count; j++)
             {
+                // 변화량 변수
                 int deltaReachableItem_1 = 0;
                 int deltaReachableItem_2 = 0;
                 List<List<Tile>> copiedBoard = new List<List<Tile>>(0);
                 Score score = new Score();
-                // board 복제
+                
+                // 원본 board를 copiedBoard에 복제
                 foreach (List<Tile> row in board)
                 {
                     List<Tile> copiedRow = new List<Tile>(row);
@@ -205,58 +227,78 @@ public class BinaryInfo : MonoBehaviour
                 }
                 str += i + "번 회전, " + locations[j] + "에 push했을 때 경우" + "\n";
                 PrintNextBoard(copyTile,copiedBoard,locations[j], ref str);
+                
+                // CopiedBoardList 가지고 DFS 계산
                 DFSListAdd(DFSList1,CopiedBoardList, player1);
-                DFSListAdd(DFSList2, CopiedBoardList, player2);        // CopiedBoardList 가지고 해야 함.
-                // PrintNextBoard 할때, CopiedBoardList에 저장하고 DFSListAdd를 해야 함.
+                DFSListAdd(DFSList2, CopiedBoardList, player2);        
+                
+                // △player1 reachable item = next - past
                 NextReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
                 deltaReachableItem_1 = NextReachableItem_1 - ReachableItem_1;
                 str += "player1 reachable item : " + NextReachableItem_1 + "\n";
+                
+                // △player2 reachable item = next - past
                 NextReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-                deltaReachableItem_2 = ReachableItem_2 - NextReachableItem_2;
+                deltaReachableItem_2 = NextReachableItem_2 - ReachableItem_2;
                 str += "player2 reachable item : " + NextReachableItem_2 + "\n";
+                
+                // score클래스에 각 경우의 위치, 회전, 아이템 변화량 정보 저장후 리스트에 저장
                 score.rotation = i;
                 score.location = locations[j];
                 score.Player1_DeltaReachableItem = deltaReachableItem_1;
                 score.Player2_DeltaReachableItem = deltaReachableItem_2;
+                score.Player1_opt = deltaReachableItem_1 - deltaReachableItem_2;
                 ScoreList.Add(score);
-                keyValuePairs.Add(new KeyValuePair<int, int>(deltaReachableItem_1,deltaReachableItem_2));
+                
                 str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
                 str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
             }
         }
 
-        for (int i = 0; i < keyValuePairs.Count; i++)
-        {
-            KeyValuePair<int, int> pair = keyValuePairs[i];
-            str += i + " 번째 Key, Value : " + pair.Key + ", " + -pair.Value + "\n";
-        }
-
+        // 각 경우의 수 정보 출력
         for (int i = 0; i < ScoreList.Count; i++)
         {
-            str += "rotation : " + ScoreList[i].rotation + "\n"
+            /*str += "rotation : " + ScoreList[i].rotation + "\n"
             + "location : " + ScoreList[i].location + "\n"
             + "Player1_DeltaReachableItem : " + ScoreList[i].Player1_DeltaReachableItem + "\n"
-            + "Player2_DeltaReachableItem : " + ScoreList[i].Player2_DeltaReachableItem + "\n" + "\n";
+            + "Player2_DeltaReachableItem : " + ScoreList[i].Player2_DeltaReachableItem + "\n" + "\n";*/
+            str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
+                   ScoreList[i].Player1_DeltaReachableItem + 
+                   ScoreList[i].Player2_DeltaReachableItem + "\t" +
+                   ScoreList[i].Player1_opt + "\n";
         }
 
-
+        // 최선의 선택을 위해 Player1_opt 내림차순 정렬
+        ScoreList.Sort((s1, s2) => s2.Player1_opt.CompareTo(s1.Player1_opt));
+        str += "\n" + "정렬 후 " + "\n";
         
-
-        // str += location + "에 push 한 후" + "\n";
-        // PushTile(ref pTile,board,location);
-        // // 출력
-        // boardList = PrintBoard(board, ref str);
-        // printList2(boardList, ref str);
-        // 
-        // 
-        // str += "\n";
-        // str += "밀어넣을 타일" + "\n";
-        // PrintTileInfo(pTile, ref str);
-        // str += "\n";
+        // 정렬 후 각 경우의 수 정보 출력
+        for (int i = 0; i < ScoreList.Count; i++)
+        {
+            str += ScoreList[i].rotation + ScoreList[i].location + "\t" + 
+                   ScoreList[i].Player1_DeltaReachableItem + 
+                   ScoreList[i].Player2_DeltaReachableItem + "\t" +
+                   ScoreList[i].Player1_opt + "\n";
+        }
         
-       
+        // 제일 점수가 높은 첫번째 Score의 정보로 Tile push
+        rotate = ScoreList[0].rotation;
+        location = ScoreList[0].location;
+        for (int i = 0; i < rotate; i++)
+            RotateTileCW(ref pTile);
+        str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
+        PushTile(ref pTile, board, location);
+        // locations - location
+        // 밀고 난 후 보드 출력
+        boardList = PrintBoard(board, ref str);
+        printList2(boardList, ref str);
         
-        // DFSListAdd(boardList,player2);
+        str += "\n";
+        str += "밀어넣을 타일" + "\n";
+        PrintTileInfo(pTile, ref str);
+        str += "\n";
+        
+        // DFSListAdd(boardList,player1);
         // checkReachableItem(ref str);
         
         testStreamWriter.Write(str);
@@ -264,6 +306,12 @@ public class BinaryInfo : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 보드 생성 함수
+    /// </summary>
+    /// <param name="list">타일 3가지 종류</param>
+    /// <param name="board">원본 보드</param>
+    /// <param name="str">출력용 매개변수</param>
     void GenerateBoard(List<Tile> list, ref List<List<Tile>> board, ref string str)
     {
         // 7*7 자동생성
@@ -276,7 +324,45 @@ public class BinaryInfo : MonoBehaviour
                 board[i][j] = tile;
             }
         }
+
+        // 정사각형 보드라 가정하고 모서리 좌표를 board.Count로 통일
+        for (int i = 0; i < 4; i++)
+        {
+            if (i == 0)
+            {
+                Tile CornerTile = new Tile(corner);
+                board[board.Count-1][0] = CornerTile;
+            }
+            else if (i == 1)
+            {
+                Tile CornerTile = new Tile(corner);
+                for (int j = 0; j < i; j++)
+                {
+                    RotateTileCW(ref CornerTile);
+                }
+                board[0][board.Count-1] = CornerTile;
+            }
+            else if (i == 2)
+            {
+                Tile CornerTile = new Tile(corner);
+                for (int j = 0; j < i; j++)
+                {
+                    RotateTileCW(ref CornerTile);
+                }
+                board[board.Count-1][board.Count-1] = CornerTile;
+            }
+            else if (i == 3)
+            {
+                Tile CornerTile = new Tile(corner);
+                for (int j = 0; j < i; j++)
+                {
+                    RotateTileCW(ref CornerTile);
+                }
+                board[board.Count-1][0] = CornerTile;
+            }
+        }
     }
+    
     void RotateTileCW(ref Tile tile)
     {
         List<List<int>> r = new List<List<int>>();
@@ -447,6 +533,7 @@ public class BinaryInfo : MonoBehaviour
                 }
                 board[num][0] = tile;
                 tile = temp;
+                // locations[3 + num].Remove();
                 break;
             case 'R':
                 temp = board[num][0];
