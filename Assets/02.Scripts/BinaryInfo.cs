@@ -60,9 +60,12 @@ class Score
 {
     public string location;
     public int rotation;
-    public int Player1_DeltaReachableItem;
-    public int Player2_DeltaReachableItem;
-    public int Player1_opt;
+    public int Player1ReachableItem;
+    public int Player2ReachableItem;
+    public int precent;
+    // public int Player1_DeltaReachableItem;
+    // public int Player2_DeltaReachableItem;
+    // public int Player1_opt;
 }
 
 struct Player
@@ -122,7 +125,7 @@ public class BinaryInfo : MonoBehaviour
         "B0","B1","B2"
     };
     
-    /*private int rand = Random.Range(0, 3);
+    
     private int n = 7;
     private int m = 7;
     private int rotate;
@@ -132,7 +135,8 @@ public class BinaryInfo : MonoBehaviour
     private int ReachableItem_1;
     private int ReachableItem_2;
     private int NextReachableItem_1;
-    private int NextReachableItem_2;*/
+    private int NextReachableItem_2;
+    private int count = 0;
     
     private void Start()
     {
@@ -141,26 +145,15 @@ public class BinaryInfo : MonoBehaviour
         StreamWriter testStreamWriter = new StreamWriter(test);
         string str = "";
         
-        int rand = Random.Range(0, 3);
-        int n = 7;
-        int m = 7;
-        int rotate;
-        string location;
-        int deltaItem = 0;
-        int ReachableItem_1;
-        int ReachableItem_2;
-        int NextReachableItem_1;
-        int NextReachableItem_2;
         
+        int rand = Random.Range(0, 3);
         
         List<Tile> TileList = new List<Tile> {
             straight,
             corner,
             halfcross
         };
-        
-        
-        
+
         // 보드 초기화
         for (int i = 0; i < n; i++)
         {
@@ -201,6 +194,8 @@ public class BinaryInfo : MonoBehaviour
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
         
+        int sum = 0;
+
         // 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
         {
@@ -234,60 +229,101 @@ public class BinaryInfo : MonoBehaviour
                 
                 // △player1 reachable item = next - past
                 NextReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
-                deltaReachableItem_1 = NextReachableItem_1 - ReachableItem_1;
+                // deltaReachableItem_1 = NextReachableItem_1 - ReachableItem_1;
                 str += "player1 reachable item : " + NextReachableItem_1 + "\n";
                 
                 // △player2 reachable item = next - past
                 NextReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-                deltaReachableItem_2 = NextReachableItem_2 - ReachableItem_2;
+                // deltaReachableItem_2 = NextReachableItem_2 - ReachableItem_2;
                 str += "player2 reachable item : " + NextReachableItem_2 + "\n";
                 
                 // score클래스에 각 경우의 위치, 회전, 아이템 변화량 정보 저장후 리스트에 저장
                 score.rotation = i;
                 score.location = locations[j];
-                score.Player1_DeltaReachableItem = deltaReachableItem_1;
-                score.Player2_DeltaReachableItem = deltaReachableItem_2;
-                score.Player1_opt = deltaReachableItem_1 - deltaReachableItem_2;
+                score.Player1ReachableItem = NextReachableItem_1;
+                score.Player2ReachableItem = NextReachableItem_2;
+                // score.Player1_DeltaReachableItem = deltaReachableItem_1;
+                // score.Player2_DeltaReachableItem = deltaReachableItem_2;
+                // score.Player1_opt = deltaReachableItem_1 - deltaReachableItem_2;
                 ScoreList.Add(score);
-                
-                str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
-                str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
+                sum += NextReachableItem_1;
+                // str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
+                // str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
             }
         }
 
-        // 각 경우의 수 정보 출력
+        /*// 각 경우의 수 정보 출력
         for (int i = 0; i < ScoreList.Count; i++)
         {
-            /*str += "rotation : " + ScoreList[i].rotation + "\n"
-            + "location : " + ScoreList[i].location + "\n"
-            + "Player1_DeltaReachableItem : " + ScoreList[i].Player1_DeltaReachableItem + "\n"
-            + "Player2_DeltaReachableItem : " + ScoreList[i].Player2_DeltaReachableItem + "\n" + "\n";*/
             str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
-                   ScoreList[i].Player1_DeltaReachableItem + 
-                   ScoreList[i].Player2_DeltaReachableItem + "\t" +
-                   ScoreList[i].Player1_opt + "\n";
+                   ScoreList[i].Player1ReachableItem + "\n";
         }
 
         // 최선의 선택을 위해 Player1_opt 내림차순 정렬
-        ScoreList.Sort((s1, s2) => s2.Player1_opt.CompareTo(s1.Player1_opt));
+        ScoreList.Sort((s1, s2) => s2.Player1ReachableItem.CompareTo(s1.Player1ReachableItem));
         str += "\n" + "정렬 후 " + "\n";
         
         // 정렬 후 각 경우의 수 정보 출력
         for (int i = 0; i < ScoreList.Count; i++)
         {
-            str += ScoreList[i].rotation + ScoreList[i].location + "\t" + 
-                   ScoreList[i].Player1_DeltaReachableItem + 
-                   ScoreList[i].Player2_DeltaReachableItem + "\t" +
-                   ScoreList[i].Player1_opt + "\n";
+            str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
+                   ScoreList[i].Player1ReachableItem + "\n";
+        }*/
+
+        int p = 0;
+        List<Score> arr = new List<Score>();
+        for(int i=0; i<100; i++){
+            Score score = new Score();
+            score.Player1ReachableItem = -1;
+            arr.Add(score);
+        }
+
+        count = 0;
+        if (sum != 0)
+        {
+            while (true)
+            {
+                p = Random.Range(0, 100);
+                // 빈칸인가?
+                if (arr[p].Player1ReachableItem == -1)
+                {
+                    arr[p].rotation = ScoreList[count].rotation; // 빈칸이면 채워넣기
+                    arr[p].location = ScoreList[count].location; // 빈칸이면 채워넣기
+                    arr[p].Player1ReachableItem = ScoreList[count].Player1ReachableItem; // 빈칸이면 채워넣기
+                    arr[p].Player2ReachableItem = ScoreList[count].Player2ReachableItem; // 빈칸이면 채워넣기
+                    arr[p].precent = (ScoreList[count].Player1ReachableItem / sum) * 100;  //  확률
+                    count++;
+                }
+                if (count == (ScoreList[count].Player1ReachableItem / sum * 100)) break;
+            }
+        }
+        str += arr.Count + "100개 배열 " + "\n";
+        for (int i = 0; i < arr.Count; i++)
+        {
+            str += arr[i].rotation + arr[i].location + " 확률 : \t" +
+                   arr[i].precent + "\n";
         }
         
-        // 제일 점수가 높은 첫번째 Score의 정보로 Tile push
+        p = Random.Range(0, 100);
+        if(arr[p].Player1ReachableItem != -1)
+        {
+            // 제일 점수가 높은 첫번째 Score의 정보로 Tile push
+            rotate = arr[p].rotation;
+            location = arr[p].location;
+            for (int i = 0; i < rotate; i++)
+                RotateTileCW(ref pTile);
+            str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
+            PushTile(ref pTile, board, location);
+        }
+        
+        
+        /*// 제일 점수가 높은 첫번째 Score의 정보로 Tile push
         rotate = ScoreList[0].rotation;
         location = ScoreList[0].location;
         for (int i = 0; i < rotate; i++)
             RotateTileCW(ref pTile);
         str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
-        PushTile(ref pTile, board, location);
+        PushTile(ref pTile, board, location);*/
         // locations - location
         // 밀고 난 후 보드 출력
         boardList = PrintBoard(board, ref str);
@@ -297,10 +333,15 @@ public class BinaryInfo : MonoBehaviour
         str += "밀어넣을 타일" + "\n";
         PrintTileInfo(pTile, ref str);
         str += "\n";
+
+        str += "Player1 "; DFSListAdd(DFSList1,boardList, player1);
+        ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
+        str += "player1 reachable item : " + ReachableItem_1 + "\n";
         
-        // DFSListAdd(boardList,player1);
-        // checkReachableItem(ref str);
-        
+        str += "Player2 "; DFSListAdd(DFSList2,boardList, player2);
+        ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
+        str += "player2 reachable item : " + ReachableItem_2 + "\n";
+
         testStreamWriter.Write(str);
         testStreamWriter.Close();
     }
@@ -331,7 +372,7 @@ public class BinaryInfo : MonoBehaviour
             if (i == 0)
             {
                 Tile CornerTile = new Tile(corner);
-                board[board.Count-1][0] = CornerTile;
+                board[0][0] = CornerTile;
             }
             else if (i == 1)
             {
@@ -710,13 +751,4 @@ public class BinaryInfo : MonoBehaviour
         DFSList.Clear();
         return count;
     }
-    
-    void inputSize(int n, int m)
-    {
-        Console.Write("Enter the number of rows: ");
-        n = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter the number of columns: ");
-        m = Convert.ToInt32(Console.ReadLine());
-    }
-
 }
