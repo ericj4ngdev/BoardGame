@@ -270,7 +270,6 @@ public class BinaryInfo : MonoBehaviour
                    ScoreList[i].Player1ReachableItem + "\n";
         }*/
 
-        int p = 0;
         List<Score> arr = new List<Score>();
         for(int i=0; i<100; i++){
             Score score = new Score();
@@ -278,17 +277,20 @@ public class BinaryInfo : MonoBehaviour
             arr.Add(score);
         }
 
+        int p = 0;
         if (sum != 0)
         {
             int idx = 0;
             int count = 0;
-            while (true)
+            while (IsFull(ref arr))
             {
+                if (idx >= ScoreList.Count) break;          // 커지다가 48보다 크면 나가기
                 // 도달가능 아이템이 0이면 배열에 담지않고 넘어감
+
                 if (ScoreList[idx].Player1ReachableItem == 0)
                 {
                     idx++; 
-                    if (idx >= ScoreList.Count) break;  // 커지다가 48보다 크면 나가기
+                    // if (idx >= ScoreList.Count) break;  // 커지다가 48보다 크면 나가기
                     continue;   // 아니면 계속 진행
                 }    
                 p = Random.Range(0, 100);
@@ -306,11 +308,22 @@ public class BinaryInfo : MonoBehaviour
                 }
                 
                 // 0부터 시작해서 count에 -1 해줘야 한다.
-                if (count == Math.Round(k)-1)
+                if (count > (int)Math.Round(k))
                 {
                     idx++;
                     count = 0;
                 }
+                
+            }
+            // 랜덤 뽑기
+            p = Random.Range(0, 100);
+            if(arr[p].Player1ReachableItem != -1)       // 빈칸이 아니라면
+            {
+                // 제일 점수가 높은 첫번째 Score의 정보로 Tile push
+                rotate = arr[p].rotation;
+                location = arr[p].location;
+                for (int i = 0; i < rotate; i++)
+                    RotateTileCW(ref pTile);
             }
         }
         else      // 만약 모든 아이템 수가 0 이면 랜덤 뽑기
@@ -332,19 +345,12 @@ public class BinaryInfo : MonoBehaviour
         }
         str += "====================================================== \n";
         
-        /*// 랜덤 뽑기 (sum = 0 이면 안해도 됨.)
-        p = Random.Range(0, 100);
-        if(arr[p].Player1ReachableItem != -1 && sum != 0)
+        for (int i = 0; i < arr.Count; i++)
         {
-            // 제일 점수가 높은 첫번째 Score의 정보로 Tile push
-            rotate = arr[p].rotation;
-            location = arr[p].location;
-            for (int i = 0; i < rotate; i++)
-                RotateTileCW(ref pTile);
+            str += arr[i].rotation + arr[i].location + "\n";
         }
-
         // 밀고 난 후 보드 출력
-        str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
+        /*str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
         PushTile(ref pTile, board, location);
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
@@ -364,6 +370,18 @@ public class BinaryInfo : MonoBehaviour
 
         testStreamWriter.Write(str);
         testStreamWriter.Close();
+    }
+
+    bool IsFull(ref List<Score> arr)
+    {
+        foreach (var score in arr)
+        {
+            if (score.Player1ReachableItem == -1)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
