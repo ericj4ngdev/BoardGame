@@ -62,10 +62,8 @@ class Score
     public int rotation;
     public int Player1ReachableItem;
     public int Player2ReachableItem;
-    public float percent = 0;
-    // public int Player1_DeltaReachableItem;
-    // public int Player2_DeltaReachableItem;
-    // public int Player1_opt;
+    public float Percent_1 = 0;
+    public float Percent_2 = 0;
 }
 
 struct Player
@@ -81,10 +79,8 @@ public class BinaryInfo : MonoBehaviour
 {
     List<List<NodeTest>> boardList = new List<List<NodeTest>>();
     List<List<NodeTest>> CopiedBoardList = new List<List<NodeTest>>();
-    
     private List<Score> ScoreList = new List<Score>();
-    
-    
+
     Tile straight = new Tile {
         Shape = new List<List<int>> {
             new List<int> {0, 0, 0},
@@ -119,7 +115,7 @@ public class BinaryInfo : MonoBehaviour
     private List<NodeTest> DFSList2 = new List<NodeTest>();
 
     List<string> locations = new List<string>
-    {   "L0", "L1","L2",
+    {   "L0","L1","L2",
         "R0","R1","R2",
         "T0","T1","T2",
         "B0","B1","B2"
@@ -194,7 +190,8 @@ public class BinaryInfo : MonoBehaviour
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
         
-        int sum = 0;
+        int sum_1 = 0;
+        int sum_2 = 0;
 
         // 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
@@ -245,8 +242,9 @@ public class BinaryInfo : MonoBehaviour
                 // score.Player1_DeltaReachableItem = deltaReachableItem_1;
                 // score.Player2_DeltaReachableItem = deltaReachableItem_2;
                 // score.Player1_opt = deltaReachableItem_1 - deltaReachableItem_2;
+                sum_1 += NextReachableItem_1;
+                sum_2 += NextReachableItem_2;
                 ScoreList.Add(score);
-                sum += NextReachableItem_1;
                 // str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
                 // str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
             }
@@ -269,88 +267,123 @@ public class BinaryInfo : MonoBehaviour
             str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
                    ScoreList[i].Player1ReachableItem + "\n";
         }*/
-
-        List<Score> arr = new List<Score>();
-        for(int i=0; i<100; i++){
-            Score score = new Score();
-            score.Player1ReachableItem = -1;
-            arr.Add(score);
-        }
-
+        str += sum_1 + " " + sum_2 + "\n";
+        List<Score> arr_1 = new List<Score>();
+        List<Score> arr_2 = new List<Score>();
+        Score p1 = new Score();
+        Score p2 = new Score();
         int p = 0;
-        if (sum != 0)
-        {
-            int idx = 0;
-            int count = 0;
-            while (IsFull(ref arr))
-            {
-                if (idx >= ScoreList.Count) break;          // 커지다가 48보다 크면 나가기
-                // 도달가능 아이템이 0이면 배열에 담지않고 넘어감
 
-                if (ScoreList[idx].Player1ReachableItem == 0)
-                {
-                    idx++; 
-                    // if (idx >= ScoreList.Count) break;  // 커지다가 48보다 크면 나가기
-                    continue;   // 아니면 계속 진행
-                }    
-                p = Random.Range(0, 100);
-                float k = (float)ScoreList[idx].Player1ReachableItem / sum * 100;
-                
-                // 담기시작! 빈칸인가?
-                if (arr[p].Player1ReachableItem == -1)
-                {
-                    arr[p].rotation = ScoreList[idx].rotation; // 빈칸이면 채워넣기
-                    arr[p].location = ScoreList[idx].location; // 빈칸이면 채워넣기
-                    arr[p].Player1ReachableItem = ScoreList[idx].Player1ReachableItem; // 빈칸이면 채워넣기
-                    arr[p].Player2ReachableItem = ScoreList[idx].Player2ReachableItem; // 빈칸이면 채워넣기
-                    ScoreList[idx].percent = (float)Math.Round(k,2);  // 확률
-                    count++;        // 개수 증가
-                }
-                
-                // 0부터 시작해서 count에 -1 해줘야 한다.
-                if (count > (int)Math.Round(k))
-                {
-                    idx++;
-                    count = 0;
-                }
-                
-            }
-            // 랜덤 뽑기
-            p = Random.Range(0, 100);
-            if(arr[p].Player1ReachableItem != -1)       // 빈칸이 아니라면
+        if (sum_1 != 0)
+        {
+            for (int i = 0; i < ScoreList.Count; i++)
             {
-                // 제일 점수가 높은 첫번째 Score의 정보로 Tile push
-                rotate = arr[p].rotation;
-                location = arr[p].location;
-                for (int i = 0; i < rotate; i++)
-                    RotateTileCW(ref pTile);
+                if (ScoreList[i].Player1ReachableItem > 0)
+                {
+                    for (int j = 0; j < ScoreList[i].Player1ReachableItem; j++)
+                    {
+                        Score score = new Score();
+                        score.location = ScoreList[i].location;
+                        score.rotation = ScoreList[i].rotation;
+                        score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
+                        score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
+                        arr_1.Add(score);
+                    }
+                    float per = (float)ScoreList[i].Player1ReachableItem / sum_1 * 100;
+                    ScoreList[i].Percent_1 = (float)Math.Round(per,2);
+                }
             }
+            p = Random.Range(0, arr_1.Count);
+            p1.location = arr_1[p].location;
+            p1.rotation = arr_1[p].rotation;
+            p1.Player1ReachableItem = arr_1[p].Player1ReachableItem;
+            p1.Player2ReachableItem = arr_1[p].Player2ReachableItem;
         }
-        else      // 만약 모든 아이템 수가 0 이면 랜덤 뽑기
+        else
         {
             p = Random.Range(0, 48);
-            rotate = ScoreList[p].rotation;
-            location = ScoreList[p].location;
-            for (int i = 0; i < rotate; i++)
-                RotateTileCW(ref pTile);
+            p1.location = ScoreList[p].location;
+            p1.rotation = ScoreList[p].rotation;
+            p1.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
+            p1.Player2ReachableItem = ScoreList[p].Player2ReachableItem;
         }
 
-        // 확률 출력(확률이 0이면 미출력)
-        str += "========================확률 표======================== \n";
+        if (sum_2 != 0)
+        {
+            for (int i = 0; i < ScoreList.Count; i++)
+            {
+                if (ScoreList[i].Player2ReachableItem > 0)
+                {
+                    for (int j = 0; j < ScoreList[i].Player2ReachableItem; j++)
+                    {
+                        Score score = new Score();
+                        score.location = ScoreList[i].location;
+                        score.rotation = ScoreList[i].rotation;
+                        score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
+                        score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
+                        arr_2.Add(score);
+                    }
+                    float per = (float)ScoreList[i].Player2ReachableItem / sum_2 * 100;
+                    ScoreList[i].Percent_2 = (float)Math.Round(per, 2);
+                }
+            }
+            p = Random.Range(0, arr_2.Count);
+            p2.location = arr_2[p].location;
+            p2.rotation = arr_2[p].rotation;
+            p2.Player1ReachableItem = arr_2[p].Player1ReachableItem;
+            p2.Player2ReachableItem = arr_2[p].Player2ReachableItem;
+        }
+        else
+        {
+            p = Random.Range(0, 48);
+            p2.location = ScoreList[p].location;
+            p2.rotation = ScoreList[p].rotation;
+            p2.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
+            p2.Player2ReachableItem = ScoreList[p].Player2ReachableItem;
+        }
+        
+        // 확률 출력
+        str += "======================== 확률 표======================= \n";
         for (int i = 0; i < ScoreList.Count; i++)
         {
-            if(ScoreList[i].percent == 0) continue; 
-            str += ScoreList[i].rotation + ScoreList[i].location + " 확률 : " +
-                   ScoreList[i].percent + "%\n";
+            str += $"{ScoreList[i].rotation}{ScoreList[i].location} 확률 : " +
+                   $"{ScoreList[i].Percent_1,5:0.00} %\t\t{ScoreList[i].Percent_2,5:0.00} %\n";
+        }
+        str += "====================== p1 선택지 ====================== \n";
+        for (int i = 0; i < arr_1.Count; i++)
+        {
+            str += arr_1[i].rotation + arr_1[i].location + "\n";
+        }
+        str += "====================== p2 선택지 ====================== \n";
+        for (int i = 0; i < arr_2.Count; i++)
+        {
+            str += arr_2[i].rotation + arr_2[i].location + "\n";
         }
         str += "====================================================== \n";
+        str += "p1 선택 : " + p1.rotation + p1.location + "\n";;
+        str += "p2 선택 : " + p2.rotation + p2.location + "\n";;
         
-        for (int i = 0; i < arr.Count; i++)
+        str += "====================== 최종 선택 ====================== \n";
+        // 랜덤 뽑기
+        // Score AIChoice = new Score();
+        p = Random.Range(0, 10);
+        int ratio = 0;      // 90%
+        if (p > ratio)
         {
-            str += arr[i].rotation + arr[i].location + "\n";
+            location = p1.location;
+            rotate = p1.rotation;
         }
+        else
+        {
+            location = p2.location;
+            rotate = p2.rotation;
+        }
+        str += rotate + location + "\n";;
+        for (int i = 0; i < rotate; i++)
+            RotateTileCW(ref pTile);
+        
         // 밀고 난 후 보드 출력
-        /*str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
+        str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
         PushTile(ref pTile, board, location);
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
@@ -366,24 +399,11 @@ public class BinaryInfo : MonoBehaviour
         
         str += "Player2 "; DFSListAdd(DFSList2,boardList, player2);
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-        str += "player2 reachable item : " + ReachableItem_2 + "\n";*/
+        str += "player2 reachable item : " + ReachableItem_2 + "\n";
 
         testStreamWriter.Write(str);
         testStreamWriter.Close();
     }
-
-    bool IsFull(ref List<Score> arr)
-    {
-        foreach (var score in arr)
-        {
-            if (score.Player1ReachableItem == -1)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /// <summary>
     /// 보드 생성 함수
