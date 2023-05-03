@@ -62,6 +62,7 @@ class Score
     public int rotation;
     public int Player1ReachableItem;
     public int Player2ReachableItem;
+    public int Player2_DeltaReachableItem;
     public float Percent_1 = 0;
     public float Percent_2 = 0;
 }
@@ -231,7 +232,7 @@ public class BinaryInfo : MonoBehaviour
                 
                 // △player2 reachable item = next - past
                 NextReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-                // deltaReachableItem_2 = NextReachableItem_2 - ReachableItem_2;
+                deltaReachableItem_2 = NextReachableItem_2 - ReachableItem_2;
                 str += "player2 reachable item : " + NextReachableItem_2 + "\n";
                 
                 // score클래스에 각 경우의 위치, 회전, 아이템 변화량 정보 저장후 리스트에 저장
@@ -240,16 +241,30 @@ public class BinaryInfo : MonoBehaviour
                 score.Player1ReachableItem = NextReachableItem_1;
                 score.Player2ReachableItem = NextReachableItem_2;
                 // score.Player1_DeltaReachableItem = deltaReachableItem_1;
-                // score.Player2_DeltaReachableItem = deltaReachableItem_2;
+                score.Player2_DeltaReachableItem = deltaReachableItem_2;
                 // score.Player1_opt = deltaReachableItem_1 - deltaReachableItem_2;
                 sum_1 += NextReachableItem_1;
-                sum_2 += NextReachableItem_2;
+                // sum_2 += 4 - NextReachableItem_2;
                 ScoreList.Add(score);
                 // str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
                 // str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
             }
         }
+        // max 구하기
+        int maxDelta = 0;
+        foreach (Score item in ScoreList)
+        {
+            if (item.Player2_DeltaReachableItem > maxDelta)
+            {
+                maxDelta = item.Player2_DeltaReachableItem;
+            }
+        }
 
+        foreach (Score item in ScoreList)
+        {
+            if (maxDelta - item.Player2ReachableItem < 0) continue;
+            sum_2 += maxDelta - item.Player2ReachableItem + 1;
+        }
         /*// 각 경우의 수 정보 출력
         for (int i = 0; i < ScoreList.Count; i++)
         {
@@ -267,7 +282,7 @@ public class BinaryInfo : MonoBehaviour
             str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
                    ScoreList[i].Player1ReachableItem + "\n";
         }*/
-        str += sum_1 + " " + sum_2 + "\n";
+        str += sum_1 + " " + sum_2 + " " + maxDelta + "\n";
         List<Score> arr_1 = new List<Score>();
         List<Score> arr_2 = new List<Score>();
         Score p1 = new Score();
@@ -307,14 +322,22 @@ public class BinaryInfo : MonoBehaviour
             p1.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
             p1.Player2ReachableItem = ScoreList[p].Player2ReachableItem;
         }
-
-        if (sum_2 != 0)
+        
+        if(maxDelta == 0)
+        {
+            p = Random.Range(0, 48);
+            p2.location = ScoreList[p].location;
+            p2.rotation = ScoreList[p].rotation;
+            p2.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
+            p2.Player2ReachableItem = ScoreList[p].Player2ReachableItem;
+        }
+        else if (maxDelta != 0 && sum_2 != 0)
         {
             for (int i = 0; i < ScoreList.Count; i++)
             {
-                if (ScoreList[i].Player2ReachableItem > 0)
+                if (maxDelta - ScoreList[i].Player2ReachableItem + 1 >= 0)
                 {
-                    for (int j = 0; j < ScoreList[i].Player2ReachableItem; j++)
+                    for (int j = 0; j < maxDelta - ScoreList[i].Player2ReachableItem + 1; j++) 
                     {
                         Score score = new Score();
                         score.location = ScoreList[i].location;
@@ -323,8 +346,8 @@ public class BinaryInfo : MonoBehaviour
                         score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
                         arr_2.Add(score);
                     }
-                    float per = (float)ScoreList[i].Player2ReachableItem / sum_2 * 100;
-                    ScoreList[i].Percent_2 = (float)Math.Round(per, 2);
+                    float per = (float)(maxDelta - ScoreList[i].Player2ReachableItem + 1) / sum_2 * 100;
+                    ScoreList[i].Percent_2 = (float)Math.Round(per,5);
                 }
             }
             p = Random.Range(0, arr_2.Count);
@@ -333,21 +356,13 @@ public class BinaryInfo : MonoBehaviour
             p2.Player1ReachableItem = arr_2[p].Player1ReachableItem;
             p2.Player2ReachableItem = arr_2[p].Player2ReachableItem;
         }
-        else
-        {
-            p = Random.Range(0, 48);
-            p2.location = ScoreList[p].location;
-            p2.rotation = ScoreList[p].rotation;
-            p2.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
-            p2.Player2ReachableItem = ScoreList[p].Player2ReachableItem;
-        }
         
         // 확률 출력
         str += "======================== 확률 표======================= \n";
         for (int i = 0; i < ScoreList.Count; i++)
         {
             str += $"{ScoreList[i].rotation}{ScoreList[i].location} 확률 : " +
-                   $"{ScoreList[i].Percent_1,5:0.00} %\t\t{ScoreList[i].Percent_2,5:0.00} %\n";
+                   $"{ScoreList[i].Percent_1,5:0.00} %\t\t{ScoreList[i].Percent_2,5:0.00000} %\n";
         }
         str += "====================== p1 선택지 ====================== \n";
         for (int i = 0; i < arr_1.Count; i++)
@@ -366,9 +381,10 @@ public class BinaryInfo : MonoBehaviour
         str += "====================== 최종 선택 ====================== \n";
         // 랜덤 뽑기
         // Score AIChoice = new Score();
-        p = Random.Range(0, 10);
-        int ratio = 0;      // 90%
-        if (p > ratio)
+        p = Random.Range(0, 100);       // (0~99)
+        // 내가 쓴 숫자가 p1의 비율
+        int ratio = 0;      // 0~89 < ratio => 90%
+        if (p < ratio)
         {
             location = p1.location;
             rotate = p1.rotation;
