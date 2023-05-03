@@ -34,21 +34,19 @@ public class BoardInfo : MonoBehaviour
             pushArea_Render[i] = waypoints[i].GetComponent<Renderer>();
         }
     }
-    /*void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         // 기즈모 색상 지정
         Gizmos.color = Color.blue;
         Gizmos.matrix = transform.localToWorldMatrix;
         // 기즈모로 범위 그리기
         for (int i = 0; i < center_x.Length; i++)
-        {
             Gizmos.DrawWireCube(center_x[i]/3, size_x);
-        }
+        
         for (int i = 0; i < center_z.Length; i++)
-        {
             Gizmos.DrawWireCube(center_z[i]/3, size_z);
-        }
-    }*/
+        
+    }
     
     public void PushNode(string info)
     {
@@ -73,7 +71,7 @@ public class BoardInfo : MonoBehaviour
         Collider[][] sortedColliders_z = hitColliders_z;
         
         // 디버깅
-        /*for (int i = 0; i < sortedColliders_x.Length; i++)
+        for (int i = 0; i < sortedColliders_x.Length; i++)
         {
             for (int j = 0; j < sortedColliders_x[i].Length; j++)
             {
@@ -85,8 +83,9 @@ public class BoardInfo : MonoBehaviour
             for (int j = 0; j < sortedColliders_z[i].Length; j++)
             {
                 Debug.Log($"z[{i}][{j}] {sortedColliders_z[i][j].transform.position}");
+                // Debug.Log($"z[{i}][{j}] {sortedColliders_z[i][j].GetComponent<Node>()}");
             }
-        }*/
+        }
 
         // 이동
         switch (location)

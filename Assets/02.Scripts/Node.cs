@@ -40,6 +40,11 @@ public class Node : MonoBehaviour
     void Start()
     {
         collidedObjects = new List<GameObject>();
+        int x = (int)((-1f / 3f) * tr.position.z + 3);
+        int y = (int)((1f / 3f) * tr.position.x + 3);
+        
+        Debug.Log(tr.name);
+        Debug.Log( $"({tr.position.x}, {tr.position.z}) -->" + $" [ {x} ], [ {y} ]");
     }
     private Vector3 GetMouseAsWorldPoint()
     {
@@ -81,8 +86,7 @@ public class Node : MonoBehaviour
         isMouseOver = true;
         StartCoroutine(WaitForMouseExit());
     }
-
-
+    
     private void OnMouseExit()
     {
         isMouseOver = false;
@@ -197,13 +201,13 @@ public class Node : MonoBehaviour
     {
         if(collision.gameObject.tag == "player")
         {
-            Debug.Log(collision.gameObject.name);
+            // Debug.Log(collision.gameObject.name);
             collision.gameObject.transform.SetParent(tr);
         }
 
         if(collision.gameObject.tag == "Item")
         {
-            Debug.Log(collision.gameObject.name);
+            // Debug.Log(collision.gameObject.name);
             collision.gameObject.transform.SetParent(tr);
             collision.gameObject.GetComponent<Rigidbody>().useGravity = false;
             collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;

@@ -6,18 +6,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private float moveSpeed; // 플레이어 이동 속도
-    public float waitTime; // 이동 대기 시간
-    public int moveTime = 1;
-    public bool isMoving = false;
-    
-    
-    public float num;
     private IEnumerator<Node_> nodeEnumerator;
     private Vector3 targetPosition;
     private GameObject groundObj;
-    public GameObject test;
     private Transform tr;
-
+    
+    public float waitTime; // 이동 대기 시간
+    public int moveTime = 1;
+    public bool isMoving = false;
+    public float num;
+    public GameObject test;
     public Vector3 playerPosition = Vector3.zero;
     
     private void Awake()
@@ -36,7 +34,7 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Item")
         {
             test = other.gameObject;
-            Debug.Log(test.name);
+            // Debug.Log(test.name);
         }
     }
 
@@ -60,7 +58,6 @@ public class PlayerController : MonoBehaviour
         {
             Move(Vector3.back, 1);
         }
-    
     }
     
     private void Move(Vector3 direction, float distance)
@@ -85,6 +82,7 @@ public class PlayerController : MonoBehaviour
         }
         return false; // 벽이 아니므로 false 반환
     }
+    
     private IEnumerator MoveTo(Vector3 end)
     {
         float	current  = 0;

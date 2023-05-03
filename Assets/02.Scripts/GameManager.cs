@@ -267,7 +267,7 @@ public class GameManager : MonoBehaviour
                 // 만약 나온 타일에 자식 오브젝트중 player가 있다면 
                 for (int i = 0; i < childCount; i++)
                 {
-                    Debug.Log($"{i}번쨰 점검 : {rotatingObject.transform.GetChild(i).name}");
+                    // Debug.Log($"{i}번쨰 점검 : {rotatingObject.transform.GetChild(i).name}");
                     if (rotatingObject.transform.GetChild(i).CompareTag("player"))
                     {
                         // 여러개 일수 있다. 이미 하나 빼버리면 인덱스 오류나버린다.
@@ -384,6 +384,7 @@ public class GameManager : MonoBehaviour
         }
         for (int i = 0; i < FixedTile.Count; i++)
         {
+            // 여기 오류 있다고 함
             FixedTile[i].GetComponent<Node>().ResetTileColor();
         }
     }

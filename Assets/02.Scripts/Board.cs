@@ -189,10 +189,7 @@ public class Board : MonoBehaviour
         Gizmos.color = Color.yellow;
         if (DFSList.Count != 0)
             for (int i = 0; i < DFSList.Count; i++)
-            {
                 Gizmos.DrawCube(new Vector3(DFSList[i].x, 10f, DFSList[i].z), Vector3.one);
-            }
-        
     }
     public void setDFS(GameObject player)
     {
@@ -255,6 +252,7 @@ public class Board : MonoBehaviour
             OpenListAdd(CurNode.x - 1, CurNode.z);
         }
     }
+    
     public void PathFinding_player(GameObject player)
     {
         GetWallInfo();

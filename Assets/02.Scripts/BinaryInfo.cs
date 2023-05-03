@@ -82,6 +82,8 @@ public class BinaryInfo : MonoBehaviour
     List<List<NodeTest>> CopiedBoardList = new List<List<NodeTest>>();
     private List<Score> ScoreList = new List<Score>();
 
+    private Node node;
+    
     Tile straight = new Tile {
         Shape = new List<List<int>> {
             new List<int> {0, 0, 0},
@@ -122,7 +124,6 @@ public class BinaryInfo : MonoBehaviour
         "B0","B1","B2"
     };
     
-    
     private int n = 7;
     private int m = 7;
     private int rotate;
@@ -141,7 +142,6 @@ public class BinaryInfo : MonoBehaviour
         FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
         StreamWriter testStreamWriter = new StreamWriter(test);
         string str = "";
-        
         
         int rand = Random.Range(0, 3);
         
