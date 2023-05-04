@@ -4,6 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[Serializable]
+public enum TileType
+{
+    STRAIGHT,
+    CORNER,
+    HALFCROSS
+};
 public class Node : MonoBehaviour
 {
     private Renderer rend;
@@ -18,6 +25,7 @@ public class Node : MonoBehaviour
     private Vector3 tileposition;
     public float timeToReachTarget = 0.5f;
     private GameManager gameManager;
+    public TileType tileType;
     
     [Header("Drag and Drop")]
     private Vector3 mOffset;
@@ -43,8 +51,8 @@ public class Node : MonoBehaviour
         int x = (int)((-1f / 3f) * tr.position.z + 3);
         int y = (int)((1f / 3f) * tr.position.x + 3);
         
-        Debug.Log(tr.name);
-        Debug.Log( $"({tr.position.x}, {tr.position.z}) -->" + $" [ {x} ], [ {y} ]");
+        // Debug.Log(tr.name);
+        // Debug.Log( $"({tr.position.x}, {tr.position.z}) -->" + $" [ {x} ], [ {y} ]");
     }
     private Vector3 GetMouseAsWorldPoint()
     {
@@ -205,7 +213,7 @@ public class Node : MonoBehaviour
             collision.gameObject.transform.SetParent(tr);
         }
 
-        if(collision.gameObject.tag == "Item")
+        if(collision.gameObject.tag == "Item_1" || collision.gameObject.tag == "Item_2")
         {
             // Debug.Log(collision.gameObject.name);
             collision.gameObject.transform.SetParent(tr);

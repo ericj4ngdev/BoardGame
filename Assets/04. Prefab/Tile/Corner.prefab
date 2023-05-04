@@ -648,6 +648,8 @@ MonoBehaviour:
   ClickableTileColor: {r: 1, g: 0.97435904, b: 0, a: 1}
   isPushed: 0
   isClicked: 0
+  timeToReachTarget: 0.5
+  tileType: 1
   isSelected: 0
 --- !u!65 &6252953712663506765
 BoxCollider:

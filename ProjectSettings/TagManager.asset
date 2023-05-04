@@ -8,8 +8,9 @@ TagManager:
   - Ground
   - Cube
   - Board
-  - Item
   - player
+  - Item_1
+  - Item_2
   layers:
   - Default
   - TransparentFX

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8161991683457740188}
   m_Layer: 0
   m_Name: Cuboid_Orange
-  m_TagString: Item
+  m_TagString: Item_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

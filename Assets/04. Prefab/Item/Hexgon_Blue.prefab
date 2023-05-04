@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 963246023666300112}
   m_Layer: 0
   m_Name: Hexgon_Blue
-  m_TagString: Item
+  m_TagString: Item_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

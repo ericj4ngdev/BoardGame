@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7923227356899581743}
   m_Layer: 0
   m_Name: octagonal_Diamond_Yellow
-  m_TagString: Item
+  m_TagString: Item_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7330785729232524855}
   m_Layer: 0
   m_Name: Diamondo_Blue
-  m_TagString: Item
+  m_TagString: Item_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         // 플레이어의 것인지 other.name == player1_Items.Contain
-        if (other.tag == "Item")
+        if (other.tag == "Item_1" || other.tag == "Item_2")
         {
             test = other.gameObject;
             // Debug.Log(test.name);

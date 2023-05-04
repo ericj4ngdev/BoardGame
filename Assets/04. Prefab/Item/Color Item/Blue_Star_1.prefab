@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 583309151469991875}
   m_Layer: 0
   m_Name: Blue_Star_1
-  m_TagString: Item
+  m_TagString: Item_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
