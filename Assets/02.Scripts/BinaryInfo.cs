@@ -9,15 +9,27 @@ class BinTile
 {
     public BinTile()
     {
-        this.Shape = new List<List<int>> {
+        Shape = new List<List<int>> {
             new List<int>{ 0, 0, 0 },
             new List<int>{ 0, 0, 0 },
             new List<int>{ 0, 0, 0 }
         };
+        rotation = 0;
+        type = TileType.STRAIGHT;
+        x = 0;
+        y = 0;
+        isvisited = false;
+        isPlayer1 = false;
+        isPlayer2 = false;
+        IsPlayer1Item = false;
+        IsPlayer2Item = false;
     }
     public BinTile(BinTile other)
     {
-        this.Shape = other.Shape;
+        this.Shape = new List<List<int>>();
+        for (int i = 0; i < other.Shape.Count; i++) {
+            this.Shape.Add(new List<int>(other.Shape[i]));
+        }
         this.rotation = other.rotation;
         this.type = other.type;
         this.x = other.x;
@@ -27,10 +39,6 @@ class BinTile
         this.isPlayer2 = other.isPlayer2;
         this.IsPlayer1Item = other.IsPlayer1Item;
         this.IsPlayer2Item = other.IsPlayer2Item;
-    }
-    
-    public BinTile Copy() {
-        return new BinTile(this);
     }
     
     public List<List<int>> Shape;
@@ -166,15 +174,30 @@ public class BinaryInfo : MonoBehaviour
                 {
                     case TileType.HALFCROSS: 
                         Node.type = TileType.HALFCROSS;
-                        Node.Shape = halfcross.Shape;
+                        Node.Shape = new List<List<int>>
+                        {
+                            new List<int> { 0, 1, 0 },
+                            new List<int> { 1, 1, 0 },
+                            new List<int> { 0, 1, 0 }
+                        };
                         break;
                     case TileType.CORNER: 
                         Node.type = TileType.CORNER;
-                        Node.Shape = corner.Shape;
+                        Node.Shape = new List<List<int>>
+                        {
+                            new List<int> { 0, 0, 0 },
+                            new List<int> { 0, 1, 1 },
+                            new List<int> { 0, 1, 0 }
+                        };
                         break;
                     case TileType.STRAIGHT: 
                         Node.type = TileType.STRAIGHT;
-                        Node.Shape = straight.Shape;
+                        Node.Shape = new List<List<int>>
+                        {
+                            new List<int> { 0, 1, 0 },
+                            new List<int> { 0, 1, 0 },
+                            new List<int> { 0, 1, 0 }
+                        };
                         break;
                 }
                 //타일 회전 정보
@@ -187,7 +210,7 @@ public class BinaryInfo : MonoBehaviour
                 Node.y = Mathf.RoundToInt((1f / 3f) * Tile.transform.position.x + 3f);
 
                 // 플레이어 정보. 타일의 자식 오브젝트 탐색
-                for (int j = 0; j < Tile.transform.childCount; j++)
+                for (int j = Tile.transform.childCount - 1; j > 0; j--)
                 {
                     Debug.Log(Tile.transform.GetChild(j).transform.name);
                     // 타일의 자식중 tag가 player이고 이름이 player1이면 isplayer1 = true;
@@ -201,12 +224,12 @@ public class BinaryInfo : MonoBehaviour
                         Node.isPlayer2 = true;
                         Node.Shape[1][1] = 4;
                     }
-                    else if (Tile.transform.GetChild(j).CompareTag("Item_1"))
+                    else if (Tile.transform.GetChild(j).transform.CompareTag("Item_1"))
                     {
                         Node.IsPlayer1Item = true;
                         Node.Shape[1][1] = 3;
                     }
-                    else if (Tile.transform.GetChild(j).CompareTag("Item_2"))
+                    else if (Tile.transform.GetChild(j).transform.CompareTag("Item_2"))
                     {
                         Node.IsPlayer2Item = true;
                         Node.Shape[1][1] = 5;
@@ -228,23 +251,32 @@ public class BinaryInfo : MonoBehaviour
                        "x2 : " + Node.x + "   y2 :  " + Node.y + "\n" + 
                        "isPlayer1 : " + Node.isPlayer1 + "   isPlayer2 :  " + Node.isPlayer2 + "\n"+
                        "IsPlayer1Item : " + Node.IsPlayer1Item + "   IsPlayer2Item :  " + Node.IsPlayer2Item + "\n\n";
-                
-                // if (Tile.transform.position.x > 10) 
             }
             NodeTestInfoList.Add(Node);
+            PrintTileInfo(NodeTestInfoList[i], ref str);
         }
-
-        foreach (var VARIABLE in NodeTestInfoList)
-        {
-            str += VARIABLE.x + " " + VARIABLE.y + " " + 
-                   VARIABLE.rotation + "\n";
-        }
-        List<BinTile> TileList = new List<BinTile> {
+        PrintTileInfo(NodeTestInfoList[0], ref str);
+        /*List<BinTile> TileList = new List<BinTile> {
             straight,
             corner,
             halfcross
-        };
-
+        };*/
+        // 밀어넣을 타일 랜덤으로 정하기
+        str += "\n";
+        str += "밀어넣을 타일" + "\n";
+        pBinTile = NodeTestInfoList[Board.transform.childCount - 1];
+        PrintTileInfo(pBinTile, ref str);
+        str += "\n" ;
+        NodeTestInfoList.RemoveAt(Board.transform.childCount - 1);
+        
+        // NodeTestInfoList에 잘 담겼는지 확인. 이미 여기서 오류
+        for (int i = 0; i < Board.transform.childCount - 1; i++)
+        {
+            PrintTileInfo(NodeTestInfoList[i], ref str);
+            str += "\n";
+        }
+        
+        // =====================================================================================
         // 보드 초기화
         for (int i = 0; i < n; i++)
         {
@@ -253,38 +285,12 @@ public class BinaryInfo : MonoBehaviour
                 row.Add(new BinTile());
             board.Add(row);
         }
-        Debug.Log(Board.transform.childCount - 2);
-        
-        // 밀어넣을 타일 랜덤으로 정하기
-        str += "\n";
-        str += "밀어넣을 타일" + "\n";
-        pBinTile = NodeTestInfoList[Board.transform.childCount - 1];
-        PrintTileInfo(pBinTile, ref str);
-        str += "\n" ;
-        NodeTestInfoList.RemoveAt(Board.transform.childCount - 1);
-        // 7*7 불러오기생성
-        BinTile binTile;
-        for (int i = 0; i < Board.transform.childCount - 2; i++)
+        // 7*7 보드에 저장
+        for (int i = 0; i < Board.transform.childCount - 1; i++)
         {
-            binTile = new BinTile(NodeTestInfoList[i]);
+            BinTile binTile = new BinTile(NodeTestInfoList[i]);
             board[NodeTestInfoList[i].x][NodeTestInfoList[i].y] = binTile;
-            
         }
-
-        
-        // NodeTestInfoList에 잘 담겼는지 확인
-        /*for (int i = 0; i < Board.transform.childCount - 2; i++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                for (int l = 0; l < 3; l++)
-                {
-                    str += NodeTestInfoList[i].Shape[k][l] + " ";
-                }
-                str += "\n";
-            }
-            str += "\n";
-        }*/
         
         // board에 모양이 잘 들어갔는지 확인하는 코드(신기하게도 type은 잘 들어감)
         /*for (int i = 0; i < board.Count; i++)
@@ -303,10 +309,6 @@ public class BinaryInfo : MonoBehaviour
             str += "\n";
         }*/
         
-        
-        
-        // GenerateBoard(TileList,ref board, ref str);
-        
         // SpawnPlayer(board);
         // SpawnItem(board);
         
@@ -314,16 +316,26 @@ public class BinaryInfo : MonoBehaviour
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
 
+        testStreamWriter.Write(str);
+        testStreamWriter.Close();
+    }
+
+    void func()
+    {
+        /*// 메모장 출력용 코드
+        FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
+        StreamWriter testStreamWriter = new StreamWriter(test);
+        string str = "";
         // 플레이어 위치정보 NodeTest타입으로 저장
-        NodeTest player1 = GetPlayer1Pos(boardList);
-        NodeTest player2 = GetPlayer2Pos(boardList);
+        // NodeTest player1 = GetPlayer1Pos(boardList);
+        // NodeTest player2 = GetPlayer2Pos(boardList);
         
         // 첫번째 판에서 dfs 출력
-        DFSListAdd(DFSList1, boardList, player1);
-        DFSListAdd(DFSList2, boardList, player2);
+        // DFSListAdd(DFSList1, boardList, player1);
+        // DFSListAdd(DFSList2, boardList, player2);
         
         // 도달 가능 아이템 수 변화를 계산하기 위해 다른 변수에 저장
-        /*ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
+        ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
         str += "player1 reachable item : " + ReachableItem_1 + "\n";
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
@@ -402,7 +414,7 @@ public class BinaryInfo : MonoBehaviour
             if (maxDelta - item.Player2ReachableItem < 0) continue;
             sum_2 += maxDelta - item.Player2ReachableItem + 1;
         }
-        /#1#/ 각 경우의 수 정보 출력
+        // 각 경우의 수 정보 출력
         for (int i = 0; i < ScoreList.Count; i++)
         {
             str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
@@ -418,7 +430,8 @@ public class BinaryInfo : MonoBehaviour
         {
             str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
                    ScoreList[i].Player1ReachableItem + "\n";
-        }#1#
+        }
+
         str += sum_1 + " " + sum_2 + " " + maxDelta + "\n";
         List<Score> arr_1 = new List<Score>();
         List<Score> arr_2 = new List<Score>();
@@ -553,10 +566,8 @@ public class BinaryInfo : MonoBehaviour
         str += "Player2 "; DFSListAdd(DFSList2,boardList, player2);
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";*/
-
-        testStreamWriter.Write(str);
-        testStreamWriter.Close();
     }
+    
     [Range(0f, 2f)] [SerializeField] private float value02;
     private void Update()
     {
@@ -593,19 +604,7 @@ public class BinaryInfo : MonoBehaviour
     /// <param name="list">타일 3가지 종류</param>
     /// <param name="board">원본 보드</param>
     /// <param name="str">출력용 매개변수</param>
-    void GenerateBoard(List<BinTile> list, ref List<List<BinTile>> board, ref string str)
-    {
-        // 7*7 자동생성
-        for (int i = 0; i < board.Count; i++)
-        {
-            for (int j = 0; j < board[i].Count; ++j)
-            {
-                BinTile binTile = new BinTile(list[Random.Range(0,3)]);
-                RotateTileRand(ref binTile);
-                board[i][j] = binTile;
-            }
-        }
-    }
+    
     List<List<int>> RotateShapeCW(List<List<int>> shape)
     {
         int n = shape.Count;
