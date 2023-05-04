@@ -402,6 +402,7 @@ public class GameManager : MonoBehaviour
                 player.GetComponent<PlayerController>().test.SetActive(false);
                 player1_Items.Remove(player.GetComponent<PlayerController>().test);
             }
+            Destroy(player.GetComponent<PlayerController>().test); 
         }
 
         if (player == player2_Prefab)
@@ -412,6 +413,7 @@ public class GameManager : MonoBehaviour
                 player.GetComponent<PlayerController>().test.SetActive(false);
                 player2_Items.Remove(player.GetComponent<PlayerController>().test);
             }
+            Destroy(player.GetComponent<PlayerController>().test); 
         }
     }
 

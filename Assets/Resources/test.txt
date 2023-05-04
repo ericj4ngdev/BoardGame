@@ -10,11 +10,6 @@ x2 : 0   y2 :  0
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
 1번째 노드 정보 
 <Shape>
 0 0 0 
@@ -27,11 +22,6 @@ x2 : 0   y2 :  2
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 1 1 
-0 1 0 
-tile.rotation : 3
-tile.type : HALFCROSS
 2번째 노드 정보 
 <Shape>
 0 0 0 
@@ -44,28 +34,18 @@ x2 : 0   y2 :  4
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 1 1 
-0 1 0 
-tile.rotation : 3
-tile.type : HALFCROSS
 3번째 노드 정보 
 <Shape>
 0 0 0 
-1 4 0 
+1 1 0 
 0 1 0 
 Type : CORNER
 Rotation 1
 x : 9     z :  9
 x2 : 0   y2 :  6
-isPlayer1 : False   isPlayer2 :  True
+isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 4 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
 4번째 노드 정보 
 <Shape>
 0 1 0 
@@ -78,11 +58,6 @@ x2 : 2   y2 :  0
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
 5번째 노드 정보 
 <Shape>
 0 1 0 
@@ -95,11 +70,6 @@ x2 : 2   y2 :  2
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
 6번째 노드 정보 
 <Shape>
 0 0 0 
@@ -112,11 +82,6 @@ x2 : 2   y2 :  4
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 1 1 
-0 1 0 
-tile.rotation : 3
-tile.type : HALFCROSS
 7번째 노드 정보 
 <Shape>
 0 1 0 
@@ -129,11 +94,6 @@ x2 : 2   y2 :  6
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
 8번째 노드 정보 
 <Shape>
 0 1 0 
@@ -146,11 +106,6 @@ x2 : 4   y2 :  0
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
 9번째 노드 정보 
 <Shape>
 0 1 0 
@@ -163,11 +118,6 @@ x2 : 4   y2 :  2
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
 10번째 노드 정보 
 <Shape>
 0 1 0 
@@ -180,11 +130,6 @@ x2 : 4   y2 :  4
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
 11번째 노드 정보 
 <Shape>
 0 1 0 
@@ -197,28 +142,18 @@ x2 : 4   y2 :  6
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
 12번째 노드 정보 
 <Shape>
 0 1 0 
-0 2 1 
+0 1 1 
 0 0 0 
 Type : CORNER
 Rotation 3
 x : -9     z :  -9
 x2 : 6   y2 :  0
-isPlayer1 : True   isPlayer2 :  False
+isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 2 1 
-0 0 0 
-tile.rotation : 3
-tile.type : CORNER
 13번째 노드 정보 
 <Shape>
 0 1 0 
@@ -231,11 +166,6 @@ x2 : 6   y2 :  2
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
 14번째 노드 정보 
 <Shape>
 0 1 0 
@@ -248,11 +178,6 @@ x2 : 6   y2 :  4
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
 15번째 노드 정보 
 <Shape>
 0 1 0 
@@ -265,283 +190,186 @@ x2 : 6   y2 :  6
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
 16번째 노드 정보 
 <Shape>
 0 1 0 
-0 3 0 
-0 1 0 
-Type : STRAIGHT
-Rotation 2
-x : -6     z :  9
-x2 : 0   y2 :  1
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : True   IsPlayer2Item :  False
-
-0 1 0 
-0 3 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
-17번째 노드 정보 
-<Shape>
-0 0 0 
-0 3 1 
-0 1 0 
-Type : CORNER
-Rotation 0
-x : 0     z :  9
-x2 : 0   y2 :  3
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : True   IsPlayer2Item :  False
-
-0 0 0 
-0 3 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-18번째 노드 정보 
-<Shape>
-0 1 0 
-1 1 1 
-0 0 0 
-Type : HALFCROSS
-Rotation 1
-x : 6     z :  9
-x2 : 0   y2 :  5
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-19번째 노드 정보 
-<Shape>
-0 0 0 
-0 1 1 
-0 1 0 
-Type : CORNER
-Rotation 0
-x : -9     z :  6
-x2 : 1   y2 :  0
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-20번째 노드 정보 
-<Shape>
-0 1 0 
-0 1 0 
-0 1 0 
-Type : STRAIGHT
-Rotation 0
-x : -6     z :  6
-x2 : 1   y2 :  1
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-21번째 노드 정보 
-<Shape>
-0 1 0 
-0 1 0 
+0 5 0 
 0 1 0 
 Type : STRAIGHT
 Rotation 0
 x : -3     z :  6
 x2 : 1   y2 :  2
 isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-22번째 노드 정보 
-<Shape>
-0 1 0 
-1 5 1 
-0 0 0 
-Type : HALFCROSS
-Rotation 1
-x : 0     z :  6
-x2 : 1   y2 :  3
-isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  True
 
-0 1 0 
-1 5 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-23번째 노드 정보 
+17번째 노드 정보 
 <Shape>
 0 0 0 
 0 1 1 
 0 1 0 
 Type : CORNER
 Rotation 0
-x : 3     z :  6
-x2 : 1   y2 :  4
+x : 0     z :  9
+x2 : 0   y2 :  3
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
+18번째 노드 정보 
+<Shape>
 0 0 0 
 0 1 1 
 0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-24번째 노드 정보 
+Type : CORNER
+Rotation 0
+x : 6     z :  9
+x2 : 0   y2 :  5
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+19번째 노드 정보 
 <Shape>
 0 1 0 
 0 1 1 
 0 1 0 
 Type : HALFCROSS
 Rotation 2
-x : 6     z :  6
-x2 : 1   y2 :  5
+x : -6     z :  6
+x2 : 1   y2 :  1
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
+20번째 노드 정보 
+<Shape>
 0 1 0 
 0 1 1 
 0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
-25번째 노드 정보 
-<Shape>
-0 0 0 
-1 1 0 
-0 1 0 
-Type : CORNER
-Rotation 1
-x : 9     z :  6
-x2 : 1   y2 :  6
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 0 0 
-1 1 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
-26번째 노드 정보 
-<Shape>
-0 0 0 
-1 3 0 
-0 1 0 
-Type : CORNER
-Rotation 1
+Type : HALFCROSS
+Rotation 2
 x : -6     z :  3
 x2 : 2   y2 :  1
 isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : True   IsPlayer2Item :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 3 0 
+21번째 노드 정보 
+<Shape>
 0 1 0 
-tile.rotation : 1
-tile.type : CORNER
-27번째 노드 정보 
+1 1 0 
+0 1 0 
+Type : HALFCROSS
+Rotation 0
+x : 0     z :  6
+x2 : 1   y2 :  3
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+22번째 노드 정보 
 <Shape>
 0 1 0 
 0 1 0 
 0 1 0 
 Type : STRAIGHT
 Rotation 2
+x : 3     z :  6
+x2 : 1   y2 :  4
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+23번째 노드 정보 
+<Shape>
+0 1 0 
+0 4 1 
+0 1 0 
+Type : HALFCROSS
+Rotation 2
+x : 6     z :  6
+x2 : 1   y2 :  5
+isPlayer1 : False   isPlayer2 :  True
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+24번째 노드 정보 
+<Shape>
+0 1 0 
+1 1 0 
+0 0 0 
+Type : CORNER
+Rotation 2
+x : 9     z :  6
+x2 : 1   y2 :  6
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+26번째 노드 정보 
+<Shape>
+0 1 0 
+1 5 1 
+0 0 0 
+Type : HALFCROSS
+Rotation 1
+x : -6     z :  0
+x2 : 3   y2 :  1
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  True
+
+27번째 노드 정보 
+<Shape>
+0 0 0 
+1 1 1 
+0 0 0 
+Type : STRAIGHT
+Rotation 1
 x : 0     z :  3
 x2 : 2   y2 :  3
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
 28번째 노드 정보 
 <Shape>
 0 0 0 
-1 5 1 
+1 1 1 
 0 0 0 
 Type : STRAIGHT
 Rotation 1
 x : 6     z :  3
 x2 : 2   y2 :  5
 isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  True
+IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 5 1 
-0 0 0 
-tile.rotation : 1
-tile.type : STRAIGHT
 29번째 노드 정보 
 <Shape>
-0 0 0 
-1 1 1 
-0 0 0 
+0 1 0 
+0 1 0 
+0 1 0 
 Type : STRAIGHT
-Rotation 1
+Rotation 0
 x : -9     z :  0
 x2 : 3   y2 :  0
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : STRAIGHT
 30번째 노드 정보 
 <Shape>
+0 0 0 
+1 1 0 
 0 1 0 
-0 5 1 
-0 1 0 
-Type : HALFCROSS
-Rotation 2
-x : -6     z :  0
-x2 : 3   y2 :  1
+Type : CORNER
+Rotation 1
+x : -6     z :  -3
+x2 : 4   y2 :  1
 isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  True
+IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 5 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
 31번째 노드 정보 
 <Shape>
 0 1 0 
-0 5 0 
+0 3 0 
 0 1 0 
 Type : STRAIGHT
-Rotation 2
+Rotation 0
 x : -3     z :  0
 x2 : 3   y2 :  2
 isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  True
+IsPlayer1Item : True   IsPlayer2Item :  False
 
-0 1 0 
-0 5 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
 32번째 노드 정보 
 <Shape>
 0 1 0 
@@ -554,79 +382,54 @@ x2 : 3   y2 :  3
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
 33번째 노드 정보 
 <Shape>
-0 1 0 
-1 3 1 
 0 0 0 
-Type : HALFCROSS
+1 3 0 
+0 1 0 
+Type : CORNER
 Rotation 1
 x : 3     z :  0
 x2 : 3   y2 :  4
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : True   IsPlayer2Item :  False
 
-0 1 0 
-1 3 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
 34번째 노드 정보 
-<Shape>
-0 1 0 
-0 1 1 
-0 1 0 
-Type : HALFCROSS
-Rotation 2
-x : 6     z :  0
-x2 : 3   y2 :  5
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
-35번째 노드 정보 
 <Shape>
 0 0 0 
 1 1 0 
 0 1 0 
 Type : CORNER
 Rotation 1
+x : 6     z :  0
+x2 : 3   y2 :  5
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+35번째 노드 정보 
+<Shape>
+0 0 0 
+0 1 1 
+0 1 0 
+Type : CORNER
+Rotation 0
 x : 9     z :  0
 x2 : 3   y2 :  6
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 1 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
 36번째 노드 정보 
 <Shape>
 0 1 0 
-1 1 0 
-0 0 0 
-Type : CORNER
+0 1 0 
+0 1 0 
+Type : STRAIGHT
 Rotation 2
-x : -6     z :  -3
-x2 : 4   y2 :  1
+x : -6     z :  -6
+x2 : 5   y2 :  1
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
 37번째 노드 정보 
 <Shape>
 0 0 0 
@@ -639,148 +442,31 @@ x2 : 4   y2 :  3
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-1 1 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
 38번째 노드 정보 
 <Shape>
-0 0 0 
-0 1 1 
 0 1 0 
-Type : CORNER
+0 1 0 
+0 1 0 
+Type : STRAIGHT
 Rotation 0
 x : 6     z :  -3
 x2 : 4   y2 :  5
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
 39번째 노드 정보 
 <Shape>
+0 0 0 
+0 2 1 
 0 1 0 
-0 1 0 
-0 1 0 
-Type : STRAIGHT
+Type : CORNER
 Rotation 0
 x : -9     z :  -6
 x2 : 5   y2 :  0
-isPlayer1 : False   isPlayer2 :  False
+isPlayer1 : True   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
 40번째 노드 정보 
-<Shape>
-0 1 0 
-0 1 0 
-0 1 0 
-Type : STRAIGHT
-Rotation 0
-x : -6     z :  -6
-x2 : 5   y2 :  1
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-41번째 노드 정보 
-<Shape>
-0 1 0 
-0 1 0 
-0 1 0 
-Type : STRAIGHT
-Rotation 2
-x : -3     z :  -6
-x2 : 5   y2 :  2
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
-42번째 노드 정보 
-<Shape>
-0 1 0 
-1 1 0 
-0 0 0 
-Type : CORNER
-Rotation 2
-x : 0     z :  -6
-x2 : 5   y2 :  3
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-43번째 노드 정보 
-<Shape>
-0 0 0 
-1 1 1 
-0 0 0 
-Type : STRAIGHT
-Rotation 1
-x : 3     z :  -6
-x2 : 5   y2 :  4
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : STRAIGHT
-44번째 노드 정보 
-<Shape>
-0 0 0 
-0 1 1 
-0 1 0 
-Type : CORNER
-Rotation 0
-x : 6     z :  -6
-x2 : 5   y2 :  5
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-45번째 노드 정보 
-<Shape>
-0 1 0 
-1 1 0 
-0 0 0 
-Type : CORNER
-Rotation 2
-x : 9     z :  -6
-x2 : 5   y2 :  6
-isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
-
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-46번째 노드 정보 
 <Shape>
 0 1 0 
 1 1 0 
@@ -792,45 +478,102 @@ x2 : 6   y2 :  1
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
+41번째 노드 정보 
+<Shape>
 0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-47번째 노드 정보 
+0 1 0 
+0 1 0 
+Type : STRAIGHT
+Rotation 0
+x : -3     z :  -6
+x2 : 5   y2 :  2
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+42번째 노드 정보 
 <Shape>
 0 0 0 
-0 1 1 
+0 3 1 
 0 1 0 
 Type : CORNER
 Rotation 0
+x : 0     z :  -6
+x2 : 5   y2 :  3
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : True   IsPlayer2Item :  False
+
+43번째 노드 정보 
+<Shape>
+0 1 0 
+1 1 0 
+0 0 0 
+Type : CORNER
+Rotation 2
+x : 3     z :  -6
+x2 : 5   y2 :  4
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+44번째 노드 정보 
+<Shape>
+0 1 0 
+0 5 0 
+0 1 0 
+Type : STRAIGHT
+Rotation 0
+x : 6     z :  -6
+x2 : 5   y2 :  5
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  True
+
+45번째 노드 정보 
+<Shape>
+0 1 0 
+0 1 0 
+0 1 0 
+Type : STRAIGHT
+Rotation 2
+x : 9     z :  -6
+x2 : 5   y2 :  6
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+46번째 노드 정보 
+<Shape>
+0 1 0 
+1 1 0 
+0 0 0 
+Type : CORNER
+Rotation 2
+x : -8.978294     z :  6
+x2 : 1   y2 :  0
+isPlayer1 : False   isPlayer2 :  False
+IsPlayer1Item : False   IsPlayer2Item :  False
+
+47번째 노드 정보 
+<Shape>
+0 0 0 
+1 1 0 
+0 1 0 
+Type : CORNER
+Rotation 1
 x : 0     z :  -9
 x2 : 6   y2 :  3
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
 48번째 노드 정보 
 <Shape>
 0 0 0 
-0 1 1 
+1 5 0 
 0 1 0 
 Type : CORNER
-Rotation 0
+Rotation 1
 x : 6     z :  -9
 x2 : 6   y2 :  5
 isPlayer1 : False   isPlayer2 :  False
-IsPlayer1Item : False   IsPlayer2Item :  False
+IsPlayer1Item : False   IsPlayer2Item :  True
 
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
 49번째 노드 정보 
 <Shape>
 0 1 0 
@@ -838,370 +581,66 @@ tile.type : CORNER
 0 0 0 
 Type : CORNER
 Rotation 2
-x : 20     z :  -6.5
-x2 : 5   y2 :  10
+x : -6     z :  8.980742
+x2 : 0   y2 :  1
 isPlayer1 : False   isPlayer2 :  False
 IsPlayer1Item : False   IsPlayer2Item :  False
 
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
 
 밀어넣을 타일
 0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-0 0 0 
-1 1 1 
-0 1 0 
-tile.rotation : 3
-tile.type : HALFCROSS
-
-0 0 0 
-1 1 1 
-0 1 0 
-tile.rotation : 3
-tile.type : HALFCROSS
-
-0 0 0 
-1 4 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
-
-0 1 0 
 0 1 1 
 0 1 0 
 tile.rotation : 2
 tile.type : HALFCROSS
-
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
-
-0 0 0 
-1 1 1 
-0 1 0 
-tile.rotation : 3
-tile.type : HALFCROSS
-
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
-
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-
-0 1 0 
-1 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : HALFCROSS
-
-0 1 0 
-0 2 1 
-0 0 0 
-tile.rotation : 3
-tile.type : CORNER
-
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-
-0 1 0 
-0 3 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
-
-0 0 0 
-0 3 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-0 1 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-
-0 1 0 
-1 5 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
-
-0 0 0 
-1 1 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
-
-0 0 0 
-1 3 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
-
-0 0 0 
-1 5 1 
-0 0 0 
-tile.rotation : 1
-tile.type : STRAIGHT
-
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : STRAIGHT
-
-0 1 0 
-0 5 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
-
-0 1 0 
-0 5 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
-
-0 1 0 
-1 3 1 
-0 0 0 
-tile.rotation : 1
-tile.type : HALFCROSS
-
-0 1 0 
-0 1 1 
-0 1 0 
-tile.rotation : 2
-tile.type : HALFCROSS
-
-0 0 0 
-1 1 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
-
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-
-0 0 0 
-1 1 0 
-0 1 0 
-tile.rotation : 1
-tile.type : CORNER
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 0
-tile.type : STRAIGHT
-
-0 1 0 
-0 1 0 
-0 1 0 
-tile.rotation : 2
-tile.type : STRAIGHT
-
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-
-0 0 0 
-1 1 1 
-0 0 0 
-tile.rotation : 1
-tile.type : STRAIGHT
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-
-0 1 0 
-1 1 0 
-0 0 0 
-tile.rotation : 2
-tile.type : CORNER
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
-
-0 0 0 
-0 1 1 
-0 1 0 
-tile.rotation : 0
-tile.type : CORNER
 
 board 원본
-0 0 0 	0 1 0 	0 0 0 	0 0 0 	0 0 0 	0 1 0 	0 0 0 	
-0 1 1 	0 3 0 	1 1 1 	0 3 1 	1 1 1 	1 1 1 	1 4 0 	
-0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	
+0 0 0 	0 1 0 	0 0 0 	0 0 0 	0 0 0 	0 0 0 	0 0 0 	
+0 1 1 	1 1 0 	1 1 1 	0 1 1 	1 1 1 	0 1 1 	1 1 0 	
+0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	
 
-0 0 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 0 0 	
-0 1 1 	0 1 0 	0 1 0 	1 5 1 	0 1 1 	0 1 1 	1 1 0 	
-0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 1 0 	
-
-0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 1 0 	
-0 1 1 	1 3 0 	0 1 1 	0 1 0 	1 1 1 	1 5 1 	1 1 0 	
-0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	
-
+0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	
+1 1 0 	0 1 1 	0 5 0 	1 1 0 	0 1 0 	0 4 1 	1 1 0 	
 0 0 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	
-1 1 1 	0 5 1 	0 5 0 	0 1 0 	1 3 1 	0 1 1 	1 1 0 	
-0 0 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	
+
+0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 0 0 	0 1 0 	
+0 1 1 	0 1 1 	0 1 1 	1 1 1 	1 1 1 	1 1 1 	1 1 0 	
+0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 0 0 	0 1 0 	
+
+0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 0 0 	
+0 1 0 	1 5 1 	0 3 0 	0 1 0 	1 3 0 	1 1 0 	0 1 1 	
+0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	
+
+0 1 0 	0 0 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 1 0 	
+0 1 1 	1 1 0 	1 1 1 	1 1 0 	1 1 0 	0 1 0 	1 1 0 	
+0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	
+
+0 0 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	0 1 0 	
+0 2 1 	0 1 0 	0 1 0 	0 3 1 	1 1 0 	0 5 0 	0 1 0 	
+0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 1 0 	
 
 0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 0 0 	0 1 0 	
-0 1 1 	1 1 0 	1 1 1 	1 1 0 	1 1 0 	0 1 1 	1 1 0 	
-0 1 0 	0 0 0 	0 0 0 	0 1 0 	0 1 0 	0 1 0 	0 1 0 	
-
-0 1 0 	0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 1 0 	
-0 1 0 	0 1 0 	0 1 0 	1 1 0 	1 1 1 	0 1 1 	1 1 0 	
-0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 0 0 	0 1 0 	0 0 0 	
-
-0 1 0 	0 1 0 	0 1 0 	0 0 0 	0 1 0 	0 0 0 	0 1 0 	
-0 2 1 	1 1 0 	1 1 1 	0 1 1 	1 1 1 	0 1 1 	1 1 0 	
+0 1 1 	1 1 0 	1 1 1 	1 1 0 	1 1 1 	1 5 0 	1 1 0 	
 0 0 0 	0 0 0 	0 0 0 	0 1 0 	0 0 0 	0 1 0 	0 0 0 	
 
-# # # #   # # # # # # # # # # #   # # # # 
-#     # a #       # a                 B # 
-#   # #   # #   # #   # #   # # # # #   # 
-# # # #   # #   # #   # # # # #   # # # # 
-#     #   # #   #   b   #     #         # 
-#   # #   # #   # # # # #   # #   # #   # 
-#   # # # # #   # #   # # # # # # # #   # 
-#       a # #     #   #         b       # 
-#   # #   # #   # #   # #   # # # # #   # 
+# # # #   # # # # # # # # # # # # # # # # 
+#         #       #           #         # 
+#   # # # # #   # #   # #   # #   # #   # 
+#   # #   # #   # #   # #   # #   # #   # 
+    # #     # b #     # #   # # B       # 
 # # # #   # #   # #   # #   # #   # # # # 
-      # b   # b # #   #   a   #         # 
-# # # #   # #   # #   # # # # #   # #   # 
+#   # #   # #   # # # # # # # # # # #   # 
+#     #     #                           # 
 #   # #   # #   # # # # #   # # # # #   # 
-#         #           #     # #         # 
-#   # # # # # # # #   # #   # #   # #   # 
-#   # #   # #   # #   # # # # # # # #   # 
-#   # #   # #   #     #       #         # 
-#   # #   # #   # # # # # # # #   # # # # 
+#   # #   # #   # #   # # # # # # # # # # 
+#   #   b   # a # #   #   a #     # #     
+#   # # # # #   # #   # #   # #   # #   # 
+#   # # # # #   # # # # #   # #   # #   # 
+#         #           #     # #   #     # 
+#   # #   # # # # #   # #   # #   # #   # 
+# # # #   # #   # # # # #   # #   # #   # 
+# A   #   # #   # # a       # # b # #   # 
+#   # #   # #   # #   # # # # #   # #   # 
 #   # #   # #   # # # # #   # # # # #   # 
-# A       #       #           #         # 
+#         #           #         b #     # 
 # # # # # # # # # #   # # # # #   # # # # 

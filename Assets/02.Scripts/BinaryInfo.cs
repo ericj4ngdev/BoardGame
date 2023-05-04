@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 class BinTile 
@@ -150,17 +151,20 @@ public class BinaryInfo : MonoBehaviour
 
     private void Start()
     {
-        
     }
 
-    void ScanBoard()
+    void ClearText(ref string str)
+    {
+        str = "";
+    }
+
+    void FirstScanBoard()
     {
         // 메모장 출력용 코드
         FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
         StreamWriter testStreamWriter = new StreamWriter(test);
         string str = "";
-        // BinTile Node = new BinTile();
-        
+        StartCoroutine(Loading());
         // 태그가 Ground인것만 리스트에 담기
         for (int i = 0; i < Board.transform.childCount; i++)
         {
@@ -212,7 +216,7 @@ public class BinaryInfo : MonoBehaviour
                 // 플레이어 정보. 타일의 자식 오브젝트 탐색
                 for (int j = Tile.transform.childCount - 1; j > 0; j--)
                 {
-                    Debug.Log(Tile.transform.GetChild(j).transform.name);
+                    // Debug.Log(Tile.transform.GetChild(j).transform.name);
                     // 타일의 자식중 tag가 player이고 이름이 player1이면 isplayer1 = true;
                     if (Tile.transform.GetChild(j).transform.name == "Player1")
                     {
@@ -253,9 +257,7 @@ public class BinaryInfo : MonoBehaviour
                        "IsPlayer1Item : " + Node.IsPlayer1Item + "   IsPlayer2Item :  " + Node.IsPlayer2Item + "\n\n";
             }
             NodeTestInfoList.Add(Node);
-            PrintTileInfo(NodeTestInfoList[i], ref str);
         }
-        PrintTileInfo(NodeTestInfoList[0], ref str);
         /*List<BinTile> TileList = new List<BinTile> {
             straight,
             corner,
@@ -270,13 +272,11 @@ public class BinaryInfo : MonoBehaviour
         NodeTestInfoList.RemoveAt(Board.transform.childCount - 1);
         
         // NodeTestInfoList에 잘 담겼는지 확인. 이미 여기서 오류
-        for (int i = 0; i < Board.transform.childCount - 1; i++)
+        /*for (int i = 0; i < Board.transform.childCount - 1; i++)
         {
             PrintTileInfo(NodeTestInfoList[i], ref str);
             str += "\n";
-        }
-        
-        // =====================================================================================
+        }*/
         // 보드 초기화
         for (int i = 0; i < n; i++)
         {
@@ -309,8 +309,167 @@ public class BinaryInfo : MonoBehaviour
             str += "\n";
         }*/
         
-        // SpawnPlayer(board);
-        // SpawnItem(board);
+        str += "board 원본" + "\n";
+        boardList = PrintBoard(board, ref str);
+        printList2(boardList, ref str);
+
+        testStreamWriter.Write(str);
+        testStreamWriter.Close();
+    }
+    void ScanBoard()
+    {
+        // 메모장 출력용 코드
+        FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
+        StreamWriter testStreamWriter = new StreamWriter(test);
+        string str = "";
+        NodeTestInfoList.Clear();
+        // 태그가 Ground인것만 리스트에 담기
+        for (int i = 0; i < Board.transform.childCount; i++)
+        {
+            Tile = Board.transform.GetChild(i).gameObject;
+            BinTile Node = new BinTile();
+            // 타일이면 
+            if (Tile.CompareTag("Ground"))
+            {
+                // 타일 종류
+                switch (Tile.GetComponent<Node>().tileType)
+                {
+                    case TileType.HALFCROSS: 
+                        Node.type = TileType.HALFCROSS;
+                        Node.Shape = new List<List<int>>
+                        {
+                            new List<int> { 0, 1, 0 },
+                            new List<int> { 1, 1, 0 },
+                            new List<int> { 0, 1, 0 }
+                        };
+                        break;
+                    case TileType.CORNER: 
+                        Node.type = TileType.CORNER;
+                        Node.Shape = new List<List<int>>
+                        {
+                            new List<int> { 0, 0, 0 },
+                            new List<int> { 0, 1, 1 },
+                            new List<int> { 0, 1, 0 }
+                        };
+                        break;
+                    case TileType.STRAIGHT: 
+                        Node.type = TileType.STRAIGHT;
+                        Node.Shape = new List<List<int>>
+                        {
+                            new List<int> { 0, 1, 0 },
+                            new List<int> { 0, 1, 0 },
+                            new List<int> { 0, 1, 0 }
+                        };
+                        break;
+                }
+                //타일 회전 정보
+                Node.rotation = (int)Tile.transform.rotation.eulerAngles.y / 90;
+                for (int j = 0; j < Node.rotation; j++)
+                    Node.Shape = RotateShapeCW(Node.Shape);
+
+                // 타일 위치
+                Node.x = Mathf.RoundToInt((-1f / 3f) * Tile.transform.position.z + 3f);
+                Node.y = Mathf.RoundToInt((1f / 3f) * Tile.transform.position.x + 3f);
+
+                // 플레이어 정보. 타일의 자식 오브젝트 탐색
+                for (int j = Tile.transform.childCount - 1; j > 0; j--)
+                {
+                    // Debug.Log(Tile.transform.GetChild(j).transform.name);
+                    // 타일의 자식중 tag가 player이고 이름이 player1이면 isplayer1 = true;
+                    if (Tile.transform.GetChild(j).transform.name == "Player1")
+                    {
+                        Node.isPlayer1 = true;
+                        Node.Shape[1][1] = 2;
+                    }
+                    else if (Tile.transform.GetChild(j).transform.name == "Player2")
+                    {
+                        Node.isPlayer2 = true;
+                        Node.Shape[1][1] = 4;
+                    }
+                    else if (Tile.transform.GetChild(j).transform.CompareTag("Item_1"))
+                    {
+                        Node.IsPlayer1Item = true;
+                        Node.Shape[1][1] = 3;
+                    }
+                    else if (Tile.transform.GetChild(j).transform.CompareTag("Item_2"))
+                    {
+                        Node.IsPlayer2Item = true;
+                        Node.Shape[1][1] = 5;
+                    }
+                }
+                // pBinTile
+                if (Node.y > 6)
+                {
+                    pBinTile = new BinTile(Node);
+                    continue;       // add안하고 넘어가기
+                }
+                
+                // 담기는 건 i랑 무관. 중간에 하나는 pTile이라 인덱스상 1차이날 수 있다.
+                str += i + "번째 노드 정보 \n" + "<Shape>" + "\n"; 
+                for (int j = 0; j < 3; j++)
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        str += Node.Shape[j][k] +" ";
+                    }
+                    str += "\n";
+                }
+                str += "Type : " + Node.type + "\n" +
+                       "Rotation " + Node.rotation + "\n" + 
+                       "x : " + Tile.transform.position.x + "     z :  " + Tile.transform.position.z + "\n" +
+                       "x2 : " + Node.x + "   y2 :  " + Node.y + "\n" + 
+                       "isPlayer1 : " + Node.isPlayer1 + "   isPlayer2 :  " + Node.isPlayer2 + "\n"+
+                       "IsPlayer1Item : " + Node.IsPlayer1Item + "   IsPlayer2Item :  " + Node.IsPlayer2Item + "\n\n";
+            }
+            NodeTestInfoList.Add(Node);
+        }
+        
+        // 밀어넣을 타일 랜덤으로 정하기
+        str += "\n";
+        str += "밀어넣을 타일" + "\n";
+        PrintTileInfo(pBinTile, ref str);
+        str += "\n" ;
+
+        // NodeTestInfoList에 잘 담겼는지 확인. 이미 여기서 오류
+        /*for (int i = 0; i < Board.transform.childCount - 1; i++)
+        {
+            PrintTileInfo(NodeTestInfoList[i], ref str);
+            str += "\n";
+        }*/
+        // 보드 초기화
+        board.Clear();
+        boardList.Clear();
+        
+        for (int i = 0; i < n; i++)
+        {
+            List<BinTile> row = new List<BinTile>();
+            for (int j = 0; j < m; j++)
+                row.Add(new BinTile());
+            board.Add(row);
+        }
+        // 7*7 보드에 저장
+        for (int i = 0; i < Board.transform.childCount - 1; i++)
+        {
+            BinTile binTile = new BinTile(NodeTestInfoList[i]);
+            board[NodeTestInfoList[i].x][NodeTestInfoList[i].y] = binTile;
+        }
+        
+        // board에 모양이 잘 들어갔는지 확인하는 코드(신기하게도 type은 잘 들어감)
+        /*for (int i = 0; i < board.Count; i++)
+        {
+            for (int j = 0; j < board[i].Count; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    for (int l = 0; l < 3; l++)
+                    {
+                        str += board[i][j].Shape[k][l] +" ";
+                    }
+                    str += "\n";
+                }
+            }
+            str += "\n";
+        }*/
         
         str += "board 원본" + "\n";
         boardList = PrintBoard(board, ref str);
@@ -568,31 +727,42 @@ public class BinaryInfo : MonoBehaviour
         str += "player2 reachable item : " + ReachableItem_2 + "\n";*/
     }
     
-    [Range(0f, 2f)] [SerializeField] private float value02;
+    [Range(0f, 1f)] [SerializeField] private float value01;
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            FirstScanBoard();
+        }
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             StartCoroutine(MyCo());
         }
     }
-
-    IEnumerator MyCo()
+    
+    IEnumerator Loading()
     {
-        yield return StartCoroutine(Value02Co());
-        ScanBoard();
-        print("모든 코루틴이 끝남");
-        value02 = 0;
+        yield return StartCoroutine(Value01Co());
+        print("로딩 완료");
+        value01 = 0;
     }
     
-    IEnumerator Value02Co()
+    IEnumerator MyCo()
+    {
+        yield return StartCoroutine(Value01Co());
+        ScanBoard();
+        print("모든 코루틴이 끝남");
+        value01 = 0;
+    }
+    
+    IEnumerator Value01Co()
     {
         while (true)
         {
-            value02 += Time.deltaTime;
-            if (value02 >= 2f)
+            value01 += Time.deltaTime;
+            if (value01 >= 1f)
             {
-                value02 = 2f;
+                value01 = 1f;
                 break; 
             }
             yield return null;
