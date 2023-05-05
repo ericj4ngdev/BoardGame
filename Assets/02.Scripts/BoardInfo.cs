@@ -51,9 +51,8 @@ public class BoardInfo : MonoBehaviour
     public void PushNode(string info)
     {
         // 매개변수 받기
-        string[] Info = info.Split(' ');
-        string location = Info[0];
-        int num = int.Parse(Info[1]);
+        char location = info[0];
+        int num = int.Parse(info.Substring(1));
         List<Transform> lastOnePath = new List<Transform>();
         
         Collider[][] hitColliders_x = new Collider[center_x.Length][];
@@ -90,7 +89,7 @@ public class BoardInfo : MonoBehaviour
         // 이동
         switch (location)
         {
-            case "Left":
+            case 'L':
                 // 1칸씩 이동
                 for (int i = 0; i < sortedColliders_x[num].Length - 1; i++)
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i+1].transform.position);
@@ -110,7 +109,7 @@ public class BoardInfo : MonoBehaviour
                 resetBtn();
                 waypoints[3*2+num].SetActive(false);
                 break;
-            case "Right":
+            case 'R':
                 // 1칸씩 이동
                 for (int i = sortedColliders_x[num].Length - 1; i > 0; i--)
                     sortedColliders_x[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_x[num][i-1].transform.position);
@@ -132,46 +131,46 @@ public class BoardInfo : MonoBehaviour
                 resetBtn();
                 waypoints[3*1+num].SetActive(false);
                 break;
-            case "Top":
+            case 'T':
                 // 1칸씩 이동
-                for (int i = sortedColliders_z[num].Length - 1; i > 0 ; i--)
-                    sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i-1].transform.position);
+                for (int i = sortedColliders_z[2-num].Length - 1; i > 0 ; i--)
+                    sortedColliders_z[2-num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[2-num][i-1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[3*3+num].transform); // 아래쪽 지점
+                lastOnePath.Add(waypoints[3*3+2-num].transform); // 아래쪽 지점
                 lastOnePath.Add(cornerPoint[0].transform); // 오른쪽 아래 코너지점
                 lastOnePath.Add(SpawnPoint.transform);
-                sortedColliders_z[num][0].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
+                sortedColliders_z[2-num][0].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
                 
                 // SpawnObject 이동
-                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][sortedColliders_z[num].Length - 1].transform.position);
+                SpawnObject.GetComponent<Node>().OnMoveto(sortedColliders_z[2-num][sortedColliders_z[2-num].Length - 1].transform.position);
                 // 넣은 놈의 isSelected는 해제
                 SpawnObject.gameObject.GetComponent<Node>().isSelected = false;
                 
-                SpawnObject = sortedColliders_z[num][0].gameObject;
-                gameManager.rotatingObject = sortedColliders_z[num][0].gameObject;
+                SpawnObject = sortedColliders_z[2-num][0].gameObject;
+                gameManager.rotatingObject = sortedColliders_z[2-num][0].gameObject;
                 resetBtn();
-                waypoints[3*3+num].SetActive(false);
+                waypoints[3*3+2-num].SetActive(false);
                 break;
-            case "Bottom":
+            case 'B':
                 // 1칸씩 이동
-                for (int i = 0; i < sortedColliders_z[num].Length - 1; i++)
-                    sortedColliders_z[num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][i+1].transform.position);
+                for (int i = 0; i < sortedColliders_z[2-num].Length - 1; i++)
+                    sortedColliders_z[2-num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[2-num][i+1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[3*0+num].transform); // 위쪽 지점
+                lastOnePath.Add(waypoints[3*0+2-num].transform); // 위쪽 지점
                 lastOnePath.Add(cornerPoint[1].transform); // 오른쪽 위 코너지점
                 lastOnePath.Add(SpawnPoint.transform);
-                sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
+                sortedColliders_z[2-num][sortedColliders_z[2-num].Length - 1].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
 
                 // SpawnObject 이동
-                SpawnObject.gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[num][0].transform.position);
+                SpawnObject.gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[2-num][0].transform.position);
                 // 넣은 놈의 isSelected는 해제
                 SpawnObject.gameObject.GetComponent<Node>().isSelected = false;
-                SpawnObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
-                gameManager.rotatingObject = sortedColliders_z[num][sortedColliders_z[num].Length - 1].gameObject;
+                SpawnObject = sortedColliders_z[2-num][sortedColliders_z[2-num].Length - 1].gameObject;
+                gameManager.rotatingObject = sortedColliders_z[2-num][sortedColliders_z[2-num].Length - 1].gameObject;
                 resetBtn();
-                waypoints[3*0+num].SetActive(false);
+                waypoints[3*0+2-num].SetActive(false);
                 break;
         }
         // 클릭 여부 점검을 위해 추가

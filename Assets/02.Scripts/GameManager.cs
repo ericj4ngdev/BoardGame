@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public List<Node> FixedTile = new List<Node>();
     public GameObject rotatingObject;
     public GameObject board;
+    public BoardInfo boardInfo;
 
     public List<int> tileCounts = new List<int>();
     // 총 34개 타일로 8,8,8,10 이 적당
@@ -69,6 +70,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        
         eulerRotation = transform.rotation.eulerAngles;
         AllItemsPos = new List<Transform>(FixedTile.Count);
         for (int i = 0; i < waypoint.Count; i++)
@@ -118,19 +120,11 @@ public class GameManager : MonoBehaviour
             // 현재 턴 정보 업데이트
             UpdateTurnUI();
             OnMovePlayerFinished();
-            if (player1Turn)
-            {
-                yield return StartCoroutine(PlayerTurn(player1_Prefab));
-            }
-            else
-            {
-                yield return StartCoroutine(PlayerTurn(player2_Prefab));
-            }
+            if (player1Turn) yield return StartCoroutine(PlayerTurn(player1_Prefab));
+            else yield return StartCoroutine(AITurn(player2_Prefab));
+            
             player1Turn = !player1Turn;
-            if (IsGameOver())
-            {
-                break;
-            }
+            if (IsGameOver()) break;
         }
 
         // 코루틴 종료 후 gameLoopCoroutine을 null로 초기화
@@ -187,7 +181,47 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator AITurn(GameObject player)
+    {
+        // 스캔
+        this.GetComponent<BinaryInfo>().ScanBoard();
+        
+        // 스폰 오브젝트는 드래그 가능
+        // 타일 옮기기 전에는 플레이어의 말을 이동할 수 없음
+        rotatingObject.GetComponent<Node>().isSelected = true;
+        
+        // 타일 옮기기 
+        yield return StartCoroutine(AIDragTile(player));
+        yield return StartCoroutine(RestDFS());
+        
+        // 플레이어 기준으로 DFS 하기, 그런데 움직인 타일의 위치가 반영이 안되어 있다. 
+        // 모든 node의 isPushed = true로 해야 클릭 가능.
+        board.GetComponent<Board>().GetWallInfo();
+        board.GetComponent<Board>().DFS_player(player);
+        
+        // 말 옮기기 
+        yield return StartCoroutine(MovePlayer(player));
+        foreach (var VARIABLE in TileBoard)
+            VARIABLE.GetComponent<Node>().isPushed = false;
+        Debug.Log($"{player.name} MovePlayer 끝");
+        
+        // 여기서 아무것도 못하게 함. 돌리기는 물론 spawnObject 클릭하지 못하게 하기
+        rotatingObject.GetComponent<Node>().isSelected = false; // 드래그 불가
+        
+        UpdateCoroutineStatus("턴 넘기기");
+        // EndTurnButton을 활성화해서 플레이어가 클릭하도록 함
+        EndTurnButton.SetActive(true);
+        
+        // 플레이어가 EndTurnButton을 클릭할 때까지 대기
+        yield return new WaitUntil(() => endTurnClicked);
 
+        // EndTurnButton을 다시 비활성화해서 다음 플레이어의 차례를 기다리도록 함
+        EndTurnButton.SetActive(false);
+        
+        // endTurnClicked 변수를 초기화
+        endTurnClicked = false;
+    }
+    
     private IEnumerator PlayerTurn(GameObject player)
     {
         // 스폰 오브젝트는 드래그 가능
@@ -254,6 +288,7 @@ public class GameManager : MonoBehaviour
         {
             rotatingObject.GetComponent<Node>().isSelected = true;
             // 타일을 놓았을 때 타일 영역에 들어가면 타일 이동 종료. 다음 spawningObejct
+
             if (rotatingObject.GetComponent<Node>().isPushed)
             {
                 foreach (var VARIABLE in TileBoard)
@@ -283,6 +318,57 @@ public class GameManager : MonoBehaviour
                 
                 
                 // 여기 있는 건 다음 spawn물건임.
+                // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
+                break;
+            }
+            UpdateCoroutineStatus("DragTile");
+            yield return null;
+        }
+        
+    }
+    
+    private IEnumerator AIDragTile(GameObject player)
+    {
+        // 밀어넣을 타일 미리 저장.
+        GameObject previousObject = rotatingObject;
+        // 마우스로 타일 드래그 드롭
+        while (true)
+        {
+            rotatingObject.GetComponent<Node>().isSelected = true;
+            // 타일을 놓았을 때 타일 영역에 들어가면 타일 이동 종료. 다음 spawningObejct
+            
+            // AI는 rotatingObject.GetComponent<Node>().isPushed 를 true로 만들고
+            // BoardInfo에 있는 이벤트에 위치, 회전값 string을 인자로 전달
+            // 위치를 어떻게 전달하지... 
+            this.GetComponent<BinaryInfo>().AIPushTile_2();
+            boardInfo.PushNode(this.GetComponent<BinaryInfo>().info);
+            
+            if (rotatingObject.GetComponent<Node>().isPushed)
+            {
+                foreach (var VARIABLE in TileBoard)
+                    VARIABLE.GetComponent<Node>().isPushed = true;
+                foreach (var VARIABLE in FixedTile)
+                    VARIABLE.GetComponent<Node>().isPushed = true;
+                rotatingObject.GetComponent<Node>().isPushed = false;
+                rotatingObject.GetComponent<Node>().isSelected = false;
+                int childCount = rotatingObject.transform.childCount;
+                List<GameObject> players = new List<GameObject>();
+                // 만약 나온 타일에 자식 오브젝트중 player가 있다면 
+                for (int i = 0; i < childCount; i++)
+                {
+                    // Debug.Log($"{i}번쨰 점검 : {rotatingObject.transform.GetChild(i).name}");
+                    if (rotatingObject.transform.GetChild(i).CompareTag("player"))
+                    {
+                        // 여러개 일수 있다. 이미 하나 빼버리면 인덱스 오류나버린다.
+                        players.Add(rotatingObject.transform.GetChild(i).gameObject);
+                    }
+                }
+
+                foreach (var VARIABLE in players)
+                {
+                    VARIABLE.transform.SetParent(previousObject.transform);
+                    VARIABLE.transform.position = previousObject.transform.position + new Vector3(0,1,0);
+                }
                 // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
                 break;
             }

@@ -387,7 +387,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Right 1
+          m_StringArgument: R1
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -1459,6 +1459,7 @@ MonoBehaviour:
   - {fileID: 1962829593}
   rotatingObject: {fileID: 0}
   board: {fileID: 1163309241}
+  boardInfo: {fileID: 1012179943}
   tileCounts: 0c000000000000000600000010000000
   player1_Prefab: {fileID: 1173345730}
   player2_Prefab: {fileID: 125105148}
@@ -1576,8 +1577,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98cf464f980df54baa2fa9d1c0f2e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: 
   Board: {fileID: 1163309241}
-  value02: 0
+  value01: 0
 --- !u!1001 &238144546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2612,7 +2614,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Top 0
+          m_StringArgument: T2
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -4914,7 +4916,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bottom 1
+          m_StringArgument: B1
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -5314,7 +5316,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Left 1
+          m_StringArgument: L1
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -5634,7 +5636,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Left 0
+          m_StringArgument: L0
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -6021,7 +6023,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Top 2
+          m_StringArgument: T0
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -6442,7 +6444,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bottom 2
+          m_StringArgument: B0
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -6759,7 +6761,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Right 2
+          m_StringArgument: R2
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -6998,7 +7000,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Right 0
+          m_StringArgument: R0
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -7369,7 +7371,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bottom 0
+          m_StringArgument: B2
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -8345,7 +8347,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Left 2
+          m_StringArgument: L2
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
@@ -10834,7 +10836,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Top 1
+          m_StringArgument: T1
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1012179943}
