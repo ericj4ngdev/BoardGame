@@ -48,8 +48,8 @@ public class Node : MonoBehaviour
     void Start()
     {
         collidedObjects = new List<GameObject>();
-        int x = (int)((-1f / 3f) * tr.position.z + 3);
-        int y = (int)((1f / 3f) * tr.position.x + 3);
+        // int x = (int)((-1f / 3f) * tr.position.z + 3);
+        // int y = (int)((1f / 3f) * tr.position.x + 3);
         
         // Debug.Log(tr.name);
         // Debug.Log( $"({tr.position.x}, {tr.position.z}) -->" + $" [ {x} ], [ {y} ]");

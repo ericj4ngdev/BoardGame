@@ -331,6 +331,19 @@ public class GameManager : MonoBehaviour
     {
         // 밀어넣을 타일 미리 저장.
         GameObject previousObject = rotatingObject;
+        previousObject.transform.position += new Vector3(0,5,0);
+        this.GetComponent<BinaryInfo>().AIPushTile_2();     // AI판단
+        
+        int rotate = GetComponent<BinaryInfo>().rotate;
+        for (int i = 0; i < rotate; i++)
+        {
+            yield return StartCoroutine(Value01Co());
+            RotateRight();
+            value01 = 0;
+        }
+        yield return StartCoroutine(Value01Co());
+        boardInfo.PushNode(this.GetComponent<BinaryInfo>().location);           // 행동
+        value01 = 0;
         // 마우스로 타일 드래그 드롭
         while (true)
         {
@@ -340,8 +353,8 @@ public class GameManager : MonoBehaviour
             // AI는 rotatingObject.GetComponent<Node>().isPushed 를 true로 만들고
             // BoardInfo에 있는 이벤트에 위치, 회전값 string을 인자로 전달
             // 위치를 어떻게 전달하지... 
-            this.GetComponent<BinaryInfo>().AIPushTile_2();
-            boardInfo.PushNode(this.GetComponent<BinaryInfo>().info);
+                 // 출력이 안됨... 
+            // 
             
             if (rotatingObject.GetComponent<Node>().isPushed)
             {
@@ -461,6 +474,22 @@ public class GameManager : MonoBehaviour
             // FixedTile[i].GetComponent<Node>().reachableTileColorChange();
         }
     }
+    
+    [Range(0f, 1f)] [SerializeField] private float value01;
+    IEnumerator Value01Co()
+    {
+        while (true)
+        {
+            value01 += Time.deltaTime;
+            if (value01 >= 1f)
+            {
+                value01 = 1f;
+                break; 
+            }
+            yield return null;
+        }
+    }
+    
     
     private void OnMovePlayerFinished()
     {

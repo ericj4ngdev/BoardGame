@@ -134,21 +134,32 @@ public class BinaryInfo : MonoBehaviour
     
     private int n = 7;
     private int m = 7;
-    private int rotate;
-    private string location;
     private int deltaItem = 0;
     private int ReachableItem_1;
     private int ReachableItem_2;
     private int NextReachableItem_1;
     private int NextReachableItem_2;
     private int count = 0;
+    private NodeTest player1;
+    private NodeTest player2;
+
+    public string location;
+    public int rotate;
+    public int sum_1;
+    public int sum_2;
     public string info;
 
     public GameObject Board;
 
+    private FileStream test;
+    private StreamWriter testStreamWriter;
+    private string str;
+    
     private void Awake()
     {
-        
+        test = new FileStream("Assets/Resources/test.txt", FileMode.OpenOrCreate);
+        testStreamWriter = new StreamWriter(test);
+        str = "";
     }
 
     private void Start()
@@ -159,13 +170,15 @@ public class BinaryInfo : MonoBehaviour
     {
         str = "";
     }
-
+    
+    private void OnApplicationQuit()
+    {
+        testStreamWriter.Write(str);
+        testStreamWriter.Close();
+    }
+    
     public void ScanBoard()
     {
-        // 메모장 출력용 코드
-        FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
-        StreamWriter testStreamWriter = new StreamWriter(test);
-        string str = "";
         NodeTestInfoList.Clear();
         // 태그가 Ground인것만 리스트에 담기
         for (int i = 0; i < Board.transform.childCount; i++)
@@ -249,7 +262,7 @@ public class BinaryInfo : MonoBehaviour
                 }
                 
                 // 담기는 건 i랑 무관. 중간에 하나는 pTile이라 인덱스상 1차이날 수 있다.
-                str += i + "번째 노드 정보 \n" + "<Shape>" + "\n"; 
+                /*str += i + "번째 노드 정보 \n" + "<Shape>" + "\n"; 
                 for (int j = 0; j < 3; j++)
                 {
                     for (int k = 0; k < 3; k++)
@@ -263,17 +276,11 @@ public class BinaryInfo : MonoBehaviour
                        "x : " + Tile.transform.position.x + "     z :  " + Tile.transform.position.z + "\n" +
                        "x2 : " + Node.x + "   y2 :  " + Node.y + "\n" + 
                        "isPlayer1 : " + Node.isPlayer1 + "   isPlayer2 :  " + Node.isPlayer2 + "\n"+
-                       "IsPlayer1Item : " + Node.IsPlayer1Item + "   IsPlayer2Item :  " + Node.IsPlayer2Item + "\n\n";
+                       "IsPlayer1Item : " + Node.IsPlayer1Item + "   IsPlayer2Item :  " + Node.IsPlayer2Item + "\n\n";*/
             }
             NodeTestInfoList.Add(Node);
         }
         
-        // 밀어넣을 타일 랜덤으로 정하기
-        str += "\n";
-        str += "밀어넣을 타일" + "\n";
-        PrintTileInfo(pBinTile, ref str);
-        str += "\n" ;
-
         // NodeTestInfoList에 잘 담겼는지 확인. 이미 여기서 오류
         /*for (int i = 0; i < Board.transform.childCount - 1; i++)
         {
@@ -297,41 +304,20 @@ public class BinaryInfo : MonoBehaviour
             BinTile binTile = new BinTile(NodeTestInfoList[i]);
             board[NodeTestInfoList[i].x][NodeTestInfoList[i].y] = binTile;
         }
-        
-        // board에 모양이 잘 들어갔는지 확인하는 코드(신기하게도 type은 잘 들어감)
-        /*for (int i = 0; i < board.Count; i++)
-        {
-            for (int j = 0; j < board[i].Count; j++)
-            {
-                for (int k = 0; k < 3; k++)
-                {
-                    for (int l = 0; l < 3; l++)
-                    {
-                        str += board[i][j].Shape[k][l] +" ";
-                    }
-                    str += "\n";
-                }
-            }
-            str += "\n";
-        }*/
-        
+
         str += "board 원본" + "\n";
         boardList = PrintBoard(board, ref str);
         printList2(boardList, ref str);
 
-        testStreamWriter.Write(str);
-        testStreamWriter.Close();
-    }
-    
-    public void AIPushTile_1()
-    {
-        // 메모장 출력용 코드
-        FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
-        StreamWriter testStreamWriter = new StreamWriter(test);
-        string str = "";
+        // 밀어넣을 타일 랜덤으로 정하기
+        str += "\n";
+        str += "밀어넣을 타일" + "\n";
+        PrintTileInfo(pBinTile, ref str);
+        str += "\n" ;
+        
         // 플레이어 위치정보 NodeTest타입으로 저장
-        NodeTest player1 = GetPlayer1Pos(boardList);
-        NodeTest player2 = GetPlayer2Pos(boardList);
+        player1 = GetPlayer1Pos(boardList);
+        player2 = GetPlayer2Pos(boardList);
         
         // 첫번째 판에서 dfs 출력
         DFSListAdd(DFSList1, boardList, player1);
@@ -343,9 +329,12 @@ public class BinaryInfo : MonoBehaviour
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
         
-        int sum_1 = 0;
-        int sum_2 = 0;
-
+        testStreamWriter.Write(str);
+        testStreamWriter.Flush();
+    }
+    
+    public void AIPushTile_1()
+    {
         #region 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
         {
@@ -584,31 +573,12 @@ public class BinaryInfo : MonoBehaviour
         str += "Player2 "; DFSListAdd(DFSList2,boardList, player2);
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
+        
+        testStreamWriter.Write(str);
+        testStreamWriter.Flush();
     }
     public void AIPushTile_2()
     {
-        // 메모장 출력용 코드
-        FileStream test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
-        StreamWriter testStreamWriter = new StreamWriter(test);
-        string str = "";
-        
-        // 플레이어 위치정보 NodeTest타입으로 저장
-        NodeTest player1 = GetPlayer1Pos(boardList);
-        NodeTest player2 = GetPlayer2Pos(boardList);
-        
-        // 첫번째 판에서 dfs 출력
-        DFSListAdd(DFSList1, boardList, player1);
-        DFSListAdd(DFSList2, boardList, player2);
-        
-        // 도달 가능 아이템 수 변화를 계산하기 위해 다른 변수에 저장
-        ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
-        str += "player1 reachable item : " + ReachableItem_1 + "\n";
-        ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-        str += "player2 reachable item : " + ReachableItem_2 + "\n";
-        
-        int sum_1 = 0;
-        int sum_2 = 0;
-
         #region 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
         {
@@ -843,41 +813,12 @@ public class BinaryInfo : MonoBehaviour
         str += "Player2 "; DFSListAdd(DFSList2,boardList, player2);
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
+        
+        testStreamWriter.Write(str);
+        testStreamWriter.Flush();
     }
-    
-    
-    
-    
-    
-    
+
     [Range(0f, 1f)] [SerializeField] private float value01;
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            // FirstScanBoard();
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            StartCoroutine(MyCo());
-        }
-    }
-    
-    IEnumerator Loading()
-    {
-        yield return StartCoroutine(Value01Co());
-        print("로딩 완료");
-        value01 = 0;
-    }
-    
-    IEnumerator MyCo()
-    {
-        yield return StartCoroutine(Value01Co());
-        ScanBoard();
-        print("모든 코루틴이 끝남");
-        value01 = 0;
-    }
-    
     IEnumerator Value01Co()
     {
         while (true)
@@ -891,6 +832,36 @@ public class BinaryInfo : MonoBehaviour
             yield return null;
         }
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            // StartCoroutine(AIChoosing());
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            // StartCoroutine(Scanning());
+        }
+    }
+    
+    IEnumerator Scanning()
+    {
+        yield return StartCoroutine(Value01Co());
+        ScanBoard();
+        print("로딩 완료");
+        value01 = 0;
+    }
+    
+    IEnumerator AIChoosing()
+    {
+        yield return StartCoroutine(Value01Co());
+        // AIPushTile_1();
+        AIPushTile_2();
+        print("48가지 경우의 수 계산");
+        value01 = 0;
+    }
+    
+    
     /// <summary>
     /// 보드 생성 함수
     /// </summary>
