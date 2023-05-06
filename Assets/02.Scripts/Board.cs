@@ -138,8 +138,8 @@ public class Board : MonoBehaviour
 
     public void GetWallInfo()
     {
-        sizeX = topRight.x - bottomLeft.x + 1; // 27
-        sizeZ = topRight.z - bottomLeft.z + 1; // 27
+        sizeX = topRight.x - bottomLeft.x + 1; // 21
+        sizeZ = topRight.z - bottomLeft.z + 1; // 21
 
         NodeArray = new Node_[sizeX, sizeZ];
 
@@ -309,7 +309,6 @@ public class Board : MonoBehaviour
     
     void OpenListAdd(int checkX, int checkZ)
     {
-        
         // 상하좌우 범위를 벗어나지 않고, 벽이 아니면서, 닫힌리스트에 없다면
         if (checkX >= bottomLeft.x && checkX < topRight.x + 1 && checkZ >= bottomLeft.z && checkZ < topRight.z + 1 &&
             !NodeArray[checkX - bottomLeft.x, checkZ - bottomLeft.z].isWall &&

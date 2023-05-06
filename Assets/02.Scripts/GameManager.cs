@@ -200,7 +200,7 @@ public class GameManager : MonoBehaviour
         board.GetComponent<Board>().DFS_player(player);
         
         // 말 옮기기 
-        yield return StartCoroutine(MovePlayer(player));
+        yield return StartCoroutine(AIMovePlayer(player));
         foreach (var VARIABLE in TileBoard)
             VARIABLE.GetComponent<Node>().isPushed = false;
         Debug.Log($"{player.name} MovePlayer 끝");
@@ -462,6 +462,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator AIMovePlayer(GameObject player)
+    {
+        Debug.Log($"{player.name} AIMovePlayer 시작");
+        // 플레이어 말 이동
+        this.GetComponent<BinaryInfo>().AIMove();     // AI판단
+        Vector3 v = GetComponent<BinaryInfo>().target;
+        player.transform.Translate(v);
+        while (true)
+        {
+            UpdateCoroutineStatus("MovePlayer 중");
+            player.GetComponent<PlayerController>().MoveController();
+            // 움직이는 리스트를 받는다. 숫자정보. 예를 들어 1이면 x+1, 이런 느낌 
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // 먹는거 시전
+                isPlayerItem(player);
+                
+                break;
+            }
+            player.GetComponent<Collider>().isTrigger = false;
+            player.GetComponent<Rigidbody>().isKinematic = false;
+            
+            // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
+            yield return null;
+        }
+    }
+    
     private void OnMovePlayerMove()
     {
         for (int i = 0; i < TileBoard.Count; i++)
