@@ -128,6 +128,8 @@ public class BinaryInfo : MonoBehaviour
         type = TileType.HALFCROSS
     };
 
+    public float ratio;
+    
     // private Node node;
     private BinTile pBinTile = new BinTile();
    
@@ -161,6 +163,7 @@ public class BinaryInfo : MonoBehaviour
         test = new FileStream("Assets/Resources/test.txt", FileMode.OpenOrCreate);
         testStreamWriter = new StreamWriter(test);
         str = "";
+        ratio = 0;
     }
 
     private void Start()
@@ -769,7 +772,7 @@ public class BinaryInfo : MonoBehaviour
 
         // 0 -> p2만 고려
         // 1 -> p1만 고려
-        float ratio = 0.5f;
+        
         // 확률 출력
         str += "======================== 확률 표======================= \n";
         for (int i = 0; i < ScoreList.Count; i++)
