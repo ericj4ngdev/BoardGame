@@ -57,7 +57,7 @@ public class MenuManager : MonoBehaviour
     public void ActiveImage()
     {
         NextImage.SetActive(true);
-        gameObject.SetActive(false);
+        MainImage.SetActive(false);
     }
 
     public void SelectDiff(float ratio)
@@ -80,18 +80,22 @@ public class MenuManager : MonoBehaviour
         op.allowSceneActivation = true;
     }
 
+    
     private IEnumerator FadeIn()
     {
-        Penal.gameObject.SetActive(true);
+        Penal.gameObject.SetActive(true); // 오브젝트를 먼저 비활성화
         Color alpha = Penal.color;
-
+        alpha.a = 0f; // alpha 값을 0으로 초기화
+        Penal.color = alpha;
         float timer = 0f;
+        
         while (alpha.a < 1f)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime / 1f;
             alpha.a = Mathf.Lerp(0f, 1f, timer);
+            Penal.color = alpha; // alpha 값을 할당
             yield return null;
         }
-        yield return null;
+        yield return new WaitForSeconds(1f);
     }
 }

@@ -130,7 +130,6 @@ public class BinaryInfo : MonoBehaviour
 
     public float ratio;
     
-    // private Node node;
     private BinTile pBinTile = new BinTile();
    
     GameObject Tile;
@@ -166,15 +165,6 @@ public class BinaryInfo : MonoBehaviour
         ratio = 0;
     }
 
-    private void Start()
-    {
-    }
-
-    void ClearText(ref string str)
-    {
-        str = "";
-    }
-    
     private void OnApplicationQuit()
     {
         testStreamWriter.Write(str);
@@ -956,15 +946,7 @@ public class BinaryInfo : MonoBehaviour
         print("48가지 경우의 수 계산");
         value01 = 0;
     }
-    
-    
-    /// <summary>
-    /// 보드 생성 함수
-    /// </summary>
-    /// <param name="list">타일 3가지 종류</param>
-    /// <param name="board">원본 보드</param>
-    /// <param name="str">출력용 매개변수</param>
-    
+
     List<List<int>> RotateShapeCW(List<List<int>> shape)
     {
         int n = shape.Count;
@@ -980,7 +962,6 @@ public class BinaryInfo : MonoBehaviour
         return rotatedShape;
     }
 
-    
     void RotateTileCW(ref BinTile binTile)
     {
         List<List<int>> r = new List<List<int>>();
