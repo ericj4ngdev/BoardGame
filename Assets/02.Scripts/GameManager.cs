@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviour
         // EndTurnButton을 활성화해서 플레이어가 클릭하도록 함
         EndTurnButton.SetActive(true);
         
+        endTurnClicked = true;
         // 플레이어가 EndTurnButton을 클릭할 때까지 대기
         yield return new WaitUntil(() => endTurnClicked);
 
@@ -461,32 +462,31 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
-
+    [SerializeField]
+    private GameObject testTile;
     private IEnumerator AIMovePlayer(GameObject player)
     {
         Debug.Log($"{player.name} AIMovePlayer 시작");
         // 플레이어 말 이동
-        this.GetComponent<BinaryInfo>().AIMove();     // AI판단
-        Vector3 v = GetComponent<BinaryInfo>().target;
-        player.transform.Translate(v);
+        testTile = this.GetComponent<BinaryInfo>().AIMove();     // AI판단
+        // Vector3 v = GetComponent<BinaryInfo>().target;
+        // player.transform.Translate(v);
+        board.GetComponent<Board>().FollowFinalNodeList_player(testTile,player);
+        yield return StartCoroutine(Value01Co());
+        
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");
-            player.GetComponent<PlayerController>().MoveController();
+            // player.GetComponent<PlayerController>().MoveController();
             // 움직이는 리스트를 받는다. 숫자정보. 예를 들어 1이면 x+1, 이런 느낌 
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                // 먹는거 시전
-                isPlayerItem(player);
-                
-                break;
-            }
+            // 먹는거 시전
+            isPlayerItem(player);
+            if (!player.GetComponent<Rigidbody>().isKinematic) break;
             player.GetComponent<Collider>().isTrigger = false;
             player.GetComponent<Rigidbody>().isKinematic = false;
             
-            // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
             yield return null;
+            // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
         }
     }
     

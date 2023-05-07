@@ -162,7 +162,7 @@ public class BinaryInfo : MonoBehaviour
         test = new FileStream("Assets/Resources/test.txt", FileMode.OpenOrCreate);
         testStreamWriter = new StreamWriter(test);
         str = "";
-        ratio = 0;
+        ratio = 0.5f;
     }
 
     private void OnApplicationQuit()
@@ -174,6 +174,8 @@ public class BinaryInfo : MonoBehaviour
     public void ScanBoard()
     {
         NodeTestInfoList.Clear();
+        DFSList1.Clear();
+        DFSList2.Clear();
         // 태그가 Ground인것만 리스트에 담기
         for (int i = 0; i < Board.transform.childCount; i++)
         {
@@ -529,17 +531,7 @@ public class BinaryInfo : MonoBehaviour
         // 랜덤 뽑기
         p = Random.Range(0, 100);       // (0~99)
         // ratio = 내가 쓴 숫자가 p1의 비율
-        int ratio = 100;      // 0~89 < ratio => 90%
-        if (p < ratio)
-        {
-            location = p1.location;
-            rotate = p1.rotation;
-        }
-        else
-        {
-            location = p2.location;
-            rotate = p2.rotation;
-        }
+        
         str += rotate + location + "\n";;
         for (int i = 0; i < rotate; i++)
             RotateTileCW(ref pBinTile);
@@ -773,8 +765,7 @@ public class BinaryInfo : MonoBehaviour
         }
         
         // per를 기준으로 백분율화?
-        
-        
+
         str += "====================== p1 선택지 ====================== \n";
         for (int i = 0; i < arr_1.Count; i++)
         {
@@ -785,10 +776,6 @@ public class BinaryInfo : MonoBehaviour
         {
             str += arr_2[i].rotation + arr_2[i].location + "\n";
         }
-        str += "====================================================== \n";
-        // str += "p1 선택 : " + p1.rotation + p1.location + "\n";;
-        // str += "p2 선택 : " + p2.rotation + p2.location + "\n";;
-        
         str += "====================== 최종 선택 ====================== \n";
 
         // 가장 높은 확률인거 고르기
@@ -806,19 +793,6 @@ public class BinaryInfo : MonoBehaviour
         rotate = ScoreList[maxPerIndex].rotation;
         
         // 랜덤 뽑기
-        /*p = Random.Range(0, 100);       // (0~99)
-        // ratio = 내가 쓴 숫자가 p1의 비율
-        ratio = 0;      // 0~89 < ratio => 90%
-        if (p < ratio)
-        {
-            location = p1.location;
-            rotate = p1.rotation;
-        }
-        else
-        {
-            location = p2.location;
-            rotate = p2.rotation;
-        }*/
         
         str += rotate + location + "\n";;
         for (int i = 0; i < rotate; i++)
@@ -839,23 +813,31 @@ public class BinaryInfo : MonoBehaviour
         str += "\n";
 
         str += "Player1 "; DFSListAdd(DFSList1,boardList, player1);
-        ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
+        ReachableItem_1 = CheckReachableItem_3(DFSList1, ref str);
         str += "player1 reachable item : " + ReachableItem_1 + "\n";
         
         str += "Player2 "; DFSListAdd(DFSList2,boardList, player2);
-        ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
+        // str += "DFSList2.Count : " + DFSList2.Count + "\n";
+        ReachableItem_2 = CheckReachableItem_4(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
         
         testStreamWriter.Write(str);
         testStreamWriter.Flush();
     }
 
-    public void AIMove()
+    public GameObject AIMove()
     {
+        // ScanBoard();
+        str += "AIMove" + "\n";
+        str += "DFSList2.Count : " + DFSList2.Count + "\n";
+        str += "ReachableItem_2 : " + ReachableItem_2 + "\n";
         if (DFSList2.Count > 3)
         {
+            Debug.Log(DFSList2.Count);
+            // 아이템이 있는 지점
             if (ReachableItem_2 > 0)
             {
+                Debug.Log(ReachableItem_2);
                 // move
                 // 도착지점 = DFSList에서 5 인 곳
                 // 정해주는 순간 PathFinding해서 이동.
@@ -863,47 +845,75 @@ public class BinaryInfo : MonoBehaviour
                 {
                     if (DFSList2[i].num == 5)
                     {
-                        str += DFSList2[i].num + "\n";
-                        str += DFSList2[i].x + ", " + DFSList2[i].y;
-                        int tx = 3 * (DFSList2[i].y - 3);
-                        int tz = (-3) * (DFSList2[i].x - 3);
+                        Debug.Log((i+1) + "번째");
+                        Debug.Log(DFSList2[i].x + ", " + DFSList2[i].y);
+                        int tx = 3 * (DFSList2[i].x/3 - 3);
+                        int tz = (-3) * (DFSList2[i].y/3 - 3);
                         target = new Vector3(tx, 0, tz);
-                        break;
+                        Debug.Log(tx + ", " + tz);
+                        for (int j = 0; j < Board.transform.childCount; j++)
+                        {
+                            Tile = Board.transform.GetChild(j).gameObject;
+
+                            if (Vector3.Distance(Tile.transform.position, target) <= 0.1f)
+                            {
+                                Debug.Log(j);
+                                return Tile;
+                            }
+                        }
                     }
                 }
             }
-            // 도착지점 = 아무 곳?
-            int r = 0;
-            do
+            else       // 도착지점 = 아무 곳?
             {
-                r = Random.Range(0, DFSList2.Count);
-                if (DFSList2[r].num == 1)
+                int r = 0;
+                do
                 {
-                    str += DFSList2[r].num + "\n";
-                    str += DFSList2[r].x + ", " + DFSList2[r].y;
-                    int tx = 3 * (DFSList2[r].y - 3);
-                    int tz = (-3) * (DFSList2[r].x - 3);
-                    target = new Vector3(tx, 0, tz);
-                    break;
-                }
-            } while (DFSList2[r].num != 1);
-            
-        }
-        for (int i = 0; i < DFSList2.Count; i++)
-        {
-            if (DFSList2[i].num == 4)
-            {
-                str += DFSList2[i].num + "\n";
-                str += DFSList2[i].x + ", " + DFSList2[i].y;
-                int tx = 3 * (DFSList2[i].y - 3);
-                int tz = (-3) * (DFSList2[i].x - 3);
-                target = new Vector3(tx, 0, tz);
-                break;
+                    r = Random.Range(0, DFSList2.Count);
+                    if (DFSList2[r].num == 1)
+                    {
+                        Debug.Log((r+1) + "번째\n");
+                        Debug.Log(DFSList2[r].x + ", " + DFSList2[r].y);
+                        int tx = 3 * (DFSList2[r].x/3 - 3);
+                        int tz = (-3) * (DFSList2[r].y/3 - 3);
+                        target = new Vector3(tx, 0, tz);
+                        for (int j = 0; j < Board.transform.childCount; j++)
+                        {
+                            Tile = Board.transform.GetChild(j).gameObject;
+                            if (Vector3.Distance(Tile.transform.position, target) <= 0.1f) return Tile;
+                        }
+                    }
+                } while (DFSList2[r].num != 1);
             }
         }
-        // 도착지점 = 제자리
+        else // 도착지점 = 제자리
+        {
+            for (int i = 0; i < DFSList2.Count; i++)
+            {
+                if (DFSList2[i].num == 4)
+                {
+                    Debug.Log((i+1) + "번째\n");
+                    Debug.Log(DFSList2[i].x + ", " + DFSList2[i].y);
+                    int tx = 3 * (DFSList2[i].x/3 - 3);
+                    int tz = (-3) * (DFSList2[i].y/3 - 3);
+                    target = new Vector3(tx, 0, tz);
+                    Debug.Log(tx + ", " + tz);
+                    for (int j = 0; j < Board.transform.childCount; j++)
+                    {
+                        Tile = Board.transform.GetChild(j).gameObject;
+                        if (Vector3.Distance(Tile.transform.position, target) <= 0.1f) return Tile;
+                    }
+                }
+            }
+        }
+        
+        str += "AIMove 끝" + "\n";
+        testStreamWriter.Write(str);
+        testStreamWriter.Flush();
+        
+        return Tile;
     }
-    
+
     [Range(0f, 1f)] [SerializeField] private float value01;
     IEnumerator Value01Co()
     {
@@ -1242,6 +1252,30 @@ public class BinaryInfo : MonoBehaviour
         }
         str += "\n";
         DFSList.Clear();
+        return count;
+    }
+    int CheckReachableItem_3(List<NodeTest> DFSList, ref string str)
+    {
+        int count = 0;
+        str += "DFSList : ";
+        for (int i = 0; i < DFSList.Count; i++)
+        {
+            if(DFSList[i].num == 3) count++;
+            str += DFSList[i].num + " ";
+        }
+        str += "\n";
+        return count;
+    }
+    int CheckReachableItem_4(List<NodeTest> DFSList, ref string str)
+    {
+        int count = 0;
+        str += "DFSList : ";
+        for (int i = 0; i < DFSList.Count; i++)
+        {
+            if(DFSList[i].num == 5) count++;
+            str += DFSList[i].num + " ";
+        }
+        str += "\n";
         return count;
     }
     
