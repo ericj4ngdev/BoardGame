@@ -57,6 +57,10 @@ MonoBehaviour:
   timeToReachTarget: 0.5
   tileType: 0
   isSelected: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  offset: {x: 0, y: 2, z: 0}
 --- !u!65 &114469266015062120
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,57 +1,41 @@
+using System;
 using UnityEngine;
 using System.IO;
 
 public class Test : MonoBehaviour
 {
-    private FileStream test;
-    private StreamWriter testStreamWriter;
-    private string str;
+    private bool isDragging = false;
+    private Vector3 offset;
+    private Vector3 newPosition;
+    public Vector3 pos;
 
-    private void Awake()
+    private void OnMouseDown()
     {
-        test = new FileStream("Assets/Resources/test.txt", FileMode.OpenOrCreate);
-        testStreamWriter = new StreamWriter(test, System.Text.Encoding.UTF8, 1024, true);
-        str = "";
+        isDragging = true;
+        offset = transform.position - GetMouseWorldPosition();
+    }
+    
+
+    private void OnMouseUp()
+    {
+        isDragging = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        pos = GetMouseWorldPosition();
+        if (isDragging)
         {
-            Func1();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Func2();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            str = "";
-            test = new FileStream("Assets/Resources/test.txt", FileMode.Create);
-            testStreamWriter = new StreamWriter(test);
-            testStreamWriter.Write(str);
-            testStreamWriter.Close();
+            newPosition = GetMouseWorldPosition() + offset;
+            newPosition.y = transform.position.y; // 유지하고자 하는 y값
+            transform.position = newPosition;
         }
     }
 
-    private void Func1()
+    private Vector3 GetMouseWorldPosition()
     {
-        str = "Hello ";
-        testStreamWriter.Write(str);
-        testStreamWriter.Flush(); // StreamWriter 버퍼를 비웁니다.
-    }
-
-    private void Func2()
-    {
-        str = "World!";
-        testStreamWriter.Write(str);
-        testStreamWriter.Flush(); // StreamWriter 버퍼를 비웁니다.
-    }
-
-
-    private void OnApplicationQuit()
-    {
-        testStreamWriter.Write(str);
-        testStreamWriter.Close();
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Camera.main.transform.position.y - transform.position.y; // 카메라와 거리 계산
+        return Camera.main.ScreenToWorldPoint(mousePosition);
     }
 }
