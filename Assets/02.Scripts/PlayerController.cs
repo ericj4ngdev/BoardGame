@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private Transform tr;
     
     public float waitTime; // 이동 대기 시간
-    public int moveTime = 1;
+    public int moveTime = 10;
     public bool isMoving = false;
     public float num;
     public GameObject test;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Item_1" || other.tag == "Item_2")
         {
             test = other.gameObject;
-            // Debug.Log(test.name);
+            Debug.Log(test.name);
         }
     }
 
@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
     
     public void FollowPath(List<Node_> path)
     {
-        moveSpeed = (path.Count) * 10 / moveTime;
+        moveSpeed = (path.Count) / moveTime;
         nodeEnumerator = path.GetEnumerator();
         if (nodeEnumerator.MoveNext())
         {

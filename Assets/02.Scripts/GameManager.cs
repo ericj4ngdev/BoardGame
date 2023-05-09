@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
     private void UpdateTurnUI()
     {
         // "Player 1's Turn" 또는 "Player 2's Turn" 등의 텍스트를 UI 요소에 업데이트
-        turnText.text = player1Turn ? "Player 1's Turn" : "Player 2's Turn";
+        turnText.text = player1Turn ? "Player 1 Turn" : "AI Turn";
     }
 
     private IEnumerator DragTile(GameObject player)
@@ -334,6 +334,7 @@ public class GameManager : MonoBehaviour
         GameObject previousObject = rotatingObject;
         previousObject.transform.position += new Vector3(0,5,0);
         this.GetComponent<BinaryInfo>().AIPushTile_2();     // AI판단
+        string info = GetComponent<BinaryInfo>().location;
         
         int rotate = GetComponent<BinaryInfo>().rotate;
         for (int i = 0; i < rotate; i++)
@@ -343,7 +344,12 @@ public class GameManager : MonoBehaviour
             value01 = 0;
         }
         yield return StartCoroutine(Value01Co());
-        boardInfo.PushNode(this.GetComponent<BinaryInfo>().location);           // 행동
+        
+        boardInfo.DragTile(rotatingObject, info);
+        value01 = 0;
+        yield return StartCoroutine(Value01Co());
+        boardInfo.PushNode(info);           // 행동
+        
         value01 = 0;
         // 마우스로 타일 드래그 드롭
         while (true)
@@ -405,24 +411,6 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator MovePlayer(GameObject player)
     {
-        // Debug.Log($"{player.name} MovePlayer 시작");
-        // 플레이어 말 이동
-        // OnMovePlayerMove();
-        // player.GetComponent<Rigidbody>().useGravity = true;
-        // player.GetComponent<Collider>().isTrigger = true;
-        // player.GetComponent<Rigidbody>().isKinematic = true;
-        // foreach (var VARIABLE in player1_Items)
-        // {
-        //     VARIABLE.GetComponent<Rigidbody>().useGravity = false;
-        //     VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
-        //     VARIABLE.GetComponent<Collider>().isTrigger = true;
-        // }
-        // foreach (var VARIABLE in player2_Items)
-        // {
-        //     VARIABLE.GetComponent<Rigidbody>().useGravity = false;
-        //     VARIABLE.GetComponent<Rigidbody>().isKinematic = true;
-        //     VARIABLE.GetComponent<Collider>().isTrigger = true;
-        // }
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");
@@ -431,33 +419,10 @@ public class GameManager : MonoBehaviour
             {
                 // 먹는거 시전
                 isPlayerItem(player);
-                
                 break;
             }
             player.GetComponent<Collider>().isTrigger = false;
             player.GetComponent<Rigidbody>().isKinematic = false;
-            /*for (int i = 0; i < TileBoard.Count; i++)
-            {
-                // TileBoard[i].GetComponent<Node>().reachableTileColorChange();
-                // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
-                if (TileBoard[i].GetComponent<Node>().isClicked)
-                {
-                    board.GetComponent<Board>().FollowFinalNodeList_player(TileBoard[i].gameObject, player);
-                    TileBoard[i].GetComponent<Node>().isClicked = false;
-                    yield break;
-                }
-            }
-            for (int i = 0; i < FixedTile.Count; i++)
-            {
-                // FixedTile[i].GetComponent<Node>().reachableTileColorChange();
-                // 모든 타일 중 하나라도 클릭한 적이 있다면 다음 턴
-                if (FixedTile[i].GetComponent<Node>().isClicked)
-                {
-                    board.GetComponent<Board>().FollowFinalNodeList_player(FixedTile[i].gameObject, player);
-                    FixedTile[i].GetComponent<Node>().isClicked = false;
-                    yield break;
-                }
-            }*/
             // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
             yield return null;
         }
@@ -536,6 +501,7 @@ public class GameManager : MonoBehaviour
     // ==========================================
     public void isPlayerItem(GameObject player)
     {
+        Debug.Log(player);
         if (player == player1_Prefab)
         {
             if (player1_Items.Contains(player.GetComponent<PlayerController>().test))
@@ -544,19 +510,18 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"{player.GetComponent<PlayerController>().test.name} 획득!!");
                 player.GetComponent<PlayerController>().test.SetActive(false);
                 player1_Items.Remove(player.GetComponent<PlayerController>().test);
+                Destroy(player.GetComponent<PlayerController>().test); 
             }
-            Destroy(player.GetComponent<PlayerController>().test); 
         }
-
-        if (player == player2_Prefab)
+        if (player.name == player2_Prefab.name)
         {
             if (player2_Items.Contains(player.GetComponent<PlayerController>().test))
             {
                 Debug.Log($"{player.GetComponent<PlayerController>().test.name} 획득!!");
                 player.GetComponent<PlayerController>().test.SetActive(false);
                 player2_Items.Remove(player.GetComponent<PlayerController>().test);
+                Destroy(player.GetComponent<PlayerController>().test); 
             }
-            Destroy(player.GetComponent<PlayerController>().test); 
         }
     }
 

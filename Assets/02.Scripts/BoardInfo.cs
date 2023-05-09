@@ -47,6 +47,32 @@ public class BoardInfo : MonoBehaviour
             Gizmos.DrawWireCube(center_z[i]/3, size_z);
         
     }
+
+    public void DragTile(GameObject rotating, string info)
+    {
+        char location = info[0];
+        int num = int.Parse(info.Substring(1));
+
+        switch (location)
+        {
+            case 'L':
+                rotating.GetComponent<Node>().OnMoveto(waypoints[3*1+num].transform.position);
+                break;
+            case 'R':
+                rotating.GetComponent<Node>().OnMoveto(waypoints[3*2+num].transform.position);
+                break;
+            case 'T':
+                rotating.GetComponent<Node>().OnMoveto(waypoints[num].transform.position);
+                break;
+            case 'B':
+                rotating.GetComponent<Node>().OnMoveto(waypoints[3*3+num].transform.position);
+                break;
+        }
+
+        
+        
+    }
+    
     
     public void PushNode(string info)
     {
@@ -137,7 +163,7 @@ public class BoardInfo : MonoBehaviour
                     sortedColliders_z[2-num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[2-num][i-1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[3*3+2-num].transform); // 아래쪽 지점
+                lastOnePath.Add(waypoints[3*3+num].transform); // 아래쪽 지점
                 lastOnePath.Add(cornerPoint[0].transform); // 오른쪽 아래 코너지점
                 lastOnePath.Add(SpawnPoint.transform);
                 sortedColliders_z[2-num][0].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
@@ -150,7 +176,7 @@ public class BoardInfo : MonoBehaviour
                 SpawnObject = sortedColliders_z[2-num][0].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[2-num][0].gameObject;
                 resetBtn();
-                waypoints[3*3+2-num].SetActive(false);
+                waypoints[3*3+num].SetActive(false);
                 break;
             case 'B':
                 // 1칸씩 이동
@@ -158,7 +184,7 @@ public class BoardInfo : MonoBehaviour
                     sortedColliders_z[2-num][i].gameObject.GetComponent<Node>().OnMoveto(sortedColliders_z[2-num][i+1].transform.position);
                 
                 // 마지막거 이동
-                lastOnePath.Add(waypoints[3*0+2-num].transform); // 위쪽 지점
+                lastOnePath.Add(waypoints[3*0+num].transform); // 위쪽 지점
                 lastOnePath.Add(cornerPoint[1].transform); // 오른쪽 위 코너지점
                 lastOnePath.Add(SpawnPoint.transform);
                 sortedColliders_z[2-num][sortedColliders_z[2-num].Length - 1].gameObject.GetComponent<Node>().OnMoveto_(lastOnePath);
@@ -170,7 +196,7 @@ public class BoardInfo : MonoBehaviour
                 SpawnObject = sortedColliders_z[2-num][sortedColliders_z[2-num].Length - 1].gameObject;
                 gameManager.rotatingObject = sortedColliders_z[2-num][sortedColliders_z[2-num].Length - 1].gameObject;
                 resetBtn();
-                waypoints[3*0+2-num].SetActive(false);
+                waypoints[3*0+num].SetActive(false);
                 break;
         }
         // 클릭 여부 점검을 위해 추가
