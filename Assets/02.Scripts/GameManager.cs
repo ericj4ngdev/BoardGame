@@ -19,14 +19,9 @@ public class GameManager : MonoBehaviour
     public GameObject rotatingObject;
     public GameObject board;
     public BoardInfo boardInfo;
-
     public List<int> tileCounts = new List<int>();
-    // 총 34개 타일로 8,8,8,10 이 적당
-    // 
     
     [Header("Players")] 
-    // public GameObject[] player;
-    // Vector3[] playerInitialPosition;
     public GameObject player1_Prefab;
     public GameObject player2_Prefab;
     Vector3 player1_InitialPosition;
@@ -42,7 +37,6 @@ public class GameManager : MonoBehaviour
     private bool endTurnClicked;
     private bool player1Turn;
     private bool isPaused = false;
-
     
     [Header("WayPoints")]
     public List<GameObject> waypoint;
@@ -60,17 +54,15 @@ public class GameManager : MonoBehaviour
     public List<GameObject> BlueItem = new List<GameObject>();
     public List<GameObject> RedItem = new List<GameObject>();
     
-    
-    // private Vector2Int BoardSize = new Vector2Int(5,5);
     private Vector3 eulerRotation;
     private float time;
     private Node node;
     private Coroutine gameLoopCoroutine;
-    private bool isRotating = false;
+    public bool isRotating = false;
 
     private void Awake()
     {
-        
+        // 회전각
         eulerRotation = transform.rotation.eulerAngles;
         AllItemsPos = new List<Transform>(FixedTile.Count);
         for (int i = 0; i < waypoint.Count; i++)
@@ -83,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         player1Turn = true;
         EndTurnButton.SetActive(false);
-        SpawnItem_();
+        SpawnItem();
 
         StartCoroutine(GameLoop());
     }
@@ -186,9 +178,8 @@ public class GameManager : MonoBehaviour
         // 스캔
         this.GetComponent<BinaryInfo>().ScanBoard();
         
-        // 스폰 오브젝트는 드래그 가능
-        // 타일 옮기기 전에는 플레이어의 말을 이동할 수 없음
-        rotatingObject.GetComponent<Node>().isSelected = true;
+        // AI턴에서는 아무것도 못하게 함.
+        rotatingObject.GetComponent<Node>().isSelected = false; // 드래그 불가
         
         // 타일 옮기기 
         yield return StartCoroutine(AIDragTile(player));
@@ -204,10 +195,7 @@ public class GameManager : MonoBehaviour
         foreach (var VARIABLE in TileBoard)
             VARIABLE.GetComponent<Node>().isPushed = false;
         Debug.Log($"{player.name} MovePlayer 끝");
-        
-        // 여기서 아무것도 못하게 함. 돌리기는 물론 spawnObject 클릭하지 못하게 하기
-        rotatingObject.GetComponent<Node>().isSelected = false; // 드래그 불가
-        
+
         UpdateCoroutineStatus("턴 넘기기");
         // EndTurnButton을 활성화해서 플레이어가 클릭하도록 함
         EndTurnButton.SetActive(true);
@@ -231,7 +219,7 @@ public class GameManager : MonoBehaviour
         
         // 타일 옮기기 
         yield return StartCoroutine(DragTile(player));
-        yield return StartCoroutine(RestDFS());
+        // yield return StartCoroutine(RestDFS());
         
         // 플레이어 기준으로 DFS 하기, 그런데 움직인 타일의 위치가 반영이 안되어 있다. 
         // 모든 node의 isPushed = true로 해야 클릭 가능.
@@ -266,7 +254,6 @@ public class GameManager : MonoBehaviour
         // UI 업데이트
         StatusText.text = coroutineName;
     }
-    
     
     public void OnEndTurnClicked()
     {
@@ -316,8 +303,7 @@ public class GameManager : MonoBehaviour
                     VARIABLE.transform.SetParent(previousObject.transform);
                     VARIABLE.transform.position = previousObject.transform.position + new Vector3(0,1,0);
                 }
-                
-                
+
                 // 여기 있는 건 다음 spawn물건임.
                 // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
                 break;
@@ -330,6 +316,7 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator AIDragTile(GameObject player)
     {
+        UpdateCoroutineStatus("DragTile");
         // 밀어넣을 타일 미리 저장.
         GameObject previousObject = rotatingObject;
         previousObject.transform.position += new Vector3(0,5,0);
@@ -354,6 +341,7 @@ public class GameManager : MonoBehaviour
         // 마우스로 타일 드래그 드롭
         while (true)
         {
+            // UpdateCoroutineStatus("DragTile");
             rotatingObject.GetComponent<Node>().isSelected = true;
             // 타일을 놓았을 때 타일 영역에 들어가면 타일 이동 종료. 다음 spawningObejct
             
@@ -392,11 +380,16 @@ public class GameManager : MonoBehaviour
                 // Debug.Log(rotatingObject.GetComponent<Node>().isPushed);
                 break;
             }
-            UpdateCoroutineStatus("DragTile");
+            
             yield return null;
         }
         
     }
+    
+    /// <summary>
+    /// Gizmo상 변한 미로에 대한 플레이어 DFS갱신하는데 걸리는 시간 딜레이 
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator RestDFS()
     {
         time = 0;
@@ -405,7 +398,7 @@ public class GameManager : MonoBehaviour
             time += Time.deltaTime;
             if(time>=2f)
                 break; 
-            UpdateCoroutineStatus("이동 중");
+            UpdateCoroutineStatus("타일 옮기는 중");
             yield return null;
         }
     }
@@ -434,40 +427,31 @@ public class GameManager : MonoBehaviour
         Debug.Log($"{player.name} AIMovePlayer 시작");
         // 플레이어 말 이동
         testTile = this.GetComponent<BinaryInfo>().AIMove();     // AI판단
-        // Vector3 v = GetComponent<BinaryInfo>().target;
-        // player.transform.Translate(v);
+        // FollowFinalNodeList_player 함수가 Coroutine이므로 yield return을 사용하여 대기합니다.
         board.GetComponent<Board>().FollowFinalNodeList_player(testTile,player);
-        yield return StartCoroutine(Value01Co());
+        // bool 타입 변수를 만들어서 코루틴이 끝나기 전까지는 bool이 false이고 그 뒤론 true가 되도록 하는 거다. 
         
         while (true)
         {
             UpdateCoroutineStatus("MovePlayer 중");
-            // player.GetComponent<PlayerController>().MoveController();
             // 움직이는 리스트를 받는다. 숫자정보. 예를 들어 1이면 x+1, 이런 느낌 
-            // 먹는거 시전
-            isPlayerItem(player);
-            if (!player.GetComponent<Rigidbody>().isKinematic) break;
+            // 멈추면 먹는거 시전
+            // Debug.Log(player.GetComponent<PlayerController>().isStopped);
+            if (player.GetComponent<PlayerController>().isStopped)
+            {
+                Debug.Log("아이템 확인중");
+                isPlayerItem(player);
+                break;
+            }
+            
             player.GetComponent<Collider>().isTrigger = false;
             player.GetComponent<Rigidbody>().isKinematic = false;
             
             yield return null;
-            // 마우스로 타일 클릭시 플레이어 말을 해당 타일 위치로 이동시키는 기능 활성화.
         }
     }
-    
-    private void OnMovePlayerMove()
-    {
-        for (int i = 0; i < TileBoard.Count; i++)
-        {
-            // TileBoard[i].GetComponent<Node>().reachableTileColorChange();
-        }
 
-        for (int i = 0; i < FixedTile.Count; i++)
-        {
-            // FixedTile[i].GetComponent<Node>().reachableTileColorChange();
-        }
-    }
-    
+
     [Range(0f, 1f)] [SerializeField] private float value01;
     IEnumerator Value01Co()
     {
@@ -513,7 +497,7 @@ public class GameManager : MonoBehaviour
                 Destroy(player.GetComponent<PlayerController>().test); 
             }
         }
-        if (player.name == player2_Prefab.name)
+        if (player == player2_Prefab)
         {
             if (player2_Items.Contains(player.GetComponent<PlayerController>().test))
             {
@@ -543,7 +527,7 @@ public class GameManager : MonoBehaviour
         return list;
     }
 
-    private void SpawnItem_()
+    private void SpawnItem()
     {
         // 각 색에 맞게 분류했고 위치만 노중복으로 배치할 것.
         GameObject itemPrefab;
@@ -583,63 +567,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    private void SpawnItem()
-    {
-        int index1, index2;
-        GameObject clone;
-        Shuffle(AllItems);
-        Shuffle(AllItemsPos);
-        Queue<GameObject> itemqueue = new Queue<GameObject>(AllItems);
-        Queue<Transform> itemPosqueue = new Queue<Transform>(AllItemsPos);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            if (itemqueue.Count > 0)
-            {
-                GameObject item = itemqueue.Dequeue();
-                Transform pos = itemPosqueue.Dequeue();
-                clone = Instantiate(item, pos);
-                // Item item_ = clone.GetComponent<Item>();
-
-                player1_Items.Add(clone);
-                player1_ItemsforExcept.Add(item);
-                player1_Itemspos.Add(pos);
-            }
-            else
-            {
-                break;
-            }
-        }
     
-        // 플레이어 2에게 아직 할당되지 않은 아이템 중 플레이어 1과 겹치지 않는 아이템 할당
-        itemqueue = new Queue<GameObject>(AllItems.Except(player1_ItemsforExcept));
-        itemPosqueue = new Queue<Transform>(AllItemsPos.Except(player1_Itemspos));
-        for (int i = 0; i < 4; i++)
-        {
-            index2 = Random.Range(0, FixedTile.Count);
-            if (itemqueue.Count > 0)
-            {
-                GameObject item = itemqueue.Dequeue();
-                Transform pos = itemPosqueue.Dequeue();
-                if (!player1_Items.Contains(item) && !player2_Items.Contains(item) && !player1_Itemspos.Contains(pos) && !player2_Itemspos.Contains(pos))
-                {
-                    clone = Instantiate(item, pos);
-                    player2_Items.Add(clone);
-                    player2_Itemspos.Add(pos);
-                }
-                else
-                {
-                    itemqueue.Enqueue(item);
-                    itemPosqueue.Enqueue(pos);
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
     private void SpawnTiles()
     {
         GameObject tilePrefab = null; // 변수 초기화
@@ -669,32 +597,32 @@ public class GameManager : MonoBehaviour
             TileBoard.Add(node);
         }
     }
-
+    
     public void RotateLeft()
     {
         if (isRotating) return;
         isRotating = true;
         eulerRotation.y -= 90f;
-        Vector3 end = eulerRotation;
-        StartCoroutine("RotateTo",end);
+        Vector3 axis = Vector3.up; // 회전할 축
+        StartCoroutine("RotateTo", Quaternion.AngleAxis(-90f, axis) * rotatingObject.transform.rotation);
     }
+
     public void RotateRight()
     {
         if (isRotating) return;
         isRotating = true;
         eulerRotation.y += 90f;
-        Vector3 end = eulerRotation;
-        StartCoroutine("RotateTo",end);
+        Vector3 axis = Vector3.up; // 회전할 축
+        StartCoroutine("RotateTo", Quaternion.AngleAxis(90f, axis) * rotatingObject.transform.rotation);
     }
-    
-    private IEnumerator RotateTo(Vector3 end)
+
+    private IEnumerator RotateTo(Quaternion endRotation)
     {
         float	current  = 0;
         float	percent  = 0;
         float	moveTime = 0.1f;
-        
+    
         Quaternion startRotation = rotatingObject.transform.rotation;
-        Quaternion endRotation = Quaternion.Euler(end);
 
         while ( percent < 1 )
         {
@@ -702,11 +630,12 @@ public class GameManager : MonoBehaviour
             percent = current / moveTime;
             // 회전하는 코드
             rotatingObject.transform.rotation = Quaternion.Lerp(startRotation, endRotation, percent);
-
             yield return null;
         }
         isRotating = false;
     }
+
+
     
     
     

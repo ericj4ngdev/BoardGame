@@ -78,12 +78,6 @@ public class Board : MonoBehaviour
     
     public void FollowFinalNodeList_player(GameObject targetTile, GameObject player)
     {
-        // for(int i = 0; i < transform.childCount; i++)
-        // {
-        //     Transform child = transform.GetChild(i);
-        //     Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(child.position.x), 0, Mathf.RoundToInt(child.position.z));
-        //     if(TilePosition == targetTile)
-        // }
         Vector3Int TilePosition = new Vector3Int(Mathf.RoundToInt(targetTile.transform.position.x), 0,
             Mathf.RoundToInt(targetTile.transform.position.z));
         targetPos = TilePosition;

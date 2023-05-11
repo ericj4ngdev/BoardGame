@@ -843,6 +843,7 @@ MonoBehaviour:
   num: 1
   test: {fileID: 0}
   playerPosition: {x: 0, y: 0, z: 0}
+  isStopped: 0
 --- !u!54 &125105150
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1102,11 +1103,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147547784}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 0.1, y: 1, z: 0.1}
+  m_LocalPosition: {x: 24, y: 0, z: -8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 504380094}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &153951469
 GameObject:
@@ -1596,6 +1597,7 @@ MonoBehaviour:
   - {fileID: 583309151469991877, guid: 5516bea024af4724ab51a14fa801a35d, type: 3}
   - {fileID: 3163133994814326644, guid: f7bef3fee70dd3d43a743131f781a3da, type: 3}
   - {fileID: 1605683045741145559, guid: 1fcee13d0b0689543ab60c32d65ed75e, type: 3}
+  isRotating: 0
   testTile: {fileID: 0}
   value01: 0
 --- !u!4 &231717543
@@ -3813,10 +3815,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504380090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24, y: -0.5, z: -8}
-  m_LocalScale: {x: 10, y: 1, z: 10}
-  m_Children:
-  - {fileID: 147547785}
+  m_LocalPosition: {x: 23.5, y: -0.55, z: -7}
+  m_LocalScale: {x: 10, y: 0.9, z: 10}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4838,7 +4839,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -4849,7 +4850,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Status
+  m_Text: "\uD0C0\uC77C \uC62E\uAE30\uB294 \uC911"
 --- !u!222 &676803780
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8172,6 +8173,7 @@ MonoBehaviour:
   num: 1
   test: {fileID: 0}
   playerPosition: {x: 0, y: 0, z: 0}
+  isStopped: 0
 --- !u!1 &1210084150
 GameObject:
   m_ObjectHideFlags: 0

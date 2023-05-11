@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float num;
     public GameObject test;
     public Vector3 playerPosition = Vector3.zero;
+    public bool isStopped = false;
     
     private void Awake()
     {
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "Item_1" || other.tag == "Item_2")
         {
             test = other.gameObject;
-            Debug.Log(test.name);
+            // Debug.Log(test.name);
         }
     }
 
@@ -102,6 +103,7 @@ public class PlayerController : MonoBehaviour
         tr.position = end;
         isMoving = false;
     }
+
     
     
     public void FollowPath(List<Node_> path)
@@ -117,20 +119,25 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator MoveToNextNode(float moveSpeed)
     {
-        // 차례차례 MoveToWards 수행
-        // 여기서 moveSpeed 를 올리면 빨리 갈 듯 
+        isStopped = false;
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
+            if (isStopped) yield break;
             transform.position = Vector3.Lerp(transform.position, targetPosition, num);
             yield return null;
         }
-        // 여기가 시간 조절하는 곳
         yield return new WaitForSeconds(waitTime);
-
         if (nodeEnumerator.MoveNext())
         {
             targetPosition = new Vector3(nodeEnumerator.Current.x, transform.position.y, nodeEnumerator.Current.z);
-            StartCoroutine("MoveToNextNode",moveSpeed);
+            StartCoroutine("MoveToNextNode", moveSpeed);
         }
+        else StopMoving();      // 멈추면 isStopped 도 true
     }
+
+    public void StopMoving()
+    {
+        isStopped = true;
+    }
+
 }

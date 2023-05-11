@@ -33,10 +33,6 @@ public class Node : MonoBehaviour
     private List<GameObject> collidedObjects;
     public bool isSelected = false;             // 
     
-    private Camera mainCamera;
-    [SerializeField] private LayerMask layerMask;
-    [SerializeField] private Vector3 offset = new Vector3(0f,3f,0f);
-    
     private void Awake()
     {
         rend = GetComponent<Renderer>();
@@ -47,7 +43,6 @@ public class Node : MonoBehaviour
         board = GetComponentInParent<Board>();
         // print(isDFS(board.DFSList));
         gameManager = FindObjectOfType<GameManager>();
-        mainCamera = Camera.main;
     }
     
     void Start()
@@ -128,32 +123,16 @@ public class Node : MonoBehaviour
     private void OnMouseDrag()
     {
         if (!isSelected) return;
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, float.MaxValue, layerMask))
-        {
-            transform.position = hit.point + offset;
-        }
+        transform.position = GetMouseAsWorldPoint() + mOffset + new Vector3(0,2,0);;
     }
 
     private void OnMouseDown()
     {
         // 클릭
         if (!isSelected) return;
-        
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, float.MaxValue,layerMask))
-        {
-            transform.position += offset;
-        }
-        
-        /*mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+        mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseAsWorldPoint();
-        transform.position += new Vector3(0,2,0);*/
-        
-        
-        
+        transform.position += new Vector3(0,2,0);
         // 타일을 밀었다면 클릭가능
         /*if (isPushed)
         {
@@ -179,7 +158,7 @@ public class Node : MonoBehaviour
         if (collidedObjects.Count == 0)
         {
             print(" 제자리로 ");
-            transform.position = new Vector3(24, 0, -8);  
+            transform.position = new Vector3(24, 0f, -8);  
                 // += new Vector3(0,-2,0);
             return;
         }

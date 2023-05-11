@@ -68,9 +68,6 @@ public class BoardInfo : MonoBehaviour
                 rotating.GetComponent<Node>().OnMoveto(waypoints[3*3+num].transform.position);
                 break;
         }
-
-        
-        
     }
     
     

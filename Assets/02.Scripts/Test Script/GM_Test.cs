@@ -1,73 +1,67 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GM_Test : MonoBehaviour
 {
-    public GameObject player1;
-    // public GameObject player2;
-    private Player_Test player;
-    private bool player1Turn;
-    private bool isPlayerMoving;
-    private void Start()
-    {
-        player1Turn = true;
-        player = GetComponent<Player_Test>();
-        StartCoroutine(GameLoop());
-    }
+    public bool isRotating = false;
+    private Vector3 eulerRotation;
+    public GameObject rotatingObject;
 
-    private IEnumerator GameLoop()
+
+    private void Update()
     {
-        while (true)
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (player1Turn)
-            {
-                yield return StartCoroutine(PlayerTurn(player1));
-            }
-            player1Turn = !player1Turn;
+            RotateLeft();
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            RotateRight();
         }
     }
 
-    private IEnumerator PlayerTurn(GameObject player)
+    public void RotateLeft()
     {
-        yield return StartCoroutine(MovePlayer(player));
-        yield return StartCoroutine(Act1(player));
-        Debug.Log($"{player.name} Act1 끝");
-        yield return StartCoroutine(Act2(player));
-        Debug.Log($"{player.name} Act2 끝");
-
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+        if (isRotating) return;
+        isRotating = true;
+        eulerRotation.y -= 90f;
+        Vector3 end = eulerRotation;
+        StartCoroutine("RotateTo",end);
     }
-
-    private IEnumerator MovePlayer(GameObject player)
+    public void RotateRight()
     {
-        // 이동 가능 상태로 변경
-        Debug.Log($"{player.name} MovePlayer 시작");
-        while (true)
-        {
-            player.GetComponent<Player_Test>().MoveController();
-            if (Input.GetKeyDown(KeyCode.Space)) break;
-            yield return null;
-        }
+        if (isRotating) return;
+        isRotating = true;
+        eulerRotation.y += 90f;
+        Vector3 end = eulerRotation;
+        StartCoroutine("RotateTo",end);
     }
     
-    private IEnumerator Act1(GameObject player)
+    private IEnumerator RotateTo(Vector3 end)
     {
-        Debug.Log($"{player.name} Act1 시작");
-        while (true)
+        float	current  = 0;
+        float	percent  = 0;
+        float	moveTime = 0.1f;
+        
+        Quaternion startRotation = rotatingObject.transform.rotation;
+        Quaternion endRotation = Quaternion.Euler(end);
+
+        while ( percent < 1 )
         {
+            current += Time.deltaTime;
+            percent = current / moveTime;
+            // 회전하는 코드
+            rotatingObject.transform.rotation = Quaternion.Lerp(startRotation, endRotation, percent);
+
             yield return null;
         }
-    }
-
-    private IEnumerator Act2(GameObject player)
-    {
-        Debug.Log($"{player.name} Act2 시작");
-        while (true)
-        {
-            if(Input.GetKeyDown(KeyCode.Keypad2)) break;
-
-            yield return null;
-        }
+        isRotating = false;
     }
 }
