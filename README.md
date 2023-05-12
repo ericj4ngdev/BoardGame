@@ -1,5 +1,11 @@
 # 게임소개
 - 제목 : The aMAZEing Labyrinth
+
+![image](https://github.com/ericj4ngdev/BoardGame/assets/108036322/36f05065-da6d-410e-87a3-4f2940c2f08c)
+
+![image](https://github.com/ericj4ngdev/BoardGame/assets/108036322/24afd4df-301c-4fdc-99ec-3eb481c88811)
+
+
 - 장르 : 보드게임, 턴제
 - 플랫폼 : PC
 - 제작 기간 : 2023-03-25 ~ 2023-05-13
@@ -12,6 +18,7 @@
         
     - 주어진 보물(=목표물)을 모두 찾아낸 후, 자신의 위치로 돌아오는 사람이 승리한다.
 - 플레이 영상
+
 
 # 개발 환경
 Visual Studio 2022 Community
