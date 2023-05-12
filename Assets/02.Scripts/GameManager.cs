@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public Text WinText;
     public GameObject pausePanel;
     private bool endTurnClicked;
-    private bool player1Turn;
+    private bool isPlayer1Turn;
     private bool isPaused = false;
     
     [Header("WayPoints")]
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        player1Turn = true;
+        isPlayer1Turn = true;
         EndTurnButton.SetActive(false);
         SpawnItem();
 
@@ -112,31 +112,21 @@ public class GameManager : MonoBehaviour
             // 현재 턴 정보 업데이트
             UpdateTurnUI();
             OnMovePlayerFinished();
-            if (player1Turn) yield return StartCoroutine(PlayerTurn(player1_Prefab));
+            // 플레이어 턴인가?
+            if (isPlayer1Turn) yield return StartCoroutine(PlayerTurn(player1_Prefab));
             else yield return StartCoroutine(AITurn(player2_Prefab));
             
-            player1Turn = !player1Turn;
+            // 턴 전환
+            isPlayer1Turn = !isPlayer1Turn;
             if (IsGameOver()) break;
         }
-
         // 코루틴 종료 후 gameLoopCoroutine을 null로 초기화
         gameLoopCoroutine = null;
-    }
-
-    public void RestartGame()
-    {
-        if (gameLoopCoroutine != null)
-        {
-            // 현재 실행 중인 GameLoop 코루틴 중지
-            StopCoroutine(gameLoopCoroutine);
-        }
-        SceneManager.LoadScene("ProtoType3D");
     }
 
     private bool IsGameOver()
     {
         bool gameOver = false;
-    
         // 승리 또는 패배 조건 판단 로직 작성
         if (player1_Items.Count == 0)
         {
@@ -152,9 +142,17 @@ public class GameManager : MonoBehaviour
             WinText.text = "Player 2 Wins!";
             StartCoroutine(FadeInImage(Winner, WinText,1f));
         }
-        // 출력
-        
         return gameOver;
+    }
+    
+    public void RestartGame()
+    {
+        if (gameLoopCoroutine != null)
+        {
+            // 현재 실행 중인 GameLoop 코루틴 중지
+            StopCoroutine(gameLoopCoroutine);
+        }
+        SceneManager.LoadScene("ProtoType3D");
     }
 
     IEnumerator FadeInImage(Image image, Text text, float fadeTime)
@@ -264,7 +262,7 @@ public class GameManager : MonoBehaviour
     private void UpdateTurnUI()
     {
         // "Player 1's Turn" 또는 "Player 2's Turn" 등의 텍스트를 UI 요소에 업데이트
-        turnText.text = player1Turn ? "Player 1 Turn" : "AI Turn";
+        turnText.text = isPlayer1Turn ? "Player 1 Turn" : "AI Turn";
     }
 
     private IEnumerator DragTile(GameObject player)

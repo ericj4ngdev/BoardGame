@@ -74,18 +74,18 @@ public class BoardInfo : MonoBehaviour
     public void PushNode(string info)
     {
         // 매개변수 받기
-        char location = info[0];
-        int num = int.Parse(info.Substring(1));
+        char location = info[0];                                // 앞 글자는 상하좌우 위치 
+        int num = int.Parse(info.Substring(1));                 // 뒤 숫자는 각 위치의 인덱스 
         List<Transform> lastOnePath = new List<Transform>();
         
         Collider[][] hitColliders_x = new Collider[center_x.Length][];
         Collider[][] hitColliders_z = new Collider[center_z.Length][];
-        // 히트 정보 저장 및 정렬(x 좌표를 기준으로 오름차순 정렬)
+        // 히트 정보 저장 및 정렬(x,z 좌표를 기준으로 오름차순 정렬)
         for (int i = 0; i < center_x.Length; i++)
         {
             hitColliders_x[i] = Physics.OverlapBox(transform.position + center_x[i], size_x, Quaternion.identity, layerMask);
             Array.Sort(hitColliders_x[i], (c1, c2) => c1.bounds.center.x.CompareTo(c2.bounds.center.x));
-            
+    
             hitColliders_z[i] = Physics.OverlapBox(transform.position + center_z[i], size_z, Quaternion.identity,layerMask);
             Array.Sort(hitColliders_z[i], (c1, c2) => c1.bounds.center.z.CompareTo(c2.bounds.center.z));
         }

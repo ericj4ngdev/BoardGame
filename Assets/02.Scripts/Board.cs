@@ -46,12 +46,7 @@ public class Board : MonoBehaviour
         node = GetComponentInChildren<Node>();
         tr = playerController.GetComponent<Transform>();
     }
-    
-    private void Start()
-    {
-        // DFS();
-    }
-    
+
     /*public void FollowFinalNodeList(GameObject targetTile)
     {
         // for(int i = 0; i < transform.childCount; i++)
@@ -110,7 +105,6 @@ public class Board : MonoBehaviour
     }*/
     
     // 감지해서 출력
-    
     public void SetAllChildrenIsClickedFalse()
     {
         Node[] childNodes = GetComponentsInChildren<Node>();
@@ -154,7 +148,6 @@ public class Board : MonoBehaviour
                 NodeArray[i, j] = new Node_(isWall, isVisited,i + bottomLeft.x, j + bottomLeft.z);
             }
         }
-
         /*for (int i = 0; i < sizeX; i++)
         {
             for (int j = 0; j < sizeZ; j++)
@@ -163,7 +156,6 @@ public class Board : MonoBehaviour
                 Debug.Log($"Node [{i},{j}]: isWall={node.isWall}, x={node.x}, z={node.z}");
             }
         }*/
-
     }
 
     void OnDrawGizmos()
@@ -216,8 +208,7 @@ public class Board : MonoBehaviour
 
             OpenList.Remove(CurNode);
             ClosedList.Add(CurNode);
-
-
+            
             // 마지막
             if (CurNode == TargetNode)
             {
@@ -230,12 +221,10 @@ public class Board : MonoBehaviour
 
                 FinalNodeList.Add(StartNode);
                 FinalNodeList.Reverse();
-
                 // for (int i = 0; i < FinalNodeList.Count; i++)
                 // {
                 //     print(i + "번째는 " + FinalNodeList[i].x + ", " + FinalNodeList[i].z);
                 // }
-
                 return;
             }
 

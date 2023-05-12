@@ -162,7 +162,7 @@ public class BinaryInfo : MonoBehaviour
         test = new FileStream("Assets/Resources/test.txt", FileMode.OpenOrCreate);
         testStreamWriter = new StreamWriter(test);
         str = "";
-        ratio = 0.5f;
+        ratio = 0f;
     }
 
     private void OnApplicationQuit()
