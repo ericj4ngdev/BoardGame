@@ -1,7 +1,6 @@
 # 게임소개
 - 제목 : The aMAZEing Labyrinth
-- 플레이 영상
-https://youtu.be/EwcdFb7qusA
+
 <div align="center">
     <img src= "https://github.com/ericj4ngdev/BoardGame/assets/108036322/36f05065-da6d-410e-87a3-4f2940c2f08c" />
 </div>
@@ -27,20 +26,17 @@ https://youtu.be/EwcdFb7qusA
     - 만약 아이템이 보드 밖으로 밀리면 해당 타일과 같이 이동한다.
     - 미로 타일을 밀어넣었는데 만약 반대편 맨끝에 게임말이 놓여있었다면 게임말은 반대편 타일(방금 밀어넣은 미로타일 위)로 순간이동한다.
     - 이전 게임자가 밀어넣어 나온 미로 타일로 상대가 원상복구하는 것을 방지하기 위해 밀어낸 구역의 반대편 구역이 다음 턴에 비활성화된다.
-
+- 플레이 영상
+https://youtu.be/EwcdFb7qusA
+- 주요 개발 내용
+https://www.notion.so/The-aMAZEing-Labyrinth-07779d5265b74b5bbfaeba23f104522c?pvs=4
+- 게임 다운로드 링크
+https://drive.google.com/drive/folders/1ImwF2jKaGJd5_aeAMr6Tevqhnto978Qo?usp=sharing
 
 # 개발 환경
 Visual Studio 2022 Community
 
 Unity3D 20.3.25f1
-
-# 개발 일정
-
-1~2주차 : 2D로 프로토타입 제작
-
-3~4주차 : 3D로 제작
-
-5~6주차 : AI 제작
 
 # 개요 및 개발목적
 
