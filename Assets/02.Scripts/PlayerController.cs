@@ -120,9 +120,10 @@ public class PlayerController : MonoBehaviour
     private IEnumerator MoveToNextNode(float moveSpeed)
     {
         isStopped = false;
+        // 플레이어와 목표타일 사이 거리가 가까워질 때까지 
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
-            if (isStopped) yield break;
+            if (isStopped) yield break;     // 멈추면 빠져나오기
             transform.position = Vector3.Lerp(transform.position, targetPosition, num);
             yield return null;
         }

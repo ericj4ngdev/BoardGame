@@ -563,6 +563,9 @@ public class BinaryInfo : MonoBehaviour
     }
     public void AIPushTile_2()
     {
+        List<Score> arr_1 = new List<Score>();
+        List<Score> arr_2 = new List<Score>();
+        
         #region 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
         {
@@ -640,8 +643,7 @@ public class BinaryInfo : MonoBehaviour
         }*/
 
         str += sum_1 + " " + sum_2 + " " + "\n";
-        List<Score> arr_1 = new List<Score>();
-        List<Score> arr_2 = new List<Score>();
+        
         // Score p1 = new Score();
         // Score p2 = new Score();
         int p = 0;
