@@ -1707,6 +1707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98cf464f980df54baa2fa9d1c0f2e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boardInfo: {fileID: 1012179942}
   ratio: 0
   location: 
   rotate: 0
@@ -1715,6 +1716,7 @@ MonoBehaviour:
   info: 
   target: {x: 0, y: 0, z: 0}
   Board: {fileID: 1163309241}
+  InactiveIndex: 0
   value01: 0
 --- !u!1001 &238144546
 PrefabInstance:

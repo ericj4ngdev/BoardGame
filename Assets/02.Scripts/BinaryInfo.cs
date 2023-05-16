@@ -108,16 +108,17 @@ public class BinaryInfo : MonoBehaviour
     List<List<NodeTest>> boardList = new List<List<NodeTest>>();
     List<List<NodeTest>> CopiedBoardList = new List<List<NodeTest>>();
     // List<Score> ScoreList = new List<Score>();
-    List<string> locations = new List<string> {   "L0","L1","L2",
+    List<string> locations = new List<string> {   "T0","T1","T2",
+        "L0","L1","L2",
         "R0","R1","R2",
-        "T0","T1","T2",
         "B0","B1","B2"
     };
     List<List<BinTile>> board = new List<List<BinTile>>();
     List<NodeTest> DFSList1 = new List<NodeTest>();
     List<NodeTest> DFSList2 = new List<NodeTest>();
     List<BinTile> NodeTestInfoList = new List<BinTile>();
-    
+
+    public GameObject boardInfo;
     
     BinTile straight = new BinTile {
         Shape = new List<List<int>> {
@@ -128,6 +129,7 @@ public class BinaryInfo : MonoBehaviour
         rotation = 0,
         type = TileType.STRAIGHT
     };
+    
     BinTile corner = new BinTile {
         Shape = new List<List<int>> {
             new List<int> {0, 0, 0},
@@ -137,6 +139,7 @@ public class BinaryInfo : MonoBehaviour
         rotation = 0,
         type = TileType.CORNER
     };
+    
     BinTile halfcross = new BinTile {
         Shape = new List<List<int>> {
             new List<int> {0, 1, 0},
@@ -176,6 +179,8 @@ public class BinaryInfo : MonoBehaviour
     private StreamWriter testStreamWriter;
     private string str;
     
+    public int InactiveIndex;
+    
     private void Awake()
     {
         test = new FileStream("Assets/Resources/test.txt", FileMode.OpenOrCreate);
@@ -192,6 +197,21 @@ public class BinaryInfo : MonoBehaviour
     
     public void ScanBoard()
     {
+        int count = boardInfo.GetComponent<BoardInfo>().waypoints.Length;
+        // bool isActiveArea = 
+        for (int i = 0; i < count; i++)
+        {
+            bool isActiveArea = boardInfo.GetComponent<BoardInfo>().waypoints[i].activeSelf;
+            // 활성화 되어 있는가? 비활성화 시 break하고 location 저장
+            if (!isActiveArea)
+            {
+                InactiveIndex = i;
+                Debug.Log($"{i} 번째 pushArea");
+                break;
+            }
+        }
+            
+            
         NodeTestInfoList.Clear();
         DFSList1.Clear();
         DFSList2.Clear();
@@ -303,6 +323,7 @@ public class BinaryInfo : MonoBehaviour
             str += "\n";
         }*/
         // 보드 초기화
+        
         board.Clear();
         boardList.Clear();
         
@@ -313,6 +334,7 @@ public class BinaryInfo : MonoBehaviour
                 row.Add(new BinTile());
             board.Add(row);
         }
+        
         // 7*7 보드에 저장
         for (int i = 0; i < Board.transform.childCount - 1; i++)
         {
@@ -587,8 +609,6 @@ public class BinaryInfo : MonoBehaviour
         List<Score> ScoreList = new List<Score>();
         List<Score> arr_1 = new List<Score>();
         List<Score> arr_2 = new List<Score>();
-        // arr_1.Clear();
-        // arr_2.Clear();
         
         #region 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
@@ -599,9 +619,12 @@ public class BinaryInfo : MonoBehaviour
             for (int j = 0; j < i; j++)
                 RotateTileCW(ref copyBinTile);
 
-            // 각 회전에 따른 12가지 위치에 따른 다음 경우의 수 출력
+            // 각 회전에 따른 11가지 위치에 따른 다음 경우의 수 출력
             for (int j = 0; j < locations.Count; j++)
             {
+                // 비활성화 된 오브젝트는 계산하지 않는다.
+                if (j == InactiveIndex) continue;
+                
                 // 변화량 변수
                 int deltaReachableItem_1 = 0;
                 int deltaReachableItem_2 = 0;
@@ -621,14 +644,10 @@ public class BinaryInfo : MonoBehaviour
                 DFSListAdd(DFSList1,CopiedBoardList, player1);
                 DFSListAdd(DFSList2, CopiedBoardList, player2);        
                 
-                // △player1 reachable item = next - past
                 NextReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
-                // deltaReachableItem_1 = NextReachableItem_1 - ReachableItem_1;
                 str += "player1 reachable item : " + NextReachableItem_1 + "\n";
                 
-                // △player2 reachable item = next - past
                 NextReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-                // deltaReachableItem_2 = NextReachableItem_2 - ReachableItem_2;
                 str += "player2 reachable item : " + NextReachableItem_2 + "\n";
                 
                 // score클래스에 각 경우의 위치, 회전, 아이템 변화량 정보 저장후 리스트에 저장
@@ -668,8 +687,6 @@ public class BinaryInfo : MonoBehaviour
 
         str += sum_1 + " " + sum_2 + " " + "\n";
         
-        // Score p1 = new Score();
-        // Score p2 = new Score();
         int p = 0;
 
         #region player2가 먹는 경우 확률
@@ -1281,6 +1298,19 @@ public class BinaryInfo : MonoBehaviour
         DFSList.Clear();
         return count;
     }
+    int CheckReachableItem_2(List<NodeTest> DFSList, ref string str)
+    {
+        int count = 0;
+        str += "DFSList : ";
+        for (int i = 0; i < DFSList.Count; i++)
+        {
+            if(DFSList[i].num == 5) count++;
+            str += DFSList[i].num + " ";
+        }
+        str += "\n";
+        DFSList.Clear();
+        return count;
+    }
     int CheckReachableItem_3(List<NodeTest> DFSList, ref string str)
     {
         int count = 0;
@@ -1306,17 +1336,5 @@ public class BinaryInfo : MonoBehaviour
         return count;
     }
     
-    int CheckReachableItem_2(List<NodeTest> DFSList, ref string str)
-    {
-        int count = 0;
-        str += "DFSList : ";
-        for (int i = 0; i < DFSList.Count; i++)
-        {
-            if(DFSList[i].num == 5) count++;
-            str += DFSList[i].num + " ";
-        }
-        str += "\n";
-        DFSList.Clear();
-        return count;
-    }
+    
 }
