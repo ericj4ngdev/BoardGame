@@ -73,22 +73,41 @@ class Score
     public float Percent_1 = 0;
     public float Percent_2 = 0;
     public float per = 0;
+    
+    public Score() // 생성자 추가
+    {
+        location = "";
+        rotation = 0;
+        Player1ReachableItem = 0;
+        Player2ReachableItem = 0;
+        Player1_DeltaReachableItem = 0;
+        Player2_DeltaReachableItem = 0;
+        Percent_1 = 0;
+        Percent_2 = 0;
+        per = 0;
+    }
+    
+    public Score(Score other)
+    {
+        location = other.location;
+        rotation = other.rotation;
+        Player1ReachableItem = other.Player1ReachableItem;
+        Player2ReachableItem = other.Player2ReachableItem;
+        Player1_DeltaReachableItem = other.Player1_DeltaReachableItem;
+        Player2_DeltaReachableItem = other.Player2_DeltaReachableItem;
+        Percent_1 = other.Percent_1;
+        Percent_2 = other.Percent_2;
+        per = other.per;
+    }
 }
 
-class Player
-{
-    public int num;
-    public int x;
-    public int y;
-    public int target;
-    public int targetCount;
-}
+
 
 public class BinaryInfo : MonoBehaviour
 {
     List<List<NodeTest>> boardList = new List<List<NodeTest>>();
     List<List<NodeTest>> CopiedBoardList = new List<List<NodeTest>>();
-    List<Score> ScoreList = new List<Score>();
+    // List<Score> ScoreList = new List<Score>();
     List<string> locations = new List<string> {   "L0","L1","L2",
         "R0","R1","R2",
         "T0","T1","T2",
@@ -329,7 +348,7 @@ public class BinaryInfo : MonoBehaviour
         testStreamWriter.Flush();
     }
     
-    public void AIPushTile_1()
+    /*public void AIPushTile_1()
     {
         #region 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
@@ -560,11 +579,16 @@ public class BinaryInfo : MonoBehaviour
         
         testStreamWriter.Write(str);
         testStreamWriter.Flush();
-    }
+    }*/
+    
     public void AIPushTile_2()
     {
+        str += "AIPushTile_2 호출" + '\n';
+        List<Score> ScoreList = new List<Score>();
         List<Score> arr_1 = new List<Score>();
         List<Score> arr_2 = new List<Score>();
+        // arr_1.Clear();
+        // arr_2.Clear();
         
         #region 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
@@ -653,6 +677,7 @@ public class BinaryInfo : MonoBehaviour
         {
             for (int i = 0; i < ScoreList.Count; i++)
             {
+                // 해당 경우에서 먹을 수 있는 아이템이 있는가?
                 if (ScoreList[i].Player2ReachableItem > 0)
                 {
                     for (int j = 0; j < ScoreList[i].Player2ReachableItem; j++)
@@ -830,9 +855,9 @@ public class BinaryInfo : MonoBehaviour
     public GameObject AIMove()
     {
         // ScanBoard();
-        str += "AIMove" + "\n";
-        str += "DFSList2.Count : " + DFSList2.Count + "\n";
-        str += "ReachableItem_2 : " + ReachableItem_2 + "\n";
+        str += "AIMove 호출" + "\n";
+        str += "AIMove() - DFSList2.Count : " + DFSList2.Count + "\n";
+        str += "AIMove() - ReachableItem_2 : " + ReachableItem_2 + "\n";
         if (DFSList2.Count > 3)
         {
             Debug.Log(DFSList2.Count);
@@ -1216,7 +1241,7 @@ public class BinaryInfo : MonoBehaviour
     
     void DFSListAdd(List<NodeTest> DFSList, List<List<NodeTest>> NodeList, NodeTest currentNode)
     {
-        NodeTest NeighborNode;
+        NodeTest NeighborNode = new NodeTest();
         for (int i = -1; i <= 1; i++)
         {
             for (int j = -1; j <= 1; j++)
