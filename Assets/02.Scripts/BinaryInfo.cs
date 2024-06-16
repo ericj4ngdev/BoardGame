@@ -66,38 +66,38 @@ class Score
 {
     public string location;
     public int rotation;
-    public int Player1ReachableItem;
-    public int Player2ReachableItem;
+    public int PlayerReachableItem;
+    public int AIReachableItem;
     public int Player1_DeltaReachableItem;
     public int Player2_DeltaReachableItem;
-    public float Percent_1 = 0;
-    public float Percent_2 = 0;
-    public float per = 0;
+    public float ChoosingPlayerReachableCasePercent = 0;
+    public float ChoosingAIReachableCasePercent = 0;
+    public float FinalPercent = 0;
     
     public Score() // 생성자 추가
     {
         location = "";
         rotation = 0;
-        Player1ReachableItem = 0;
-        Player2ReachableItem = 0;
+        PlayerReachableItem = 0;
+        AIReachableItem = 0;
         Player1_DeltaReachableItem = 0;
         Player2_DeltaReachableItem = 0;
-        Percent_1 = 0;
-        Percent_2 = 0;
-        per = 0;
+        ChoosingPlayerReachableCasePercent = 0;
+        ChoosingAIReachableCasePercent = 0;
+        FinalPercent = 0;
     }
     
     public Score(Score other)
     {
         location = other.location;
         rotation = other.rotation;
-        Player1ReachableItem = other.Player1ReachableItem;
-        Player2ReachableItem = other.Player2ReachableItem;
+        PlayerReachableItem = other.PlayerReachableItem;
+        AIReachableItem = other.AIReachableItem;
         Player1_DeltaReachableItem = other.Player1_DeltaReachableItem;
         Player2_DeltaReachableItem = other.Player2_DeltaReachableItem;
-        Percent_1 = other.Percent_1;
-        Percent_2 = other.Percent_2;
-        per = other.per;
+        ChoosingPlayerReachableCasePercent = other.ChoosingPlayerReachableCasePercent;
+        ChoosingAIReachableCasePercent = other.ChoosingAIReachableCasePercent;
+        FinalPercent = other.FinalPercent;
     }
 }
 
@@ -161,16 +161,16 @@ public class BinaryInfo : MonoBehaviour
     private int deltaItem = 0;
     private int ReachableItem_1;
     private int ReachableItem_2;
-    private int NextReachableItem_1;
-    private int NextReachableItem_2;
+    private int ReachableItemForPlayer;
+    private int ReachableItemForAI;
     private int count = 0;
     private NodeTest player1;
     private NodeTest player2;
 
     public string location;
     public int rotate;
-    public int sum_1;
-    public int sum_2;
+    [FormerlySerializedAs("ReachableItemInAllCaseForP1")] [FormerlySerializedAs("sum_1")] public int ReachableItemInAllCaseForPlayer;
+    [FormerlySerializedAs("ReachableItemInAllCaseForP2")] [FormerlySerializedAs("sum_2")] public int ReachableItemInAllCaseForAI;
     public string info;
     public Vector3 target;
     public GameObject Board;
@@ -194,7 +194,7 @@ public class BinaryInfo : MonoBehaviour
         testStreamWriter.Write(str);
         testStreamWriter.Close();
     }
-    
+
     public void ScanBoard()
     {
         int count = boardInfo.GetComponent<BoardInfo>().waypoints.Length;
@@ -210,8 +210,8 @@ public class BinaryInfo : MonoBehaviour
                 break;
             }
         }
-            
-            
+
+
         NodeTestInfoList.Clear();
         DFSList1.Clear();
         DFSList2.Clear();
@@ -226,7 +226,7 @@ public class BinaryInfo : MonoBehaviour
                 // 타일 종류
                 switch (Tile.GetComponent<Node>().tileType)
                 {
-                    case TileType.HALFCROSS: 
+                    case TileType.HALFCROSS:
                         Node.type = TileType.HALFCROSS;
                         Node.Shape = new List<List<int>>
                         {
@@ -235,7 +235,7 @@ public class BinaryInfo : MonoBehaviour
                             new List<int> { 0, 1, 0 }
                         };
                         break;
-                    case TileType.CORNER: 
+                    case TileType.CORNER:
                         Node.type = TileType.CORNER;
                         Node.Shape = new List<List<int>>
                         {
@@ -244,7 +244,7 @@ public class BinaryInfo : MonoBehaviour
                             new List<int> { 0, 1, 0 }
                         };
                         break;
-                    case TileType.STRAIGHT: 
+                    case TileType.STRAIGHT:
                         Node.type = TileType.STRAIGHT;
                         Node.Shape = new List<List<int>>
                         {
@@ -254,6 +254,7 @@ public class BinaryInfo : MonoBehaviour
                         };
                         break;
                 }
+
                 //타일 회전 정보
                 Node.rotation = (int)Tile.transform.rotation.eulerAngles.y / 90;
                 for (int j = 0; j < Node.rotation; j++)
@@ -289,15 +290,16 @@ public class BinaryInfo : MonoBehaviour
                         Node.Shape[1][1] = 5;
                     }
                 }
+
                 // pBinTile
                 if (Node.y > 6)
                 {
                     pBinTile = new BinTile(Node);
-                    continue;       // add안하고 넘어가기
+                    continue; // add안하고 넘어가기
                 }
-                
+
                 // 담기는 건 i랑 무관. 중간에 하나는 pTile이라 인덱스상 1차이날 수 있다.
-                /*str += i + "번째 노드 정보 \n" + "<Shape>" + "\n"; 
+                /*str += i + "번째 노드 정보 \n" + "<Shape>" + "\n";
                 for (int j = 0; j < 3; j++)
                 {
                     for (int k = 0; k < 3; k++)
@@ -307,15 +309,16 @@ public class BinaryInfo : MonoBehaviour
                     str += "\n";
                 }
                 str += "Type : " + Node.type + "\n" +
-                       "Rotation " + Node.rotation + "\n" + 
+                       "Rotation " + Node.rotation + "\n" +
                        "x : " + Tile.transform.position.x + "     z :  " + Tile.transform.position.z + "\n" +
-                       "x2 : " + Node.x + "   y2 :  " + Node.y + "\n" + 
+                       "x2 : " + Node.x + "   y2 :  " + Node.y + "\n" +
                        "isPlayer1 : " + Node.isPlayer1 + "   isPlayer2 :  " + Node.isPlayer2 + "\n"+
                        "IsPlayer1Item : " + Node.IsPlayer1Item + "   IsPlayer2Item :  " + Node.IsPlayer2Item + "\n\n";*/
             }
+
             NodeTestInfoList.Add(Node);
         }
-        
+
         // NodeTestInfoList에 잘 담겼는지 확인. 이미 여기서 오류
         /*for (int i = 0; i < Board.transform.childCount - 1; i++)
         {
@@ -323,10 +326,10 @@ public class BinaryInfo : MonoBehaviour
             str += "\n";
         }*/
         // 보드 초기화
-        
+
         board.Clear();
         boardList.Clear();
-        
+
         for (int i = 0; i < n; i++)
         {
             List<BinTile> row = new List<BinTile>();
@@ -334,7 +337,7 @@ public class BinaryInfo : MonoBehaviour
                 row.Add(new BinTile());
             board.Add(row);
         }
-        
+
         // 7*7 보드에 저장
         for (int i = 0; i < Board.transform.childCount - 1; i++)
         {
@@ -350,266 +353,33 @@ public class BinaryInfo : MonoBehaviour
         str += "\n";
         str += "밀어넣을 타일" + "\n";
         PrintTileInfo(pBinTile, ref str);
-        str += "\n" ;
-        
+        str += "\n";
+
         // 플레이어 위치정보 NodeTest타입으로 저장
         player1 = GetPlayer1Pos(boardList);
         player2 = GetPlayer2Pos(boardList);
-        
+
         // 첫번째 판에서 dfs 출력
         DFSListAdd(DFSList1, boardList, player1);
         DFSListAdd(DFSList2, boardList, player2);
-        
+
         // 도달 가능 아이템 수 변화를 계산하기 위해 다른 변수에 저장
         ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
         str += "player1 reachable item : " + ReachableItem_1 + "\n";
         ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
         str += "player2 reachable item : " + ReachableItem_2 + "\n";
-        
+
         testStreamWriter.Write(str);
         testStreamWriter.Flush();
     }
-    
-    /*public void AIPushTile_1()
-    {
-        #region 48가지 경우의 수 
-        for (int i = 0; i < 4; i++)
-        {
-            BinTile copyBinTile = new BinTile(pBinTile);
-            
-            // 회전 4가지. i에 의해 회전 가지수 결정
-            for (int j = 0; j < i; j++)
-                RotateTileCW(ref copyBinTile);
 
-            // 각 회전에 따른 12가지 위치에 따른 다음 경우의 수 출력
-            for (int j = 0; j < locations.Count; j++)
-            {
-                // 변화량 변수
-                int deltaReachableItem_1 = 0;
-                int deltaReachableItem_2 = 0;
-                List<List<BinTile>> copiedBoard = new List<List<BinTile>>(0);
-                Score score = new Score();
-                
-                // 원본 board를 copiedBoard에 복제
-                foreach (List<BinTile> row in board)
-                {
-                    List<BinTile> copiedRow = new List<BinTile>(row);
-                    copiedBoard.Add(copiedRow);
-                }
-                str += i + "번 회전, " + locations[j] + "에 push했을 때 경우" + "\n";
-                PrintNextBoard(copyBinTile,copiedBoard,locations[j], ref str);
-                
-                // CopiedBoardList 가지고 DFS 계산
-                DFSListAdd(DFSList1,CopiedBoardList, player1);
-                DFSListAdd(DFSList2, CopiedBoardList, player2);        
-                
-                // △player1 reachable item = next - past
-                NextReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
-                // deltaReachableItem_1 = NextReachableItem_1 - ReachableItem_1;
-                str += "player1 reachable item : " + NextReachableItem_1 + "\n";
-                
-                // △player2 reachable item = next - past
-                NextReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-                deltaReachableItem_2 = NextReachableItem_2 - ReachableItem_2;
-                str += "player2 reachable item : " + NextReachableItem_2 + "\n";
-                
-                // score클래스에 각 경우의 위치, 회전, 아이템 변화량 정보 저장후 리스트에 저장
-                score.rotation = i;
-                score.location = locations[j];
-                score.Player1ReachableItem = NextReachableItem_1;
-                score.Player2ReachableItem = NextReachableItem_2;
-                // score.Player1_DeltaReachableItem = deltaReachableItem_1;
-                score.Player2_DeltaReachableItem = deltaReachableItem_2;
-                // score.Player1_opt = deltaReachableItem_1 - deltaReachableItem_2;
-                sum_1 += NextReachableItem_1;
-                // sum_2 += 4 - NextReachableItem_2;
-                ScoreList.Add(score);
-                // str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
-                // str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
-            }
-        }
-        
-
-        #endregion 
-        
-        // max 구하기
-        int maxDelta = 0;
-        foreach (Score item in ScoreList)
-        {
-            if (item.Player2_DeltaReachableItem > maxDelta)
-            {
-                maxDelta = item.Player2_DeltaReachableItem;
-            }
-        }
-
-        foreach (Score item in ScoreList)
-        {
-            if (maxDelta - item.Player2ReachableItem < 0) continue;
-            sum_2 += maxDelta - item.Player2ReachableItem + 1;
-        }
-        // 각 경우의 수 정보 출력
-        for (int i = 0; i < ScoreList.Count; i++)
-        {
-            str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
-                   ScoreList[i].Player1ReachableItem + "\n";
-        }
-
-        // 최선의 선택을 위해 Player1_opt 내림차순 정렬
-        ScoreList.Sort((s1, s2) => s2.Player1ReachableItem.CompareTo(s1.Player1ReachableItem));
-        str += "\n" + "정렬 후 " + "\n";
-        
-        // 정렬 후 각 경우의 수 정보 출력
-        for (int i = 0; i < ScoreList.Count; i++)
-        {
-            str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
-                   ScoreList[i].Player1ReachableItem + "\n";
-        }
-
-        str += sum_1 + " " + sum_2 + " " + maxDelta + "\n";
-        List<Score> arr_1 = new List<Score>();
-        List<Score> arr_2 = new List<Score>();
-        Score p1 = new Score();
-        Score p2 = new Score();
-        int p = 0;
-
-        #region 내가 먹는 경우 확률
-        if (sum_1 != 0)
-        {
-            for (int i = 0; i < ScoreList.Count; i++)
-            {
-                if (ScoreList[i].Player1ReachableItem > 0)
-                {
-                    for (int j = 0; j < ScoreList[i].Player1ReachableItem; j++)
-                    {
-                        Score score = new Score();
-                        score.location = ScoreList[i].location;
-                        score.rotation = ScoreList[i].rotation;
-                        score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
-                        score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
-                        arr_1.Add(score);
-                    }
-                    float per = (float)ScoreList[i].Player1ReachableItem / sum_1 * 100;
-                    ScoreList[i].Percent_1 = (float)Math.Round(per,2);
-                }
-            }
-            p = Random.Range(0, arr_1.Count);
-            p1.location = arr_1[p].location;
-            p1.rotation = arr_1[p].rotation;
-            p1.Player1ReachableItem = arr_1[p].Player1ReachableItem;
-            p1.Player2ReachableItem = arr_1[p].Player2ReachableItem;
-        }
-        else
-        {
-            p = Random.Range(0, 48);
-            p1.location = ScoreList[p].location;
-            p1.rotation = ScoreList[p].rotation;
-            p1.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
-            p1.Player2ReachableItem = ScoreList[p].Player2ReachableItem;
-        }
-        
-
-        #endregion
-
-        #region 상대가 못먹을 확률
-        if (sum_2 != 0)
-        {
-            for (int i = 0; i < ScoreList.Count; i++)
-            {
-                if (ScoreList[i].Player2ReachableItem > 0)
-                {
-                    for (int j = 0; j < ScoreList[i].Player2ReachableItem; j++)
-                    {
-                        Score score = new Score();
-                        score.location = ScoreList[i].location;
-                        score.rotation = ScoreList[i].rotation;
-                        score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
-                        score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
-                        arr_2.Add(score);
-                    }
-                    float per = (float)ScoreList[i].Player2ReachableItem / sum_2 * 100;
-                    ScoreList[i].Percent_2 = (float)Math.Round(per,2);
-                }
-            }
-            p = Random.Range(0, arr_2.Count);
-            p2.location = arr_2[p].location;
-            p2.rotation = arr_2[p].rotation;
-            p2.Player1ReachableItem = arr_2[p].Player1ReachableItem;
-            p2.Player2ReachableItem = arr_2[p].Player2ReachableItem;
-        }
-        else
-        {
-            p = Random.Range(0, 48);
-            p2.location = ScoreList[p].location;
-            p2.rotation = ScoreList[p].rotation;
-            p2.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
-            p2.Player2ReachableItem = ScoreList[p].Player2ReachableItem;
-        }
-        #endregion
-
-        // 확률 출력
-        str += "======================== 확률 표======================= \n";
-        for (int i = 0; i < ScoreList.Count; i++)
-        {
-            str += $"{ScoreList[i].rotation}{ScoreList[i].location} 확률 : " +
-                   $"{ScoreList[i].Percent_1,5:0.00} %\t\t{ScoreList[i].Percent_2,5:0.00000} %\n";
-        }
-        str += "====================== p1 선택지 ====================== \n";
-        for (int i = 0; i < arr_1.Count; i++)
-        {
-            str += arr_1[i].rotation + arr_1[i].location + "\n";
-        }
-        str += "====================== p2 선택지 ====================== \n";
-        for (int i = 0; i < arr_2.Count; i++)
-        {
-            str += arr_2[i].rotation + arr_2[i].location + "\n";
-        }
-        str += "====================================================== \n";
-        str += "p1 선택 : " + p1.rotation + p1.location + "\n";;
-        str += "p2 선택 : " + p2.rotation + p2.location + "\n";;
-        
-        str += "====================== 최종 선택 ====================== \n";
-        
-        // 랜덤 뽑기
-        p = Random.Range(0, 100);       // (0~99)
-        // ratio = 내가 쓴 숫자가 p1의 비율
-        
-        str += rotate + location + "\n";;
-        for (int i = 0; i < rotate; i++)
-            RotateTileCW(ref pBinTile);
-        
-        // 이제 이 rotation과 location 정보를 이용해 밀어넣으면 된다. 
-        // =======================================================================
-        // 미는 동작은?
-        // 밀고 난 후 보드 출력
-        str += rotate + "회전 후 " + location + "에 push 한 후" + "\n";
-        PushTile(ref pBinTile, board, location);
-        boardList = PrintBoard(board, ref str);
-        printList2(boardList, ref str);
-        
-        str += "\n";
-        str += "밀어넣을 타일" + "\n";
-        PrintTileInfo(pBinTile, ref str);
-        str += "\n";
-
-        str += "Player1 "; DFSListAdd(DFSList1,boardList, player1);
-        ReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
-        str += "player1 reachable item : " + ReachableItem_1 + "\n";
-        
-        str += "Player2 "; DFSListAdd(DFSList2,boardList, player2);
-        ReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-        str += "player2 reachable item : " + ReachableItem_2 + "\n";
-        
-        testStreamWriter.Write(str);
-        testStreamWriter.Flush();
-    }*/
-    
     public void AIPushTile_2()
     {
         str += "AIPushTile_2 호출" + '\n';
-        List<Score> ScoreList = new List<Score>();
-        List<Score> arr_1 = new List<Score>();
-        List<Score> arr_2 = new List<Score>();
-        
+        List<Score> AllCaseScores = new List<Score>();  // 모든 경우
+        List<Score> PlayerReachableCases = new List<Score>();      // p1 아이템 있는 경우
+        List<Score> AIReachableCases = new List<Score>();      // p2 아이템 있는 경우
+
         #region 48가지 경우의 수 
         for (int i = 0; i < 4; i++)
         {
@@ -644,70 +414,48 @@ public class BinaryInfo : MonoBehaviour
                 DFSListAdd(DFSList1,CopiedBoardList, player1);
                 DFSListAdd(DFSList2, CopiedBoardList, player2);        
                 
-                NextReachableItem_1 = CheckReachableItem_1(DFSList1, ref str);
-                str += "player1 reachable item : " + NextReachableItem_1 + "\n";
+                ReachableItemForPlayer = CheckReachableItem_1(DFSList1, ref str);
+                str += "player1 reachable item : " + ReachableItemForPlayer + "\n";
                 
-                NextReachableItem_2 = CheckReachableItem_2(DFSList2, ref str);
-                str += "player2 reachable item : " + NextReachableItem_2 + "\n";
+                ReachableItemForAI = CheckReachableItem_2(DFSList2, ref str);
+                str += "player2 reachable item : " + ReachableItemForAI + "\n";
                 
                 // score클래스에 각 경우의 위치, 회전, 아이템 변화량 정보 저장후 리스트에 저장
                 score.rotation = i;
                 score.location = locations[j];
-                score.Player1ReachableItem = NextReachableItem_1;
-                score.Player2ReachableItem = NextReachableItem_2;
-                score.Player1_DeltaReachableItem = deltaReachableItem_1;
-                score.Player2_DeltaReachableItem = deltaReachableItem_2;
-                // score.Player1_opt = deltaReachableItem_1 - deltaReachableItem_2;
-                sum_1 += NextReachableItem_1;
-                sum_2 += NextReachableItem_2;
-                ScoreList.Add(score);
-                // str += "Player1이 먹을 수 있는 a의 수 변화 : " + deltaReachableItem_1 + "\n";
-                // str += "Player2가 먹을 수 있는 b의 수 변화 : " + deltaReachableItem_2 + "\n";
+                score.PlayerReachableItem = ReachableItemForPlayer;
+                score.AIReachableItem = ReachableItemForAI;
+                
+                ReachableItemInAllCaseForPlayer += ReachableItemForPlayer;
+                ReachableItemInAllCaseForAI += ReachableItemForAI;
+                AllCaseScores.Add(score);
             }
         }
         #endregion 
         
-        /*// 각 경우의 수 정보 출력
-        for (int i = 0; i < ScoreList.Count; i++)
-        {
-            str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
-                   ScoreList[i].Player2ReachableItem + "\n";
-        }
-
-        // 최선의 선택을 위해 Player1_opt 내림차순 정렬
-        ScoreList.Sort((s1, s2) => s2.Player2ReachableItem.CompareTo(s1.Player2ReachableItem));
-        str += "\n" + "정렬 후 " + "\n";
+        // sum_1 : 모든 경우 P1이 도달가능한 아이템 수 합
+        // sum_2 : 모든 경우 P2이 도달가능한 아이템 수 합
+        str += ReachableItemInAllCaseForPlayer + " " + ReachableItemInAllCaseForAI + " " + "\n";
         
-        // 정렬 후 각 경우의 수 정보 출력
-        for (int i = 0; i < ScoreList.Count; i++)
-        {
-            str += ScoreList[i].rotation + ScoreList[i].location + "\t" +
-                   ScoreList[i].Player2ReachableItem + "\n";
-        }*/
-
-        str += sum_1 + " " + sum_2 + " " + "\n";
-        
-        int p = 0;
-
         #region player2가 먹는 경우 확률
-        if (sum_2 != 0)
+        if (ReachableItemInAllCaseForAI != 0)
         {
-            for (int i = 0; i < ScoreList.Count; i++)
+            for (int i = 0; i < AllCaseScores.Count; i++)
             {
                 // 해당 경우에서 먹을 수 있는 아이템이 있는가?
-                if (ScoreList[i].Player2ReachableItem > 0)
+                if (AllCaseScores[i].AIReachableItem > 0)
                 {
-                    for (int j = 0; j < ScoreList[i].Player2ReachableItem; j++)
+                    for (int j = 0; j < AllCaseScores[i].AIReachableItem; j++)
                     {
                         Score score = new Score();
-                        score.location = ScoreList[i].location;
-                        score.rotation = ScoreList[i].rotation;
-                        score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
-                        score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
-                        arr_2.Add(score);
+                        score.location = AllCaseScores[i].location;
+                        score.rotation = AllCaseScores[i].rotation;
+                        score.PlayerReachableItem = AllCaseScores[i].PlayerReachableItem;
+                        score.AIReachableItem = AllCaseScores[i].AIReachableItem;
+                        AIReachableCases.Add(score);
                     }
-                    float per = (float)ScoreList[i].Player2ReachableItem / sum_2 * 100;
-                    ScoreList[i].Percent_2 = (float)Math.Round(per,2);
+                    float per = (float)AllCaseScores[i].AIReachableItem / ReachableItemInAllCaseForAI * 100;
+                    AllCaseScores[i].ChoosingAIReachableCasePercent = (float)Math.Round(per,2);
                 }
             }
             /*
@@ -720,19 +468,19 @@ public class BinaryInfo : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < ScoreList.Count; i++)
+            for (int i = 0; i < AllCaseScores.Count; i++)
             {
-                for (int j = 0; j < ScoreList[i].Player2ReachableItem; j++)
+                for (int j = 0; j < AllCaseScores[i].AIReachableItem; j++)
                 {
                     Score score = new Score();
-                    score.location = ScoreList[i].location;
-                    score.rotation = ScoreList[i].rotation;
-                    score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
-                    score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
-                    arr_2.Add(score);
+                    score.location = AllCaseScores[i].location;
+                    score.rotation = AllCaseScores[i].rotation;
+                    score.PlayerReachableItem = AllCaseScores[i].PlayerReachableItem;
+                    score.AIReachableItem = AllCaseScores[i].AIReachableItem;
+                    AIReachableCases.Add(score);
                 }
                 // float per = (float)ScoreList[i].Player2ReachableItem / sum_2 * 100;
-                ScoreList[i].Percent_2 = (float)Math.Round(1/48f,2);
+                AllCaseScores[i].ChoosingAIReachableCasePercent = (float)Math.Round(1/48f,2);
             }
             /*p = Random.Range(0, 48);
             p2.location = ScoreList[p].location;
@@ -745,52 +493,48 @@ public class BinaryInfo : MonoBehaviour
         #endregion
 
         #region player1이 먹는 경우 확률
-        if (sum_1 != 0)
+        if (ReachableItemInAllCaseForPlayer != 0)
         {
-            for (int i = 0; i < ScoreList.Count; i++)
+            // 모든 경우
+            for (int i = 0; i < AllCaseScores.Count; i++)
             {
-                if (ScoreList[i].Player1ReachableItem > 0)
+                // Player1이 도달 가능한 아이템이 있는 경우
+                if (AllCaseScores[i].PlayerReachableItem > 0)
                 {
-                    for (int j = 0; j < ScoreList[i].Player1ReachableItem; j++)
+                    // 아이템 수만큼 Score 추가
+                    for (int j = 0; j < AllCaseScores[i].PlayerReachableItem; j++)
                     {
+                        // ...
                         Score score = new Score();
-                        score.location = ScoreList[i].location;
-                        score.rotation = ScoreList[i].rotation;
-                        score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
-                        score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
-                        arr_1.Add(score);
+                        score.location = AllCaseScores[i].location;
+                        score.rotation = AllCaseScores[i].rotation;
+                        score.PlayerReachableItem = AllCaseScores[i].PlayerReachableItem;
+                        score.AIReachableItem = AllCaseScores[i].AIReachableItem;
+                        PlayerReachableCases.Add(score);
                     }
-                    float per = (float)ScoreList[i].Player1ReachableItem / sum_1 * 100;
-                    ScoreList[i].Percent_1 = (float)Math.Round(per,2);
+                    // Player1이 도달 가능한 아이템이 있는 경우 중에서의 확률 
+                    float per = (float)AllCaseScores[i].PlayerReachableItem / ReachableItemInAllCaseForPlayer * 100;
+                    AllCaseScores[i].ChoosingPlayerReachableCasePercent = (float)Math.Round(per,2);
                 }
             }
-            /*p = Random.Range(0, arr_1.Count);
-            p1.location = arr_1[p].location;
-            p1.rotation = arr_1[p].rotation;
-            p1.Player1ReachableItem = arr_1[p].Player1ReachableItem;
-            p1.Player2ReachableItem = arr_1[p].Player2ReachableItem;*/
         }
         else
         {
-            for (int i = 0; i < ScoreList.Count; i++)
+            // 아무것도 없으면 1/48로 넣기 
+            for (int i = 0; i < AllCaseScores.Count; i++)
             {
-                 for (int j = 0; j < ScoreList[i].Player1ReachableItem; j++)
+                 for (int j = 0; j < AllCaseScores[i].PlayerReachableItem; j++)
                  {
                      Score score = new Score();
-                     score.location = ScoreList[i].location;
-                     score.rotation = ScoreList[i].rotation;
-                     score.Player1ReachableItem = ScoreList[i].Player1ReachableItem;
-                     score.Player2ReachableItem = ScoreList[i].Player2ReachableItem;
-                     arr_1.Add(score);
+                     score.location = AllCaseScores[i].location;
+                     score.rotation = AllCaseScores[i].rotation;
+                     score.PlayerReachableItem = AllCaseScores[i].PlayerReachableItem;
+                     score.AIReachableItem = AllCaseScores[i].AIReachableItem;
+                     PlayerReachableCases.Add(score);
                  }
                  // float per = (float)ScoreList[i].Player1ReachableItem / sum_1 * 100;
-                 ScoreList[i].Percent_1 = (float)Math.Round(1/48f,2);
+                 AllCaseScores[i].ChoosingPlayerReachableCasePercent = (float)Math.Round(1/48f,2);
             }
-            /*p = Random.Range(0, 48);
-            p1.location = ScoreList[p].location;
-            p1.rotation = ScoreList[p].rotation;
-            p1.Player1ReachableItem = ScoreList[p].Player1ReachableItem;
-            p1.Player2ReachableItem = ScoreList[p].Player2ReachableItem;*/
         }
 
 
@@ -801,40 +545,40 @@ public class BinaryInfo : MonoBehaviour
         
         // 확률 출력
         str += "======================== 확률 표======================= \n";
-        for (int i = 0; i < ScoreList.Count; i++)
+        for (int i = 0; i < AllCaseScores.Count; i++)
         {
-            ScoreList[i].per = (ScoreList[i].Percent_1 * ratio) + (ScoreList[i].Percent_2 * (1 - ratio));
-            str += $"{ScoreList[i].rotation}{ScoreList[i].location} 확률 : " +
-                   $"{ScoreList[i].Percent_1,5:0.0000} %\t\t{ScoreList[i].Percent_2,5:0.0000} %\t\t{ScoreList[i].per,5:0.0000} %\n";
+            AllCaseScores[i].FinalPercent = (AllCaseScores[i].ChoosingPlayerReachableCasePercent * ratio) + (AllCaseScores[i].ChoosingAIReachableCasePercent * (1 - ratio));
+            str += $"{AllCaseScores[i].rotation}{AllCaseScores[i].location} 확률 : " +
+                   $"{AllCaseScores[i].ChoosingPlayerReachableCasePercent,5:0.0000} %\t\t{AllCaseScores[i].ChoosingAIReachableCasePercent,5:0.0000} %\t\t{AllCaseScores[i].FinalPercent,5:0.0000} %\n";
         }
         
         // per를 기준으로 백분율화?
 
         str += "====================== p1 선택지 ====================== \n";
-        for (int i = 0; i < arr_1.Count; i++)
+        for (int i = 0; i < PlayerReachableCases.Count; i++)
         {
-            str += arr_1[i].rotation + arr_1[i].location + "\n";
+            str += PlayerReachableCases[i].rotation + PlayerReachableCases[i].location + "\n";
         }
         str += "====================== p2 선택지 ====================== \n";
-        for (int i = 0; i < arr_2.Count; i++)
+        for (int i = 0; i < AIReachableCases.Count; i++)
         {
-            str += arr_2[i].rotation + arr_2[i].location + "\n";
+            str += AIReachableCases[i].rotation + AIReachableCases[i].location + "\n";
         }
         str += "====================== 최종 선택 ====================== \n";
 
         // 가장 높은 확률인거 고르기
         int maxPerIndex = 0;
         float maxPer = 0f;
-        for (int i = 0; i < ScoreList.Count; i++)
+        for (int i = 0; i < AllCaseScores.Count; i++)
         {
-            if (ScoreList[i].per > maxPer)
+            if (AllCaseScores[i].FinalPercent > maxPer)
             {
-                maxPer = ScoreList[i].per;
+                maxPer = AllCaseScores[i].FinalPercent;
                 maxPerIndex = i;
             }
         }
-        location = ScoreList[maxPerIndex].location;
-        rotate = ScoreList[maxPerIndex].rotation;
+        location = AllCaseScores[maxPerIndex].location;
+        rotate = AllCaseScores[maxPerIndex].rotation;
         
         // 랜덤 뽑기
         

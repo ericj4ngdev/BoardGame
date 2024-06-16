@@ -68,12 +68,12 @@ public class Node : MonoBehaviour
         return Camera.main.ScreenToWorldPoint(mousePoint);
     }
 
-    /*public void reachableTileColorChange()
+    public void reachableTileColorChange()
     {
         bool isReachable = isDFS(board.DFSList);
         Color tileColor = isReachable ? reachableTileColor : originalColor;
         transform.GetChild(0).GetComponent<Renderer>().material.color = tileColor;
-    }*/
+    }
 
     public void ResetTileColor()
     {
@@ -115,6 +115,7 @@ public class Node : MonoBehaviour
     }
 
     
+
     /*private void OnMouseExit()
     {
         transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;
@@ -173,6 +174,11 @@ public class Node : MonoBehaviour
         transform.GetChild(0).GetComponent<Renderer>().material.color = originalColor;  // 기존 색상으로 변경
     }
 
+    [Header("Info")]
+    [SerializeField] private float attackRange;
+    [SerializeField] private float recognitionRange;
+
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -265,4 +271,8 @@ public class Node : MonoBehaviour
         }
         yield return null;
     }
+    
+    
+    
+    
 }
